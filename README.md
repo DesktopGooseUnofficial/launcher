@@ -9,3 +9,9 @@ looking for the backend? check [this github repo](https://github.com/desktopgoos
 ## launch date
 
 when it's ready! end of this week or later, we hope.
+
+### hold on, why is there source code here then?
+
+well, what you see here is a super early access version. it lacks basic features, it doesn't work well.
+
+basically, it's in general not intended for public use just yet, although we want to keep our progress open to everyone!
