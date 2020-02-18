@@ -13,7 +13,7 @@ namespace ResourceHubLauncher
     public partial class Form1 : Form
     {
 
-        // TOOD Add "Launch Goose" button which launches goose (depends on Config being added)
+        // TODO Add "Launch Goose" button which launches goose (depends on Config being added)
 
         public Form1()
         {
