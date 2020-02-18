@@ -64,7 +64,7 @@ namespace ResourceHubLauncher
 
         private void ResourceHubPage_Click(object sender, EventArgs e)
         {
-            //Add dialog box "Are you sure you want to open the ResourceHub page?"
+            //TODO Add dialog box "Are you sure you want to open the ResourceHub page?"
             
         }
 
