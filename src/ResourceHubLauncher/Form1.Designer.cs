@@ -65,6 +65,8 @@
             // 
             // label2
             // 
+
+            // TODO Change this to the actual version of the software
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(613, 424);
             this.label2.Name = "label2";
