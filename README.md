@@ -15,3 +15,10 @@ when it's ready! end of this week or later, we hope.
 well, what you see here is a super early access version. it lacks basic features, it doesn't work well.
 
 basically, it's in general not intended for public use just yet, although we want to keep our progress open to everyone!
+
+
+## to-do
+
+allow users to run goose directly from app
+
+updater for launcher, not just mods
