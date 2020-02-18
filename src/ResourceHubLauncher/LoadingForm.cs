@@ -20,6 +20,10 @@ namespace ResourceHubLauncher
         {
             InitializeComponent();
 
+            // TODO Add updater for Launcher, not just mods
+            // TODO Add config file and dark mode, have a dark mode toggle inside the config file
+            // TODO Ask for Goose file path on startup, and write this path to the config file
+
             WebRequest request = WebRequest.Create("https://raw.githubusercontent.com/DesktopGooseUnofficial/launcher-backend/master/mods-test.json");
             WebResponse response = request.GetResponse();
             Stream data = response.GetResponseStream();
