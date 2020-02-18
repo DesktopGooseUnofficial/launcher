@@ -10,12 +10,9 @@ using System.Windows.Forms;
 
 namespace ResourceHubLauncher
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-
-        // TODO Add "Launch Goose" button which launches goose (depends on Config being added)
-
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -67,7 +64,7 @@ namespace ResourceHubLauncher
 
         private void ResourceHubPage_Click(object sender, EventArgs e)
         {
-            //TODO Add dialog box "Are you sure you want to open the ResourceHub page?" If yes, open page in user's web browser
+            //Add dialog box "Are you sure you want to open the ResourceHub page?"
             
         }
 
