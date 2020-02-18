@@ -22,3 +22,5 @@ basically, it's in general not intended for public use just yet, although we wan
 allow users to run goose directly from app
 
 updater for launcher, not just mods
+
+add configuration file, and ask for goose file path if config is not found (store this data in config)
