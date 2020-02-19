@@ -62,7 +62,7 @@ namespace ResourceHubLauncher {
                     }
                 } catch (Exception) {
                     download = false;
-                    MsgBox("Download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MsgBox("The download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 enabledMods.Items.Add(Path.GetFileNameWithoutExtension(f));
                 string ext = f.Substring(Path.GetFileNameWithoutExtension(f).Length + 1);
@@ -87,7 +87,7 @@ namespace ResourceHubLauncher {
             try {
                 Process.Start(mod["resourcehub"].ToString());
             } catch (Exception) {
-                MsgBox("Link for this mod is not available or invalid.", "Page opening error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MsgBox("The link for this mod is not available or invalid.", "Page opening error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
