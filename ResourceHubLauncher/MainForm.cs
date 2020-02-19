@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ResourceHubLauncher
 {
-    public partial class MainForm : Form
+    public partial class MainForm : MetroFramework.Forms.MetroForm
     {
         public MainForm()
         {
@@ -71,6 +71,10 @@ namespace ResourceHubLauncher
             {
                 e.Cancel=true;
             }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e) {
+
         }
     }
 }

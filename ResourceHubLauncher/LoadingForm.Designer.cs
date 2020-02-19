@@ -28,47 +28,43 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label1 = new System.Windows.Forms.Label();
+            this.metroProgressBar1 = new MetroFramework.Controls.MetroProgressBar();
+            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.SuspendLayout();
             // 
-            // progressBar1
+            // metroProgressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(10, 11);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(2);
-            this.progressBar1.Maximum = 1000;
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(218, 10);
-            this.progressBar1.Step = 0;
-            this.progressBar1.TabIndex = 0;
-            this.progressBar1.UseWaitCursor = true;
-            this.progressBar1.Value = 10;
-            this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
+            this.metroProgressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.metroProgressBar1.Location = new System.Drawing.Point(20, 74);
+            this.metroProgressBar1.Name = "metroProgressBar1";
+            this.metroProgressBar1.ProgressBarStyle = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.metroProgressBar1.Size = new System.Drawing.Size(232, 11);
+            this.metroProgressBar1.TabIndex = 2;
+            this.metroProgressBar1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
-            // label1
+            // metroLabel1
             // 
-            this.label1.Location = new System.Drawing.Point(0, 23);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(239, 37);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Checking for available updates. Please wait...";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.UseWaitCursor = true;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.metroLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metroLabel1.Location = new System.Drawing.Point(20, 30);
+            this.metroLabel1.Name = "metroLabel1";
+            this.metroLabel1.Size = new System.Drawing.Size(232, 44);
+            this.metroLabel1.TabIndex = 3;
+            this.metroLabel1.Text = "Looking for updates.\r\nPlease wait...";
+            this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // LoadingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(239, 61);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.progressBar1);
+            this.ClientSize = new System.Drawing.Size(272, 105);
+            this.Controls.Add(this.metroLabel1);
+            this.Controls.Add(this.metroProgressBar1);
+            this.DisplayHeader = false;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "LoadingForm";
-            this.Text = "Updater";
-            this.UseWaitCursor = true;
+            this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Load += new System.EventHandler(this.LoadingForm_Load);
             this.ResumeLayout(false);
 
@@ -76,7 +72,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar progressBar1;
-        public System.Windows.Forms.Label label1;
+        private MetroFramework.Controls.MetroProgressBar metroProgressBar1;
+        private MetroFramework.Controls.MetroLabel metroLabel1;
     }
 }
