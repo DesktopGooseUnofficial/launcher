@@ -1,4 +1,4 @@
-# launcher
+# launcher ![GitHub All Releases](https://img.shields.io/github/downloads/desktopgooseunofficial/launcher/total)
 
 welcome to the launcher for resourcehub!
 
