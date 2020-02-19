@@ -59,13 +59,15 @@ namespace ResourceHubLauncher
 
         private void ResourceHubPage_Click(object sender, EventArgs e)
         {
-            //Add dialog box "Are you sure you want to open the ResourceHub page?"
-            
+            //TODO Add dialog box "Are you sure you want to open the ResourceHub page?" If yes, open page in user's web browser 
+
         }
+
+        // stop user from exiting the launcher if they did not mean to
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to close ResourceHub Launcher?", "Resource Hub Launcher", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show("Are you sure you want to close ResourceHub Launcher?", "Hold up!", MessageBoxButtons.YesNo) == DialogResult.No)
             {
                 e.Cancel=true;
             }
