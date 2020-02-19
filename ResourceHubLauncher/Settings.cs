@@ -45,11 +45,19 @@ namespace ResourceHubLauncher {
                 c.BackColor = colors[i];
                 int _ = i;
                 c.Click += (object s, EventArgs e) => {
+                    Config.Save();
+                    Config.Load();
                     Config.Options["color"] = _;
+                    Config.Options["theme"] = (int)Config.Options["theme"];
+                    styleManager.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
                     styleManager.Style = (MetroColorStyle)(int)Config.Options["color"];
+                    Config.Save();
                     Config.Theme(this);
                 };
             }
+
+            metroTextBox1.Text = (string)Config.Options["gpath"];
+            metroTextBox2.Text = (string)Config.Options["cpath"];
         }
 
         private void Settings_Load(object sender, EventArgs e) {
@@ -57,8 +65,13 @@ namespace ResourceHubLauncher {
         }
 
         private void metroCheckBox1_CheckedChanged(object sender, EventArgs e) {
+            Config.Save();
+            Config.Load();
+            Config.Options["color"] = (int)Config.Options["color"];
             Config.Options["theme"] = metroCheckBox1.Checked ? 1 : 2;
             styleManager.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
+            styleManager.Style = (MetroColorStyle)(int)Config.Options["color"];
+            Config.Save();
             Config.Theme(this);
         }
 
@@ -72,7 +85,8 @@ namespace ResourceHubLauncher {
 
         private void goosePathDialog_FileOk(object sender, CancelEventArgs e) {
             Config.Options["gpath"] = goosePathDialog.FileName;
-            metroTextBox1.Text = goosePathDialog.FileName;
+            metroTextBox1.Text = (string)Config.Options["gpath"];
+            Config.Save();
         }
 
         private void metroButton3_Click(object sender, EventArgs e) {
@@ -81,7 +95,8 @@ namespace ResourceHubLauncher {
 
         private void configPathDialog_FileOk(object sender, CancelEventArgs e) {
             Config.Options["cpath"] = configPathDialog.FileName;
-            metroTextBox2.Text = configPathDialog.FileName;
+            metroTextBox2.Text = (string)Config.Options["cpath"];
+            Config.Save();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace ResourceHubLauncher {
         static void Main(string[] args) {
             Config.Load();
 
-            WebRequest request = WebRequest.Create("https://raw.githubusercontent.com/DesktopGooseUnofficial/launcher-backend/master/data.json");
+            WebRequest request = WebRequest.Create("http://rhl.my.to/data");
             WebResponse response = request.GetResponse();
             Stream stream = response.GetResponseStream();
             string html = "";
@@ -58,7 +58,7 @@ namespace ResourceHubLauncher {
             if (_G.dev && MetroMessageBox.Show(form, "Copy Version MD5 to clipboard?", "Developer Mode", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 Clipboard.SetText(md5.ToString());
 
-            if ((string)Config.Options["gpath"] == "No Path Specified") {
+            if ((string)Config.Options["gpath"] == "") {
                 if (MetroMessageBox.Show(form, "Do you want to select it yourself?", "We couldn't find the Goose .exe file.", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                     using (OpenFileDialog oFileDialog = new OpenFileDialog()) {
                         oFileDialog.InitialDirectory = @"C:\";

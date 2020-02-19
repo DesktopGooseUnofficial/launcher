@@ -7,11 +7,13 @@ using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Net;
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
         public IList<JToken> results = new List<JToken>();
         IList<JToken> mods = new List<JToken>();
+        bool download = false;
 
         public MainForm() {
             InitializeComponent();
@@ -20,6 +22,8 @@ namespace ResourceHubLauncher {
 
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
+
+
         }
 
         private DialogResult MsgBox(object text, string title = "ResourceHub Launcher", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) {
@@ -30,22 +34,60 @@ namespace ResourceHubLauncher {
             foreach (JToken ok in results) {
                 foreach (JToken mod in ok) {
                     mods.Add(mod);
-                    otherMods.Items.Add(mod["name"]);
+                    otherMods.Items.Add(mod["name"] + " v" + mod["mod-version"]);
                 }
             }
         }
 
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
             JToken mod = mods[otherMods.SelectedIndex];
-            MsgBox("As such, downloading mods is not yet available.", "This is an early version of ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            string url = (string) mod["url"];
+            using (WebClient wc = new WebClient()) {
+                string f = Path.GetFileName((string)mod["url"]);
+                try {
+                    if(!download) {
+                        download = true;
+                        metroLabel1.Text = $"Installing {f}";
+                        wc.DownloadFileAsync(new Uri(url), f);
+                        wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
+                            metroProgressBar1.Value = args.ProgressPercentage;
+                        };
+                        wc.DownloadDataCompleted += (object _sender, DownloadDataCompletedEventArgs args) => {
+                            metroLabel1.Hide();
+                            metroProgressBar1.Hide();
+                            download = false;
+                        };
+                    } else {
+                        MsgBox("You already have a download in progress.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                } catch (Exception) {
+                    download = false;
+                    MsgBox("Download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                enabledMods.Items.Add(Path.GetFileNameWithoutExtension(f));
+                string ext = f.Substring(Path.GetFileNameWithoutExtension(f).Length + 1);
+                string nme = f.Substring(f.Length - (ext.Length + 1));
+                if (ext != "dll") {
+                    MsgBox("This mod is not a DLL and therefore cannot be automatically installed.\r\n" + 
+                           "Please manually install " + nme + ".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    string dest = Path.Combine(Config.getModPath(), "Assets", "Mods", f);
+                    File.Move(f, dest);
+                    Process.Start("explorer.exe", "/select, " + Path.Combine(Config.getModPath(), "Assets", "Mods", f));
+                } else {
+                    string path = Path.Combine(Config.getModPath(), "Assets", "Mods", (string)mod["name"]);
+                    if(!Directory.Exists(path)) Directory.CreateDirectory(path);
+                    File.Move(f, Path.Combine(path, f));
+                }
+            }
         }
 
         private void resourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
             JToken mod = mods[otherMods.SelectedIndex];
             try {
                 Process.Start(mod["resourcehub"].ToString());
-            } catch (Exception ex) {
-                MsgBox("Link for this mod is not available.", "Page opening error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } catch (Exception) {
+                MsgBox("Link for this mod is not available or invalid.", "Page opening error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -60,16 +102,7 @@ namespace ResourceHubLauncher {
         }
 
         private void RunGoose_Click(object sender, EventArgs e) {
-            if((string)Config.Options["gpath"] == "No Path Specified") {
-                MsgBox("Please set the Goose path in the Settings.", "Error 404: Goose not found!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else {
-                if(File.Exists((string)Config.Options["gpath"])) {
-                    Process.Start((string)Config.Options["gpath"]);
-                } else {
-                    MsgBox("The goose path you have set seems to be outdated.\r\n" +
-                           "Please set the Goose path in the Settings.", "Error 404: Goose not found!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            Process.Start(Path.Combine(Config.getModPath(), Path.GetFileName((string)Config.Options["gpath"])));
         }
 
         private void otherMods_SelectedIndexChanged(object sender, EventArgs e) {
@@ -97,6 +130,23 @@ namespace ResourceHubLauncher {
 
         private void modListContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e) {
             if (otherMods.SelectedIndex == -1) modListContextMenu.Close();
+        }
+
+        private void metroButton4_Click(object sender, EventArgs e) {
+            foreach(Process p in Process.GetProcessesByName("GooseDesktop")) {
+                p.Kill();
+            }
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e) {
+            string mod = enabledMods.SelectedItem.ToString();
+            string path = Path.Combine(Config.getModPath(), "Assets", "Mods", mod);
+            if (Directory.Exists(path)) Directory.Delete(path, true);
+            enabledMods.Items.Remove(mod);
+        }
+
+        private void installedModsContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e) {
+            if (enabledMods.SelectedIndex == -1) installedModsContextMenu.Close();
         }
     }
 }

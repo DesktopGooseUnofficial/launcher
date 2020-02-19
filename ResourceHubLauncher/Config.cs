@@ -15,9 +15,23 @@ namespace ResourceHubLauncher {
         public static void Defaults() {
             Options["theme"] = 2;
             Options["color"] = 0;
-            Options["gpath"] = "No Path Specified";
-            Options["cpath"] = "No Path Specified";
+            Options["gpath"] = "";
+            Options["cpath"] = "";
             Options["devmode"] = false;
+        }
+
+        public static string getModPath() {
+            if ((string)Options["gpath"] == "") {
+                MetroMessageBox.Show(new MainForm(), "Please set the Goose path in the Settings.", "Error 404: Goose not found!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } else {
+                if (File.Exists((string)Options["gpath"])) {
+                    return Path.GetDirectoryName((string)Options["gpath"]);
+                } else {
+                    MetroMessageBox.Show(new MainForm(), "The goose path you have set seems to be outdated.\r\n" +
+                           "Please set the Goose path in the Settings.", "Error 404: Goose not found!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            return "";
         }
 
         public static void Check() {

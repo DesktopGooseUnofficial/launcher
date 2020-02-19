@@ -310,6 +310,7 @@
             this.Controls.Add(this.colorPicker1);
             this.Controls.Add(this.metroCheckBox1);
             this.Name = "Settings";
+            this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
             this.Text = "Application Settings";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
