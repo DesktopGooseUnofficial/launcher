@@ -3,6 +3,7 @@ using MetroFramework.Forms;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -32,6 +33,11 @@ namespace ResourceHubLauncher {
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
             JToken mod = mods[otherMods.SelectedIndex];
             MsgBox(mod["name"]);
+        }
+
+        private void resourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
+            JToken mod = mods[otherMods.SelectedIndex];
+            Process.Start(mod["resourcehub"].ToString());
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

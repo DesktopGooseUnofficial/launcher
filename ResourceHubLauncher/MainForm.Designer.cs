@@ -40,12 +40,10 @@
             this.label5 = new MetroFramework.Controls.MetroLabel();
             this.disabledMods = new System.Windows.Forms.ListBox();
             this.label6 = new MetroFramework.Controls.MetroLabel();
-            this.Install = new MetroFramework.Controls.MetroButton();
-            this.Uninstall = new MetroFramework.Controls.MetroButton();
-            this.ResourceHubPage = new MetroFramework.Controls.MetroButton();
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.metroStyleExtender1 = new MetroFramework.Components.MetroStyleExtender(this.components);
             this.RunGoose = new MetroFramework.Controls.MetroButton();
+            this.resourceHubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
@@ -72,11 +70,12 @@
             this.modListContextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.modListContextMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.modListContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.installToolStripMenuItem});
+            this.installToolStripMenuItem,
+            this.resourceHubToolStripMenuItem});
             this.modListContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.modListContextMenu.Name = "modListContextMenu";
             this.modListContextMenu.ShowImageMargin = false;
-            this.modListContextMenu.Size = new System.Drawing.Size(81, 26);
+            this.modListContextMenu.Size = new System.Drawing.Size(156, 70);
             // 
             // installToolStripMenuItem
             // 
@@ -184,43 +183,6 @@
             this.label6.Text = "Mod description:";
             this.label6.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
-            // Install
-            // 
-            this.Install.Location = new System.Drawing.Point(381, 271);
-            this.Install.Margin = new System.Windows.Forms.Padding(2);
-            this.Install.Name = "Install";
-            this.Install.Size = new System.Drawing.Size(218, 21);
-            this.Install.TabIndex = 9;
-            this.Install.TabStop = false;
-            this.Install.Text = "Install mod";
-            this.Install.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.Install.UseSelectable = true;
-            // 
-            // Uninstall
-            // 
-            this.Uninstall.Location = new System.Drawing.Point(381, 296);
-            this.Uninstall.Margin = new System.Windows.Forms.Padding(2);
-            this.Uninstall.Name = "Uninstall";
-            this.Uninstall.Size = new System.Drawing.Size(218, 21);
-            this.Uninstall.TabIndex = 11;
-            this.Uninstall.TabStop = false;
-            this.Uninstall.Text = "Uninstall mod";
-            this.Uninstall.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.Uninstall.UseSelectable = true;
-            // 
-            // ResourceHubPage
-            // 
-            this.ResourceHubPage.Location = new System.Drawing.Point(381, 365);
-            this.ResourceHubPage.Margin = new System.Windows.Forms.Padding(2);
-            this.ResourceHubPage.Name = "ResourceHubPage";
-            this.ResourceHubPage.Size = new System.Drawing.Size(218, 21);
-            this.ResourceHubPage.TabIndex = 13;
-            this.ResourceHubPage.TabStop = false;
-            this.ResourceHubPage.Text = "Open ResourceHub page";
-            this.ResourceHubPage.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.ResourceHubPage.UseSelectable = true;
-            this.ResourceHubPage.Click += new System.EventHandler(this.ResourceHubPage_Click);
-            // 
             // metroStyleManager1
             // 
             this.metroStyleManager1.Owner = this;
@@ -231,7 +193,7 @@
             // 
             // RunGoose
             // 
-            this.RunGoose.Location = new System.Drawing.Point(381, 330);
+            this.RunGoose.Location = new System.Drawing.Point(381, 365);
             this.RunGoose.Margin = new System.Windows.Forms.Padding(2);
             this.RunGoose.Name = "RunGoose";
             this.RunGoose.Size = new System.Drawing.Size(218, 21);
@@ -241,15 +203,19 @@
             this.RunGoose.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.RunGoose.UseSelectable = true;
             // 
+            // resourceHubToolStripMenuItem
+            // 
+            this.resourceHubToolStripMenuItem.Name = "resourceHubToolStripMenuItem";
+            this.resourceHubToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.resourceHubToolStripMenuItem.Text = "ResourceHub";
+            this.resourceHubToolStripMenuItem.Click += new System.EventHandler(this.resourceHubToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(611, 417);
             this.Controls.Add(this.RunGoose);
-            this.Controls.Add(this.ResourceHubPage);
-            this.Controls.Add(this.Uninstall);
-            this.Controls.Add(this.Install);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.disabledMods);
             this.Controls.Add(this.label5);
@@ -286,14 +252,12 @@
         private MetroFramework.Controls.MetroLabel label5;
         private System.Windows.Forms.ListBox disabledMods;
         private MetroFramework.Controls.MetroLabel label6;
-        private MetroFramework.Controls.MetroButton Install;
-        private MetroFramework.Controls.MetroButton Uninstall;
-        private MetroFramework.Controls.MetroButton ResourceHubPage;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
         private MetroFramework.Components.MetroStyleExtender metroStyleExtender1;
         private System.Windows.Forms.ContextMenuStrip modListContextMenu;
         private System.Windows.Forms.ToolStripMenuItem installToolStripMenuItem;
         private MetroFramework.Controls.MetroButton RunGoose;
+        private System.Windows.Forms.ToolStripMenuItem resourceHubToolStripMenuItem;
     }
 }
 
