@@ -75,19 +75,19 @@
             this.modListContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.modListContextMenu.Name = "modListContextMenu";
             this.modListContextMenu.ShowImageMargin = false;
-            this.modListContextMenu.Size = new System.Drawing.Size(156, 48);
+            this.modListContextMenu.Size = new System.Drawing.Size(81, 26);
             // 
             // installToolStripMenuItem
             // 
             this.installToolStripMenuItem.Name = "installToolStripMenuItem";
-            this.installToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.installToolStripMenuItem.Size = new System.Drawing.Size(80, 22);
             this.installToolStripMenuItem.Text = "Install";
             this.installToolStripMenuItem.Click += new System.EventHandler(this.installToolStripMenuItem_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 16);
+            this.label1.Location = new System.Drawing.Point(11, 55);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 19);
@@ -98,7 +98,7 @@
             // VersionLabel
             // 
             this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Location = new System.Drawing.Point(428, 348);
+            this.VersionLabel.Location = new System.Drawing.Point(428, 388);
             this.VersionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.VersionLabel.Name = "VersionLabel";
             this.VersionLabel.Size = new System.Drawing.Size(171, 19);
@@ -112,7 +112,7 @@
             this.label3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label3.Location = new System.Drawing.Point(196, 37);
+            this.label3.Location = new System.Drawing.Point(196, 75);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(403, 174);
@@ -138,7 +138,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(11, 212);
+            this.label4.Location = new System.Drawing.Point(11, 251);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(96, 19);
@@ -149,7 +149,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(196, 212);
+            this.label5.Location = new System.Drawing.Point(196, 251);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(99, 19);
@@ -175,7 +175,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(196, 16);
+            this.label6.Location = new System.Drawing.Point(196, 55);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(108, 19);
@@ -185,7 +185,7 @@
             // 
             // Install
             // 
-            this.Install.Location = new System.Drawing.Point(381, 233);
+            this.Install.Location = new System.Drawing.Point(381, 271);
             this.Install.Margin = new System.Windows.Forms.Padding(2);
             this.Install.Name = "Install";
             this.Install.Size = new System.Drawing.Size(218, 21);
@@ -195,21 +195,9 @@
             this.Install.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Install.UseSelectable = true;
             // 
-            // Enable
-            // 
-            this.Enable.Location = new System.Drawing.Point(373, 319);
-            this.Enable.Margin = new System.Windows.Forms.Padding(2);
-            this.Enable.Name = "Enable";
-            this.Enable.Size = new System.Drawing.Size(218, 21);
-            this.Enable.TabIndex = 10;
-            this.Enable.TabStop = false;
-            this.Enable.Text = "Enable mod";
-            this.Enable.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.Enable.UseSelectable = true;
-            // 
             // Uninstall
             // 
-            this.Uninstall.Location = new System.Drawing.Point(381, 258);
+            this.Uninstall.Location = new System.Drawing.Point(381, 296);
             this.Uninstall.Margin = new System.Windows.Forms.Padding(2);
             this.Uninstall.Name = "Uninstall";
             this.Uninstall.Size = new System.Drawing.Size(218, 21);
@@ -219,21 +207,9 @@
             this.Uninstall.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Uninstall.UseSelectable = true;
             // 
-            // Disable
-            // 
-            this.Disable.Location = new System.Drawing.Point(373, 342);
-            this.Disable.Margin = new System.Windows.Forms.Padding(2);
-            this.Disable.Name = "Disable";
-            this.Disable.Size = new System.Drawing.Size(218, 21);
-            this.Disable.TabIndex = 12;
-            this.Disable.TabStop = false;
-            this.Disable.Text = "Disable mod";
-            this.Disable.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.Disable.UseSelectable = true;
-            // 
             // ResourceHubPage
             // 
-            this.ResourceHubPage.Location = new System.Drawing.Point(381, 325);
+            this.ResourceHubPage.Location = new System.Drawing.Point(381, 365);
             this.ResourceHubPage.Margin = new System.Windows.Forms.Padding(2);
             this.ResourceHubPage.Name = "ResourceHubPage";
             this.ResourceHubPage.Size = new System.Drawing.Size(218, 21);
@@ -251,23 +227,11 @@
             // 
             this.metroStyleExtender1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
-            // RunGooseButton
-            // 
-            this.RunGooseButton.Location = new System.Drawing.Point(381, 283);
-            this.RunGooseButton.Margin = new System.Windows.Forms.Padding(2);
-            this.RunGooseButton.Name = "RunGooseButton";
-            this.RunGooseButton.Size = new System.Drawing.Size(218, 21);
-            this.RunGooseButton.TabIndex = 14;
-            this.RunGooseButton.TabStop = false;
-            this.RunGooseButton.Text = "Run Goose";
-            this.RunGooseButton.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(611, 380);
-            this.Controls.Add(this.RunGooseButton);
+            this.ClientSize = new System.Drawing.Size(611, 417);
             this.Controls.Add(this.ResourceHubPage);
             this.Controls.Add(this.Uninstall);
             this.Controls.Add(this.Install);
@@ -283,7 +247,6 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
             this.Resizable = false;
             this.Text = "ResourceHub Launcher";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
