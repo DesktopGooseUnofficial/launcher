@@ -55,6 +55,9 @@ namespace ResourceHubLauncher {
                 } else if (c is MetroCheckBox) {
                     ((MetroCheckBox)c).Theme = (MetroThemeStyle)(int)Options["theme"];
                     ((MetroCheckBox)c).Style = (MetroColorStyle)(int)Options["color"];
+                } else if (c is MetroTextBox) {
+                    ((MetroTextBox)c).Theme = (MetroThemeStyle)(int)Options["theme"];
+                    ((MetroTextBox)c).Style = (MetroColorStyle)(int)Options["color"];
                 }
                 c.Refresh();
             }
