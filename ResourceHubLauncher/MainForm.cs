@@ -34,10 +34,17 @@ namespace ResourceHubLauncher {
             MsgBox(mod["name"]);
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = MessageBox.Show("Are you sure you want to close ResourceHub Launcher?", "Hold up!", MessageBoxButtons.YesNo) != DialogResult.Yes;
         }
 
+        private void ResourceHubPage_Click(object sender, EventArgs e)
+        {
+            if(MessageBox.Show("Are you sure you want to open the ResourceHub website?", "Hold up!", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                System.Diagnostics.Process.Start("https://desktopgooseunofficial.github.io/ResourceHub/");
+            }
+        }
     }
 }
