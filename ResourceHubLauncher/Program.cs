@@ -1,31 +1,82 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Net;
+using Newtonsoft.Json;
 
+namespace ResourceHubLauncher
+{
+    static class Program
+    {
+        
 
-namespace ResourceHubLauncher {
-    static class Program {
-        [STAThread]
-        static void Main() {
-
+        static void LoadData(out dynamic loadedData, out List<string> enabledMods, out List<string> disabledMods)
+        {
+            
             WebRequest request = WebRequest.Create("https://raw.githubusercontent.com/DesktopGooseUnofficial/launcher-backend/master/data.json");
             WebResponse response = request.GetResponse();
-            Stream stream = response.GetResponseStream();
-            string html = "";
-            using (StreamReader sr = new StreamReader(stream)) {
+            Stream data = response.GetResponseStream();
+            string html = String.Empty;
+            using (StreamReader sr = new StreamReader(data))
+            {
                 html = sr.ReadToEnd();
             }
 
-            JObject data = JObject.Parse(html);
+            dynamic array = JsonConvert.DeserializeObject(html);
+            loadedData = array;
+            
+            if (!Directory.Exists("Disabled Mods"))
+                Directory.CreateDirectory("Disabled Mods");
 
+            if (!Directory.Exists("Mods"))
+                Directory.CreateDirectory("Mods");
+
+            string[] enabled = Directory.GetDirectories("Mods");
+            enabled = enabled.Except(new string[] { "ResourceHubUpdater" }).ToArray();
+            List<string> enabledNames = new List<string>();
+            foreach (string element in enabled)
+            {
+                enabledNames.Add(Path.GetFileName(element));
+            }
+            enabledMods = enabledNames;
+            
+            string[] disabled = Directory.GetDirectories("Disabled Mods");
+            List<string> disabledNames = new List<string>();
+            foreach (string element in disabled)
+            {
+                disabledNames.Add(Path.GetFileName(element));
+            }
+            disabledMods = disabledNames;
+            
+        }
+
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        /// 
+
+        [STAThread]
+        static void Main()
+        {
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            MainForm form = new MainForm();
-            form.results = data["mods"].Children().ToList();
-            Application.Run(form);
+            dynamic loadedMods;
+            List<string> enabledMods;
+            List<string> disabledMods;
+            
+
+            
+            LoadData(out loadedMods, out enabledMods, out disabledMods);
+
+
+            Application.Run(new MainForm());
+            
+            
         }
     }
 }
