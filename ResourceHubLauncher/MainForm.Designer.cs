@@ -91,9 +91,9 @@
             this.label1.Location = new System.Drawing.Point(11, 55);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 19);
+            this.label1.Size = new System.Drawing.Size(102, 19);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Other mods:";
+            this.label1.Text = "Available mods:";
             this.label1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // VersionLabel
