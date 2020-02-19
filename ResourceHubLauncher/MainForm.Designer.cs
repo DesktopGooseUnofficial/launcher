@@ -60,9 +60,9 @@
             this.label1.Location = new System.Drawing.Point(9, 7);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(101, 13);
+            this.label1.Size = new System.Drawing.Size(99, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Non Installed Mods:";
+            this.label1.Text = "Non-installed mods:";
             // 
             // VersionLabel
             // 
@@ -84,7 +84,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(391, 174);
             this.label3.TabIndex = 3;
-            this.label3.Text = "Mod Description";
+            this.label3.Text = "Mod description";
             // 
             // Installed
             // 
@@ -102,9 +102,9 @@
             this.label4.Location = new System.Drawing.Point(9, 205);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 13);
+            this.label4.Size = new System.Drawing.Size(77, 13);
             this.label4.TabIndex = 5;
-            this.label4.Text = "Installed Mods:";
+            this.label4.Text = "Installed mods:";
             // 
             // label5
             // 
@@ -112,9 +112,9 @@
             this.label5.Location = new System.Drawing.Point(196, 205);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(80, 13);
+            this.label5.Size = new System.Drawing.Size(79, 13);
             this.label5.TabIndex = 6;
-            this.label5.Text = "Disabled Mods:";
+            this.label5.Text = "Disabled mods:";
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // Disabled
@@ -133,9 +133,9 @@
             this.label6.Location = new System.Drawing.Point(196, 7);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(87, 13);
+            this.label6.Size = new System.Drawing.Size(85, 13);
             this.label6.TabIndex = 8;
-            this.label6.Text = "Mod Description:";
+            this.label6.Text = "Mod description:";
             // 
             // Install
             // 
@@ -144,7 +144,7 @@
             this.Install.Name = "Install";
             this.Install.Size = new System.Drawing.Size(218, 23);
             this.Install.TabIndex = 9;
-            this.Install.Text = "Install Mod";
+            this.Install.Text = "Install mod";
             this.Install.UseVisualStyleBackColor = true;
             this.Install.Click += new System.EventHandler(this.Button1_Click);
             // 
@@ -155,7 +155,7 @@
             this.Enable.Name = "Enable";
             this.Enable.Size = new System.Drawing.Size(218, 23);
             this.Enable.TabIndex = 10;
-            this.Enable.Text = "Enable Mod";
+            this.Enable.Text = "Enable mod";
             this.Enable.UseVisualStyleBackColor = true;
             this.Enable.Click += new System.EventHandler(this.Enable_Click);
             // 
@@ -166,7 +166,7 @@
             this.Uninstall.Name = "Uninstall";
             this.Uninstall.Size = new System.Drawing.Size(218, 23);
             this.Uninstall.TabIndex = 11;
-            this.Uninstall.Text = "Uninstall Mod";
+            this.Uninstall.Text = "Uninstall mod";
             this.Uninstall.UseVisualStyleBackColor = true;
             this.Uninstall.Click += new System.EventHandler(this.Uninstall_Click);
             // 
@@ -177,7 +177,7 @@
             this.Disable.Name = "Disable";
             this.Disable.Size = new System.Drawing.Size(218, 23);
             this.Disable.TabIndex = 12;
-            this.Disable.Text = "Disable Mod";
+            this.Disable.Text = "Disable mod";
             this.Disable.UseVisualStyleBackColor = true;
             this.Disable.Click += new System.EventHandler(this.Disable_Click);
             // 
@@ -188,7 +188,7 @@
             this.ResourceHubPage.Name = "ResourceHubPage";
             this.ResourceHubPage.Size = new System.Drawing.Size(218, 23);
             this.ResourceHubPage.TabIndex = 13;
-            this.ResourceHubPage.Text = "Open ResourceHub Page";
+            this.ResourceHubPage.Text = "Open ResourceHub page";
             this.ResourceHubPage.UseVisualStyleBackColor = true;
             this.ResourceHubPage.Click += new System.EventHandler(this.ResourceHubPage_Click);
             // 
