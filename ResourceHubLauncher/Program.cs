@@ -1,6 +1,7 @@
 ﻿using MetroFramework;
 using Newtonsoft.Json.Linq;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -13,7 +14,7 @@ using System.Windows.Forms;
 namespace ResourceHubLauncher {
     static class Program {
         [STAThread]
-        static void Main() {
+        static void Main(string[] args) {
             Config.Load();
 
             WebRequest request = WebRequest.Create("https://raw.githubusercontent.com/DesktopGooseUnofficial/launcher-backend/master/data.json");
@@ -48,10 +49,28 @@ namespace ResourceHubLauncher {
             }
 
             if (latest != md5.ToString()) {
-                bool update = MetroMessageBox.Show(form, $"App out of date.\nWould you like to update now?\n({md5} != {latest})", "Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
-                if (update) {
+                if (MetroMessageBox.Show(form, $"Launcher out of date.\nWould you like to update now?\n(MD5 {md5} does not match latest MD5: {latest})", "Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                     Process.Start("https://github.com/DesktopGooseUnofficial/launcher/releases");
-                    Application.Exit();
+                    Environment.Exit(0);
+                }
+            }
+
+            if (_G.dev && MetroMessageBox.Show(form, "Copy Version MD5 to clipboard?", "Developer Mode", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                Clipboard.SetText(md5.ToString());
+
+            if ((string)Config.Options["gpath"] == "No Path Specified") {
+                if (MetroMessageBox.Show(form, "Do you want to select it yourself?", "We couldn't find the Goose .exe file.", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                    using (OpenFileDialog oFileDialog = new OpenFileDialog()) {
+                        oFileDialog.InitialDirectory = @"C:\";
+                        oFileDialog.Filter = "GooseDesktop.exe|GooseDesktop.exe";
+                        oFileDialog.Title = "Select GooseDesktop.exe";
+                        
+                        oFileDialog.FileOk += (object sender, CancelEventArgs e) => {
+                            if (e.Cancel) { return; }
+                            Config.Options["gpath"] = oFileDialog.FileName;
+                        };
+                        oFileDialog.ShowDialog();
+                    }
                 }
             }
 

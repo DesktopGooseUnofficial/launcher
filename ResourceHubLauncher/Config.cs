@@ -1,15 +1,9 @@
 ﻿using MetroFramework;
-using MetroFramework.Components;
 using MetroFramework.Controls;
 using MetroFramework.Forms;
-using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ResourceHubLauncher {
@@ -21,6 +15,9 @@ namespace ResourceHubLauncher {
         public static void Defaults() {
             Options["theme"] = 2;
             Options["color"] = 0;
+            Options["gpath"] = "No Path Specified";
+            Options["cpath"] = "No Path Specified";
+            Options["devmode"] = false;
         }
 
         public static void Check() {
@@ -32,7 +29,9 @@ namespace ResourceHubLauncher {
             Check();
             Defaults();
             string data = File.ReadAllText(configFile);
-            Options = JObject.Parse(data);
+            foreach(KeyValuePair<string, JToken> option in JObject.Parse(data)) {
+                Options[option.Key] = option.Value;
+            }
         }
 
         public static void Save(bool defaults = false) {

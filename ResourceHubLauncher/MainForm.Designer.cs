@@ -107,12 +107,12 @@
             // VersionLabel
             // 
             this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Location = new System.Drawing.Point(428, 388);
+            this.VersionLabel.Location = new System.Drawing.Point(442, 388);
             this.VersionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(171, 19);
+            this.VersionLabel.Size = new System.Drawing.Size(157, 19);
             this.VersionLabel.TabIndex = 2;
-            this.VersionLabel.Text = "ResourceHub Launcher 0.1.0";
+            this.VersionLabel.Text = "ResourceHub Launcher v1";
             this.VersionLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.VersionLabel.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 

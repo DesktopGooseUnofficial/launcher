@@ -66,24 +66,22 @@ namespace ResourceHubLauncher {
             Config.Save();
         }
 
-        private void metroPanel3_Paint(object sender, PaintEventArgs e) {
-
+        private void metroButton1_Click(object sender, EventArgs e) {
+            goosePathDialog.ShowDialog();
         }
 
-        private void metroPanel5_Paint(object sender, PaintEventArgs e) {
-
+        private void goosePathDialog_FileOk(object sender, CancelEventArgs e) {
+            Config.Options["gpath"] = goosePathDialog.FileName;
+            metroTextBox1.Text = goosePathDialog.FileName;
         }
 
-        private void metroPanel8_Paint(object sender, PaintEventArgs e) {
-
+        private void metroButton3_Click(object sender, EventArgs e) {
+            configPathDialog.ShowDialog();
         }
 
-        private void metroPanel10_Paint(object sender, PaintEventArgs e) {
-
-        }
-
-        private void metroPanel12_Paint(object sender, PaintEventArgs e) {
-
+        private void configPathDialog_FileOk(object sender, CancelEventArgs e) {
+            Config.Options["cpath"] = configPathDialog.FileName;
+            metroTextBox2.Text = configPathDialog.FileName;
         }
     }
 }

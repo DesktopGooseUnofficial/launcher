@@ -3,6 +3,7 @@ using MetroFramework.Controls;
 using MetroFramework.Forms;
 using Newtonsoft.Json.Linq;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -59,7 +60,16 @@ namespace ResourceHubLauncher {
         }
 
         private void RunGoose_Click(object sender, EventArgs e) {
-            MsgBox("As such, running the Goose is not yet available.", "This is an early version of ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if((string)Config.Options["gpath"] == "No Path Specified") {
+                MsgBox("Please set the Goose path in the Settings.", "Error 404: Goose not found!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } else {
+                if(File.Exists((string)Config.Options["gpath"])) {
+                    Process.Start((string)Config.Options["gpath"]);
+                } else {
+                    MsgBox("The goose path you have set seems to be outdated.\r\n" +
+                           "Please set the Goose path in the Settings.", "Error 404: Goose not found!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void otherMods_SelectedIndexChanged(object sender, EventArgs e) {
