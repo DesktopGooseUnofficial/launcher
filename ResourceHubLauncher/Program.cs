@@ -14,6 +14,7 @@ namespace ResourceHubLauncher {
     static class Program {
         [STAThread]
         static void Main() {
+            Config.Load();
 
             WebRequest request = WebRequest.Create("https://raw.githubusercontent.com/DesktopGooseUnofficial/launcher-backend/master/data.json");
             WebResponse response = request.GetResponse();
@@ -46,9 +47,9 @@ namespace ResourceHubLauncher {
                 md5.Append(hash[i].ToString("X2"));
             }
 
-            if(latest != md5.ToString()) {
+            if (latest != md5.ToString()) {
                 bool update = MetroMessageBox.Show(form, $"App out of date.\nWould you like to update now?\n({md5} != {latest})", "Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
-                if(update) {
+                if (update) {
                     Process.Start("https://github.com/DesktopGooseUnofficial/launcher/releases");
                     Application.Exit();
                 }
