@@ -47,11 +47,7 @@ namespace ResourceHubLauncher {
             }
 
             if(latest != md5.ToString()) {
-                Form screen = new Form();
-                screen.Size = Screen.PrimaryScreen.Bounds.Size;
-                screen.Size = new Size(screen.Size.Width / 4, screen.Size.Height / 4);
-                screen.Location = new Point(Screen.PrimaryScreen.Bounds.Width / 2 - screen.Width / 2, Screen.PrimaryScreen.Bounds.Height / 2 - screen.Height / 2);
-                bool update = MetroMessageBox.Show(screen, $"App out of date.\nWould you like to update now?\n({md5} != {latest})", "Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
+                bool update = MetroMessageBox.Show(form, $"App out of date.\nWould you like to update now?\n({md5} != {latest})", "Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
                 if(update) {
                     Process.Start("https://github.com/DesktopGooseUnofficial/launcher/releases");
                     Application.Exit();
