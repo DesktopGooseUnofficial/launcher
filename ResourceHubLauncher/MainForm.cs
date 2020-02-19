@@ -52,5 +52,10 @@ namespace ResourceHubLauncher {
                 System.Diagnostics.Process.Start("https://desktopgooseunofficial.github.io/ResourceHub/");
             }
         }
+
+        private void RunGoose_Click(object sender, EventArgs e)
+        {
+            MetroMessageBox.Show(this, "As such, running the Goose is not yet available.", "This is an early version of ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

@@ -32,6 +32,7 @@
             this.otherMods = new System.Windows.Forms.ListBox();
             this.modListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.installToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resourceHubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new MetroFramework.Controls.MetroLabel();
             this.VersionLabel = new MetroFramework.Controls.MetroLabel();
             this.label3 = new MetroFramework.Controls.MetroLabel();
@@ -43,7 +44,6 @@
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.metroStyleExtender1 = new MetroFramework.Components.MetroStyleExtender(this.components);
             this.RunGoose = new MetroFramework.Controls.MetroButton();
-            this.resourceHubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
@@ -75,14 +75,21 @@
             this.modListContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.modListContextMenu.Name = "modListContextMenu";
             this.modListContextMenu.ShowImageMargin = false;
-            this.modListContextMenu.Size = new System.Drawing.Size(156, 70);
+            this.modListContextMenu.Size = new System.Drawing.Size(121, 48);
             // 
             // installToolStripMenuItem
             // 
             this.installToolStripMenuItem.Name = "installToolStripMenuItem";
-            this.installToolStripMenuItem.Size = new System.Drawing.Size(80, 22);
+            this.installToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.installToolStripMenuItem.Text = "Install";
             this.installToolStripMenuItem.Click += new System.EventHandler(this.installToolStripMenuItem_Click);
+            // 
+            // resourceHubToolStripMenuItem
+            // 
+            this.resourceHubToolStripMenuItem.Name = "resourceHubToolStripMenuItem";
+            this.resourceHubToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.resourceHubToolStripMenuItem.Text = "ResourceHub";
+            this.resourceHubToolStripMenuItem.Click += new System.EventHandler(this.resourceHubToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -202,13 +209,7 @@
             this.RunGoose.Text = "Run Goose";
             this.RunGoose.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.RunGoose.UseSelectable = true;
-            // 
-            // resourceHubToolStripMenuItem
-            // 
-            this.resourceHubToolStripMenuItem.Name = "resourceHubToolStripMenuItem";
-            this.resourceHubToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.resourceHubToolStripMenuItem.Text = "ResourceHub";
-            this.resourceHubToolStripMenuItem.Click += new System.EventHandler(this.resourceHubToolStripMenuItem_Click);
+            this.RunGoose.Click += new System.EventHandler(this.RunGoose_Click);
             // 
             // MainForm
             // 
