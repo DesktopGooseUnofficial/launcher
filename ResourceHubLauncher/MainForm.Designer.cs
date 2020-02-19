@@ -247,7 +247,7 @@
             this.metroButton3.Size = new System.Drawing.Size(72, 24);
             this.metroButton3.TabIndex = 17;
             this.metroButton3.TabStop = false;
-            this.metroButton3.Text = "Github";
+            this.metroButton3.Text = "GitHub";
             this.metroButton3.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton3.UseSelectable = true;
             this.metroButton3.Click += new System.EventHandler(this.metroButton3_Click);
