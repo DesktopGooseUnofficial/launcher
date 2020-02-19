@@ -41,13 +41,13 @@
             this.disabledMods = new System.Windows.Forms.ListBox();
             this.label6 = new MetroFramework.Controls.MetroLabel();
             this.styleExtender = new MetroFramework.Components.MetroStyleExtender(this.components);
+            this.installedModsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.RunGoose = new MetroFramework.Controls.MetroButton();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.metroButton2 = new MetroFramework.Controls.MetroButton();
             this.metroButton3 = new MetroFramework.Controls.MetroButton();
             this.metroButton4 = new MetroFramework.Controls.MetroButton();
-            this.installedModsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.metroProgressBar1 = new MetroFramework.Controls.MetroProgressBar();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.modListContextMenu.SuspendLayout();
@@ -189,6 +189,26 @@
             // 
             this.styleExtender.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
+            // installedModsContextMenu
+            // 
+            this.styleExtender.SetApplyMetroTheme(this.installedModsContextMenu, true);
+            this.installedModsContextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.installedModsContextMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.installedModsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.installedModsContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
+            this.installedModsContextMenu.Name = "modListContextMenu";
+            this.installedModsContextMenu.ShowImageMargin = false;
+            this.installedModsContextMenu.Size = new System.Drawing.Size(96, 26);
+            this.installedModsContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.installedModsContextMenu_Opening);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(95, 22);
+            this.toolStripMenuItem1.Text = "Uninstall";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
             // RunGoose
             // 
             this.RunGoose.FontWeight = MetroFramework.MetroButtonWeight.Regular;
@@ -259,26 +279,6 @@
             this.metroButton4.UseSelectable = true;
             this.metroButton4.Click += new System.EventHandler(this.metroButton4_Click);
             // 
-            // installedModsContextMenu
-            // 
-            this.styleExtender.SetApplyMetroTheme(this.installedModsContextMenu, true);
-            this.installedModsContextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.installedModsContextMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
-            this.installedModsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
-            this.installedModsContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-            this.installedModsContextMenu.Name = "modListContextMenu";
-            this.installedModsContextMenu.ShowImageMargin = false;
-            this.installedModsContextMenu.Size = new System.Drawing.Size(96, 26);
-            this.installedModsContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.installedModsContextMenu_Opening);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(95, 22);
-            this.toolStripMenuItem1.Text = "Uninstall";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
             // metroProgressBar1
             // 
             this.metroProgressBar1.Location = new System.Drawing.Point(374, 295);
@@ -291,7 +291,7 @@
             // metroLabel1
             // 
             this.metroLabel1.AutoSize = true;
-            this.metroLabel1.Location = new System.Drawing.Point(374, 273);
+            this.metroLabel1.Location = new System.Drawing.Point(373, 273);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(149, 19);
             this.metroLabel1.TabIndex = 21;

@@ -112,11 +112,15 @@ namespace ResourceHubLauncher {
         }
 
         private void metroButton2_Click(object sender, EventArgs e) {
-            Process.Start("https://discord.gg/uyUMhW8");
+            if(MsgBox("This will open a discord.gg link to our Discord server. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Process.Start("https://discord.gg/uyUMhW8");
+            }
         }
 
         private void metroButton3_Click(object sender, EventArgs e) {
-            Process.Start("https://github.com/DesktopGooseUnofficial/launcher");
+            if(MsgBox("This will open a github.com link to our GitHub repo. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Process.Start("https://github.com/DesktopGooseUnofficial/launcher");
+            }
         }
 
         private void metroButton1_Click(object sender, EventArgs e) {
