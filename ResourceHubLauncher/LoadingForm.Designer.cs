@@ -64,6 +64,7 @@
             this.MaximizeBox = false;
             this.Name = "LoadingForm";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
+            this.Resizable = false;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Load += new System.EventHandler(this.LoadingForm_Load);
             this.ResumeLayout(false);
