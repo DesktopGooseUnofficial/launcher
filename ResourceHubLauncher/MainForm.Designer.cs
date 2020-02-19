@@ -219,6 +219,7 @@
             this.ResourceHubPage.Text = "Open ResourceHub page";
             this.ResourceHubPage.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.ResourceHubPage.UseSelectable = true;
+            this.ResourceHubPage.Click += new System.EventHandler(this.ResourceHubPage_Click);
             // 
             // metroStyleManager1
             // 
@@ -264,7 +265,7 @@
             this.Resizable = false;
             this.Text = "ResourceHub Launcher";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.modListContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
