@@ -37,7 +37,14 @@ namespace ResourceHubLauncher {
 
         private void resourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
             JToken mod = mods[otherMods.SelectedIndex];
-            Process.Start(mod["resourcehub"].ToString());
+            try
+            {
+                Process.Start(mod["resourcehub"].ToString());
+            }
+            catch(Exception ex)
+            {
+                MetroMessageBox.Show(this, "Link for this mod is not available.", "Page opening error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -56,6 +63,13 @@ namespace ResourceHubLauncher {
         private void RunGoose_Click(object sender, EventArgs e)
         {
             MetroMessageBox.Show(this, "As such, running the Goose is not yet available.", "This is an early version of ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void otherMods_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            JToken mod = mods[otherMods.SelectedIndex];
+
+            label3.Text =(string) mod["description"];
         }
     }
 }
