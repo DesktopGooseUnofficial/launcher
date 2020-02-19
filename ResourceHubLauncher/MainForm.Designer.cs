@@ -29,14 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.NonInstalled = new System.Windows.Forms.ListBox();
+            this.otherMods = new System.Windows.Forms.ListBox();
+            this.modListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.installToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new MetroFramework.Controls.MetroLabel();
             this.VersionLabel = new MetroFramework.Controls.MetroLabel();
             this.label3 = new MetroFramework.Controls.MetroLabel();
-            this.Installed = new System.Windows.Forms.ListBox();
+            this.enabledMods = new System.Windows.Forms.ListBox();
             this.label4 = new MetroFramework.Controls.MetroLabel();
             this.label5 = new MetroFramework.Controls.MetroLabel();
-            this.Disabled = new System.Windows.Forms.ListBox();
+            this.disabledMods = new System.Windows.Forms.ListBox();
             this.label6 = new MetroFramework.Controls.MetroLabel();
             this.Install = new MetroFramework.Controls.MetroButton();
             this.Enable = new MetroFramework.Controls.MetroButton();
@@ -45,24 +47,44 @@
             this.ResourceHubPage = new MetroFramework.Controls.MetroButton();
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.metroStyleExtender1 = new MetroFramework.Components.MetroStyleExtender(this.components);
+            this.modListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
             // 
-            // NonInstalled
+            // otherMods
             // 
-            this.metroStyleExtender1.SetApplyMetroTheme(this.NonInstalled, true);
-            this.NonInstalled.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.NonInstalled.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NonInstalled.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.NonInstalled.FormattingEnabled = true;
-            this.NonInstalled.IntegralHeight = false;
-            this.NonInstalled.Location = new System.Drawing.Point(11, 76);
-            this.NonInstalled.Margin = new System.Windows.Forms.Padding(2);
-            this.NonInstalled.Name = "NonInstalled";
-            this.NonInstalled.Size = new System.Drawing.Size(171, 173);
-            this.NonInstalled.TabIndex = 0;
-            this.NonInstalled.TabStop = false;
-            this.NonInstalled.SelectedIndexChanged += new System.EventHandler(this.NonInstalled_SelectedIndexChanged);
+            this.metroStyleExtender1.SetApplyMetroTheme(this.otherMods, true);
+            this.otherMods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.otherMods.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.otherMods.ContextMenuStrip = this.modListContextMenu;
+            this.otherMods.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.otherMods.FormattingEnabled = true;
+            this.otherMods.IntegralHeight = false;
+            this.otherMods.Location = new System.Drawing.Point(11, 76);
+            this.otherMods.Margin = new System.Windows.Forms.Padding(2);
+            this.otherMods.Name = "otherMods";
+            this.otherMods.Size = new System.Drawing.Size(171, 173);
+            this.otherMods.TabIndex = 0;
+            this.otherMods.TabStop = false;
+            // 
+            // modListContextMenu
+            // 
+            this.metroStyleExtender1.SetApplyMetroTheme(this.modListContextMenu, true);
+            this.modListContextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.modListContextMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.modListContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.installToolStripMenuItem});
+            this.modListContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
+            this.modListContextMenu.Name = "modListContextMenu";
+            this.modListContextMenu.ShowImageMargin = false;
+            this.modListContextMenu.Size = new System.Drawing.Size(156, 48);
+            // 
+            // installToolStripMenuItem
+            // 
+            this.installToolStripMenuItem.Name = "installToolStripMenuItem";
+            this.installToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.installToolStripMenuItem.Text = "Install";
+            this.installToolStripMenuItem.Click += new System.EventHandler(this.installToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -70,9 +92,9 @@
             this.label1.Location = new System.Drawing.Point(9, 55);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(127, 19);
+            this.label1.Size = new System.Drawing.Size(83, 19);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Non-installed mods:";
+            this.label1.Text = "Other mods:";
             this.label1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // VersionLabel
@@ -84,6 +106,7 @@
             this.VersionLabel.Size = new System.Drawing.Size(171, 19);
             this.VersionLabel.TabIndex = 2;
             this.VersionLabel.Text = "ResourceHub Launcher 0.1.0";
+            this.VersionLabel.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.VersionLabel.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // label3
@@ -99,21 +122,20 @@
             this.label3.Text = "Mod description";
             this.label3.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
-            // Installed
+            // enabledMods
             // 
-            this.metroStyleExtender1.SetApplyMetroTheme(this.Installed, true);
-            this.Installed.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.Installed.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Installed.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.Installed.FormattingEnabled = true;
-            this.Installed.IntegralHeight = false;
-            this.Installed.Location = new System.Drawing.Point(11, 273);
-            this.Installed.Margin = new System.Windows.Forms.Padding(2);
-            this.Installed.Name = "Installed";
-            this.Installed.Size = new System.Drawing.Size(171, 134);
-            this.Installed.TabIndex = 4;
-            this.Installed.TabStop = false;
-            this.Installed.SelectedIndexChanged += new System.EventHandler(this.Installed_SelectedIndexChanged);
+            this.metroStyleExtender1.SetApplyMetroTheme(this.enabledMods, true);
+            this.enabledMods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.enabledMods.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.enabledMods.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.enabledMods.FormattingEnabled = true;
+            this.enabledMods.IntegralHeight = false;
+            this.enabledMods.Location = new System.Drawing.Point(11, 273);
+            this.enabledMods.Margin = new System.Windows.Forms.Padding(2);
+            this.enabledMods.Name = "enabledMods";
+            this.enabledMods.Size = new System.Drawing.Size(171, 134);
+            this.enabledMods.TabIndex = 4;
+            this.enabledMods.TabStop = false;
             // 
             // label4
             // 
@@ -136,23 +158,21 @@
             this.label5.TabIndex = 6;
             this.label5.Text = "Disabled mods:";
             this.label5.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
-            // Disabled
+            // disabledMods
             // 
-            this.metroStyleExtender1.SetApplyMetroTheme(this.Disabled, true);
-            this.Disabled.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.Disabled.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Disabled.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.Disabled.FormattingEnabled = true;
-            this.Disabled.IntegralHeight = false;
-            this.Disabled.Location = new System.Drawing.Point(198, 273);
-            this.Disabled.Margin = new System.Windows.Forms.Padding(2);
-            this.Disabled.Name = "Disabled";
-            this.Disabled.Size = new System.Drawing.Size(171, 134);
-            this.Disabled.TabIndex = 7;
-            this.Disabled.TabStop = false;
-            this.Disabled.SelectedIndexChanged += new System.EventHandler(this.Disabled_SelectedIndexChanged);
+            this.metroStyleExtender1.SetApplyMetroTheme(this.disabledMods, true);
+            this.disabledMods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.disabledMods.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.disabledMods.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.disabledMods.FormattingEnabled = true;
+            this.disabledMods.IntegralHeight = false;
+            this.disabledMods.Location = new System.Drawing.Point(198, 273);
+            this.disabledMods.Margin = new System.Windows.Forms.Padding(2);
+            this.disabledMods.Name = "disabledMods";
+            this.disabledMods.Size = new System.Drawing.Size(171, 134);
+            this.disabledMods.TabIndex = 7;
+            this.disabledMods.TabStop = false;
             // 
             // label6
             // 
@@ -175,7 +195,7 @@
             this.Install.TabStop = false;
             this.Install.Text = "Install mod";
             this.Install.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.Install.Click += new System.EventHandler(this.Button1_Click);
+            this.Install.UseSelectable = true;
             // 
             // Enable
             // 
@@ -187,7 +207,7 @@
             this.Enable.TabStop = false;
             this.Enable.Text = "Enable mod";
             this.Enable.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.Enable.Click += new System.EventHandler(this.Enable_Click);
+            this.Enable.UseSelectable = true;
             // 
             // Uninstall
             // 
@@ -199,7 +219,7 @@
             this.Uninstall.TabStop = false;
             this.Uninstall.Text = "Uninstall mod";
             this.Uninstall.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.Uninstall.Click += new System.EventHandler(this.Uninstall_Click);
+            this.Uninstall.UseSelectable = true;
             // 
             // Disable
             // 
@@ -211,7 +231,7 @@
             this.Disable.TabStop = false;
             this.Disable.Text = "Disable mod";
             this.Disable.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.Disable.Click += new System.EventHandler(this.Disable_Click);
+            this.Disable.UseSelectable = true;
             // 
             // ResourceHubPage
             // 
@@ -223,12 +243,15 @@
             this.ResourceHubPage.TabStop = false;
             this.ResourceHubPage.Text = "Open ResourceHub page";
             this.ResourceHubPage.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.ResourceHubPage.Click += new System.EventHandler(this.ResourceHubPage_Click);
+            this.ResourceHubPage.UseSelectable = true;
             // 
             // metroStyleManager1
             // 
             this.metroStyleManager1.Owner = this;
-            this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // metroStyleExtender1
+            // 
+            this.metroStyleExtender1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // MainForm
             // 
@@ -241,21 +264,23 @@
             this.Controls.Add(this.Enable);
             this.Controls.Add(this.Install);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.Disabled);
+            this.Controls.Add(this.disabledMods);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.Installed);
+            this.Controls.Add(this.enabledMods);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.VersionLabel);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.NonInstalled);
+            this.Controls.Add(this.otherMods);
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Resizable = false;
             this.Text = "ResourceHub Launcher";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.modListContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -264,14 +289,14 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox NonInstalled;
+        private System.Windows.Forms.ListBox otherMods;
         private MetroFramework.Controls.MetroLabel label1;
         private MetroFramework.Controls.MetroLabel VersionLabel;
         private MetroFramework.Controls.MetroLabel label3;
-        private System.Windows.Forms.ListBox Installed;
+        private System.Windows.Forms.ListBox enabledMods;
         private MetroFramework.Controls.MetroLabel label4;
         private MetroFramework.Controls.MetroLabel label5;
-        private System.Windows.Forms.ListBox Disabled;
+        private System.Windows.Forms.ListBox disabledMods;
         private MetroFramework.Controls.MetroLabel label6;
         private MetroFramework.Controls.MetroButton Install;
         private MetroFramework.Controls.MetroButton Enable;
@@ -280,6 +305,8 @@
         private MetroFramework.Controls.MetroButton ResourceHubPage;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
         private MetroFramework.Components.MetroStyleExtender metroStyleExtender1;
+        private System.Windows.Forms.ContextMenuStrip modListContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem installToolStripMenuItem;
     }
 }
 
