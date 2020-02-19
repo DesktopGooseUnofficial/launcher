@@ -45,6 +45,7 @@
             this.ResourceHubPage = new MetroFramework.Controls.MetroButton();
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.metroStyleExtender1 = new MetroFramework.Components.MetroStyleExtender(this.components);
+            this.RunGoose = new MetroFramework.Controls.MetroButton();
             this.modListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
@@ -227,11 +228,24 @@
             // 
             this.metroStyleExtender1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
+            // RunGoose
+            // 
+            this.RunGoose.Location = new System.Drawing.Point(381, 330);
+            this.RunGoose.Margin = new System.Windows.Forms.Padding(2);
+            this.RunGoose.Name = "RunGoose";
+            this.RunGoose.Size = new System.Drawing.Size(218, 21);
+            this.RunGoose.TabIndex = 14;
+            this.RunGoose.TabStop = false;
+            this.RunGoose.Text = "Run Goose";
+            this.RunGoose.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.RunGoose.UseSelectable = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(611, 417);
+            this.Controls.Add(this.RunGoose);
             this.Controls.Add(this.ResourceHubPage);
             this.Controls.Add(this.Uninstall);
             this.Controls.Add(this.Install);
@@ -277,6 +291,7 @@
         private MetroFramework.Components.MetroStyleExtender metroStyleExtender1;
         private System.Windows.Forms.ContextMenuStrip modListContextMenu;
         private System.Windows.Forms.ToolStripMenuItem installToolStripMenuItem;
+        private MetroFramework.Controls.MetroButton RunGoose;
     }
 }
 

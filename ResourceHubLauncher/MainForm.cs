@@ -38,5 +38,6 @@ namespace ResourceHubLauncher {
         {
             e.Cancel = MessageBox.Show("Are you sure you want to close ResourceHub Launcher?", "Hold up!", MessageBoxButtons.YesNo) != DialogResult.Yes;
         }
+
     }
 }
