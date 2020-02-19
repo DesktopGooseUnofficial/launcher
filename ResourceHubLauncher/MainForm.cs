@@ -32,7 +32,7 @@ namespace ResourceHubLauncher {
 
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
             JToken mod = mods[otherMods.SelectedIndex];
-            MsgBox(mod["name"]);
+            MetroMessageBox.Show(this, "As such, downloading mods is not yet available.", "This is an early version of ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void resourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
