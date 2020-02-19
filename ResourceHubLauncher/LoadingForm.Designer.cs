@@ -34,35 +34,41 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 106);
+            this.progressBar1.Location = new System.Drawing.Point(9, 86);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.progressBar1.Maximum = 1000;
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(295, 27);
+            this.progressBar1.Size = new System.Drawing.Size(221, 22);
             this.progressBar1.Step = 0;
             this.progressBar1.TabIndex = 0;
+            this.progressBar1.UseWaitCursor = true;
             this.progressBar1.Value = 10;
             this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(9, 7);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(295, 94);
+            this.label1.Size = new System.Drawing.Size(221, 76);
             this.label1.TabIndex = 1;
             this.label1.Text = "Checking for available updates. Please wait...";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label1.UseWaitCursor = true;
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // LoadingForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(319, 145);
+            this.ClientSize = new System.Drawing.Size(239, 118);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.progressBar1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.Name = "LoadingForm";
             this.Text = "Updater";
+            this.UseWaitCursor = true;
             this.ResumeLayout(false);
 
         }
