@@ -67,12 +67,12 @@
             // VersionLabel
             // 
             this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Location = new System.Drawing.Point(452, 344);
+            this.VersionLabel.Location = new System.Drawing.Point(441, 344);
             this.VersionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(139, 13);
+            this.VersionLabel.Size = new System.Drawing.Size(148, 13);
             this.VersionLabel.TabIndex = 2;
-            this.VersionLabel.Text = "ResourceHub Launcher 0.1";
+            this.VersionLabel.Text = "ResourceHub Launcher 0.1.0";
             // 
             // label3
             // 
@@ -142,7 +142,7 @@
             this.Install.Location = new System.Drawing.Point(373, 221);
             this.Install.Margin = new System.Windows.Forms.Padding(2);
             this.Install.Name = "Install";
-            this.Install.Size = new System.Drawing.Size(218, 19);
+            this.Install.Size = new System.Drawing.Size(218, 23);
             this.Install.TabIndex = 9;
             this.Install.Text = "Install Mod";
             this.Install.UseVisualStyleBackColor = true;
@@ -153,7 +153,7 @@
             this.Enable.Location = new System.Drawing.Point(373, 268);
             this.Enable.Margin = new System.Windows.Forms.Padding(2);
             this.Enable.Name = "Enable";
-            this.Enable.Size = new System.Drawing.Size(218, 19);
+            this.Enable.Size = new System.Drawing.Size(218, 23);
             this.Enable.TabIndex = 10;
             this.Enable.Text = "Enable Mod";
             this.Enable.UseVisualStyleBackColor = true;
@@ -164,7 +164,7 @@
             this.Uninstall.Location = new System.Drawing.Point(373, 245);
             this.Uninstall.Margin = new System.Windows.Forms.Padding(2);
             this.Uninstall.Name = "Uninstall";
-            this.Uninstall.Size = new System.Drawing.Size(218, 19);
+            this.Uninstall.Size = new System.Drawing.Size(218, 23);
             this.Uninstall.TabIndex = 11;
             this.Uninstall.Text = "Uninstall Mod";
             this.Uninstall.UseVisualStyleBackColor = true;
@@ -175,7 +175,7 @@
             this.Disable.Location = new System.Drawing.Point(373, 292);
             this.Disable.Margin = new System.Windows.Forms.Padding(2);
             this.Disable.Name = "Disable";
-            this.Disable.Size = new System.Drawing.Size(218, 19);
+            this.Disable.Size = new System.Drawing.Size(218, 23);
             this.Disable.TabIndex = 12;
             this.Disable.Text = "Disable Mod";
             this.Disable.UseVisualStyleBackColor = true;
@@ -186,7 +186,7 @@
             this.ResourceHubPage.Location = new System.Drawing.Point(373, 315);
             this.ResourceHubPage.Margin = new System.Windows.Forms.Padding(2);
             this.ResourceHubPage.Name = "ResourceHubPage";
-            this.ResourceHubPage.Size = new System.Drawing.Size(218, 19);
+            this.ResourceHubPage.Size = new System.Drawing.Size(218, 23);
             this.ResourceHubPage.TabIndex = 13;
             this.ResourceHubPage.Text = "Open ResourceHub Page";
             this.ResourceHubPage.UseVisualStyleBackColor = true;
