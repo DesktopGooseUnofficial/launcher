@@ -40,8 +40,6 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.openInModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label4 = new MetroFramework.Controls.MetroLabel();
-            this.label5 = new MetroFramework.Controls.MetroLabel();
-            this.disabledMods = new System.Windows.Forms.ListBox();
             this.label6 = new MetroFramework.Controls.MetroLabel();
             this.styleExtender = new MetroFramework.Components.MetroStyleExtender(this.components);
             this.RunGoose = new MetroFramework.Controls.MetroButton();
@@ -51,6 +49,10 @@
             this.metroButton4 = new MetroFramework.Controls.MetroButton();
             this.metroProgressBar1 = new MetroFramework.Controls.MetroProgressBar();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
+            this.modInfo = new System.Windows.Forms.ListBox();
+            this.metroButton5 = new MetroFramework.Controls.MetroButton();
+            this.metroButton6 = new MetroFramework.Controls.MetroButton();
             this.modListContextMenu.SuspendLayout();
             this.installedModsContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -67,7 +69,7 @@
             this.otherMods.Location = new System.Drawing.Point(11, 76);
             this.otherMods.Margin = new System.Windows.Forms.Padding(2);
             this.otherMods.Name = "otherMods";
-            this.otherMods.Size = new System.Drawing.Size(171, 173);
+            this.otherMods.Size = new System.Drawing.Size(170, 173);
             this.otherMods.TabIndex = 0;
             this.otherMods.TabStop = false;
             this.otherMods.SelectedIndexChanged += new System.EventHandler(this.otherMods_SelectedIndexChanged);
@@ -103,7 +105,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 55);
+            this.label1.Location = new System.Drawing.Point(7, 55);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(102, 19);
@@ -113,10 +115,11 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label3.Location = new System.Drawing.Point(196, 75);
+            this.label3.Location = new System.Drawing.Point(195, 75);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(403, 174);
@@ -125,6 +128,7 @@
             // 
             // enabledMods
             // 
+            this.enabledMods.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.styleExtender.SetApplyMetroTheme(this.enabledMods, true);
             this.enabledMods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.enabledMods.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -132,10 +136,10 @@
             this.enabledMods.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.enabledMods.FormattingEnabled = true;
             this.enabledMods.IntegralHeight = false;
-            this.enabledMods.Location = new System.Drawing.Point(11, 273);
+            this.enabledMods.Location = new System.Drawing.Point(11, 275);
             this.enabledMods.Margin = new System.Windows.Forms.Padding(2);
             this.enabledMods.Name = "enabledMods";
-            this.enabledMods.Size = new System.Drawing.Size(171, 134);
+            this.enabledMods.Size = new System.Drawing.Size(170, 91);
             this.enabledMods.TabIndex = 4;
             this.enabledMods.TabStop = false;
             // 
@@ -169,8 +173,9 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(11, 251);
+            this.label4.Location = new System.Drawing.Point(7, 253);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(96, 19);
@@ -178,36 +183,11 @@
             this.label4.Text = "Installed mods:";
             this.label4.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(196, 251);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(99, 19);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Disabled mods:";
-            this.label5.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // disabledMods
-            // 
-            this.styleExtender.SetApplyMetroTheme(this.disabledMods, true);
-            this.disabledMods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.disabledMods.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.disabledMods.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
-            this.disabledMods.FormattingEnabled = true;
-            this.disabledMods.IntegralHeight = false;
-            this.disabledMods.Location = new System.Drawing.Point(198, 273);
-            this.disabledMods.Margin = new System.Windows.Forms.Padding(2);
-            this.disabledMods.Name = "disabledMods";
-            this.disabledMods.Size = new System.Drawing.Size(171, 134);
-            this.disabledMods.TabIndex = 7;
-            this.disabledMods.TabStop = false;
-            // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(196, 55);
+            this.label6.Location = new System.Drawing.Point(191, 55);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(108, 19);
@@ -221,11 +201,12 @@
             // 
             // RunGoose
             // 
+            this.RunGoose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.RunGoose.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.RunGoose.Location = new System.Drawing.Point(373, 383);
+            this.RunGoose.Location = new System.Drawing.Point(185, 342);
             this.RunGoose.Margin = new System.Windows.Forms.Padding(2);
             this.RunGoose.Name = "RunGoose";
-            this.RunGoose.Size = new System.Drawing.Size(111, 24);
+            this.RunGoose.Size = new System.Drawing.Size(117, 24);
             this.RunGoose.TabIndex = 14;
             this.RunGoose.TabStop = false;
             this.RunGoose.Text = "Run Goose";
@@ -235,11 +216,12 @@
             // 
             // metroButton1
             // 
+            this.metroButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.metroButton1.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.metroButton1.Location = new System.Drawing.Point(527, 355);
+            this.metroButton1.Location = new System.Drawing.Point(346, 314);
             this.metroButton1.Margin = new System.Windows.Forms.Padding(2);
             this.metroButton1.Name = "metroButton1";
-            this.metroButton1.Size = new System.Drawing.Size(72, 24);
+            this.metroButton1.Size = new System.Drawing.Size(77, 24);
             this.metroButton1.TabIndex = 15;
             this.metroButton1.TabStop = false;
             this.metroButton1.Text = "Settings";
@@ -249,11 +231,12 @@
             // 
             // metroButton2
             // 
+            this.metroButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.metroButton2.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.metroButton2.Location = new System.Drawing.Point(373, 355);
+            this.metroButton2.Location = new System.Drawing.Point(185, 314);
             this.metroButton2.Margin = new System.Windows.Forms.Padding(2);
             this.metroButton2.Name = "metroButton2";
-            this.metroButton2.Size = new System.Drawing.Size(72, 24);
+            this.metroButton2.Size = new System.Drawing.Size(77, 24);
             this.metroButton2.TabIndex = 16;
             this.metroButton2.TabStop = false;
             this.metroButton2.Text = "Discord";
@@ -263,11 +246,13 @@
             // 
             // metroButton3
             // 
+            this.metroButton3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.metroButton3.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.metroButton3.Location = new System.Drawing.Point(450, 355);
+            this.metroButton3.Location = new System.Drawing.Point(266, 314);
             this.metroButton3.Margin = new System.Windows.Forms.Padding(2);
             this.metroButton3.Name = "metroButton3";
-            this.metroButton3.Size = new System.Drawing.Size(72, 24);
+            this.metroButton3.Size = new System.Drawing.Size(76, 24);
             this.metroButton3.TabIndex = 17;
             this.metroButton3.TabStop = false;
             this.metroButton3.Text = "GitHub";
@@ -277,11 +262,12 @@
             // 
             // metroButton4
             // 
+            this.metroButton4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.metroButton4.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.metroButton4.Location = new System.Drawing.Point(488, 383);
+            this.metroButton4.Location = new System.Drawing.Point(306, 342);
             this.metroButton4.Margin = new System.Windows.Forms.Padding(2);
             this.metroButton4.Name = "metroButton4";
-            this.metroButton4.Size = new System.Drawing.Size(111, 24);
+            this.metroButton4.Size = new System.Drawing.Size(117, 24);
             this.metroButton4.TabIndex = 18;
             this.metroButton4.TabStop = false;
             this.metroButton4.Text = "Stop Goose";
@@ -291,17 +277,21 @@
             // 
             // metroProgressBar1
             // 
-            this.metroProgressBar1.Location = new System.Drawing.Point(374, 295);
+            this.metroProgressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.metroProgressBar1.Location = new System.Drawing.Point(185, 297);
             this.metroProgressBar1.Name = "metroProgressBar1";
-            this.metroProgressBar1.Size = new System.Drawing.Size(226, 12);
+            this.metroProgressBar1.Size = new System.Drawing.Size(238, 12);
             this.metroProgressBar1.TabIndex = 20;
             this.metroProgressBar1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroProgressBar1.Visible = false;
             // 
             // metroLabel1
             // 
+            this.metroLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel1.AutoSize = true;
-            this.metroLabel1.Location = new System.Drawing.Point(373, 273);
+            this.metroLabel1.Location = new System.Drawing.Point(182, 275);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(106, 19);
             this.metroLabel1.TabIndex = 21;
@@ -309,11 +299,73 @@
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroLabel1.Visible = false;
             // 
+            // metroLabel2
+            // 
+            this.metroLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.metroLabel2.AutoSize = true;
+            this.metroLabel2.Location = new System.Drawing.Point(423, 253);
+            this.metroLabel2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.metroLabel2.Name = "metroLabel2";
+            this.metroLabel2.Size = new System.Drawing.Size(66, 19);
+            this.metroLabel2.TabIndex = 23;
+            this.metroLabel2.Text = "Mod Info:";
+            this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // modInfo
+            // 
+            this.modInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.styleExtender.SetApplyMetroTheme(this.modInfo, true);
+            this.modInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.modInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.modInfo.ContextMenuStrip = this.installedModsContextMenu;
+            this.modInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.modInfo.FormattingEnabled = true;
+            this.modInfo.IntegralHeight = false;
+            this.modInfo.Items.AddRange(new object[] {
+            "Category:",
+            "Rating:"});
+            this.modInfo.Location = new System.Drawing.Point(427, 275);
+            this.modInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.modInfo.Name = "modInfo";
+            this.modInfo.Size = new System.Drawing.Size(170, 91);
+            this.modInfo.TabIndex = 22;
+            this.modInfo.TabStop = false;
+            // 
+            // metroButton5
+            // 
+            this.metroButton5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.metroButton5.FontWeight = MetroFramework.MetroButtonWeight.Regular;
+            this.metroButton5.Location = new System.Drawing.Point(306, 342);
+            this.metroButton5.Margin = new System.Windows.Forms.Padding(2);
+            this.metroButton5.Name = "metroButton5";
+            this.metroButton5.Size = new System.Drawing.Size(0, 24);
+            this.metroButton5.TabIndex = 24;
+            this.metroButton5.TabStop = false;
+            this.metroButton5.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroButton5.UseSelectable = true;
+            // 
+            // metroButton6
+            // 
+            this.metroButton6.FontWeight = MetroFramework.MetroButtonWeight.Light;
+            this.metroButton6.Location = new System.Drawing.Point(165, 76);
+            this.metroButton6.Name = "metroButton6";
+            this.metroButton6.Size = new System.Drawing.Size(16, 16);
+            this.metroButton6.TabIndex = 25;
+            this.metroButton6.Text = "↻";
+            this.metroButton6.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroButton6.UseSelectable = true;
+            this.metroButton6.Click += new System.EventHandler(this.metroButton6_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(611, 417);
+            this.ClientSize = new System.Drawing.Size(610, 380);
+            this.Controls.Add(this.metroButton6);
+            this.Controls.Add(this.metroButton5);
+            this.Controls.Add(this.metroLabel2);
+            this.Controls.Add(this.modInfo);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.metroProgressBar1);
             this.Controls.Add(this.metroButton4);
@@ -322,8 +374,6 @@
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.RunGoose);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.disabledMods);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.enabledMods);
             this.Controls.Add(this.label3);
@@ -352,8 +402,6 @@
         private MetroFramework.Controls.MetroLabel label3;
         private System.Windows.Forms.ListBox enabledMods;
         private MetroFramework.Controls.MetroLabel label4;
-        private MetroFramework.Controls.MetroLabel label5;
-        private System.Windows.Forms.ListBox disabledMods;
         private MetroFramework.Controls.MetroLabel label6;
         private MetroFramework.Components.MetroStyleExtender styleExtender;
         private System.Windows.Forms.ContextMenuStrip modListContextMenu;
@@ -369,6 +417,10 @@
         private MetroFramework.Controls.MetroProgressBar metroProgressBar1;
         private MetroFramework.Controls.MetroLabel metroLabel1;
         private System.Windows.Forms.ToolStripMenuItem openInModsToolStripMenuItem;
+        private MetroFramework.Controls.MetroLabel metroLabel2;
+        private System.Windows.Forms.ListBox modInfo;
+        private MetroFramework.Controls.MetroButton metroButton5;
+        private MetroFramework.Controls.MetroButton metroButton6;
     }
 }
 

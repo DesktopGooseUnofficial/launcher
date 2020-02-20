@@ -47,6 +47,36 @@ namespace ResourceHubLauncher {
             }
         }
 
+        private void metroButton6_Click(object sender, EventArgs e) {
+            metroButton6.Enabled = false;
+            WebRequest request = WebRequest.Create("http://rhl.my.to/data");
+            WebResponse response = request.GetResponse();
+            Stream stream = response.GetResponseStream();
+            string html = "";
+            using (StreamReader sr = new StreamReader(stream)) {
+                html = sr.ReadToEnd();
+            }
+
+            JObject data = JObject.Parse(html);
+
+            results = data["mods"].Children().ToList();
+
+            mods.Clear();
+            otherMods.Items.Clear();
+            foreach (JToken ok in results) {
+                foreach (JToken mod in ok) {
+                    mods.Add(mod);
+                    otherMods.Items.Add(mod["name"]);
+                }
+            }
+
+            enabledMods.Items.Clear();
+            foreach (string mod in Directory.GetDirectories(modPath)) {
+                enabledMods.Items.Add(mod.Substring(modPath.Length + 1));
+            }
+            metroButton6.Enabled = true;
+        }
+
         private string ReadableBytes(double len) {
             string[] sizes = { "B", "KB", "MB", "GB", "TB" };
             int order = 0;
@@ -106,10 +136,10 @@ namespace ResourceHubLauncher {
                         wc.DownloadFileCompleted += (object _sender, AsyncCompletedEventArgs args) => {
                             metroLabel1.Hide();
                             metroProgressBar1.Hide();
-                            if (!enabledMods.Items.Contains(m)) enabledMods.Items.Add(m);
+                            if (!enabledMods.Items.Contains(m) && Directory.Exists(filePath)) enabledMods.Items.Add(m);
 
                             if (!d) {
-                                MsgBox($"This mod is not a DLL and therefore cannot be automatically installed.\r\nPlease manually install {m}.", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MsgBox($"This mod is not a DLL and therefore cannot be automatically installed.\r\nPlease manually install {m}.", "Unable to automatically install.", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                                 if (MsgBox("Should we open Explorer for you? (where we put the file, of course)", "One thing...", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                                     Process.Start("explorer.exe", "/select, " + f);
@@ -157,7 +187,24 @@ namespace ResourceHubLauncher {
             Process.Start(Path.Combine(Config.getModPath(), Path.GetFileName((string)Config.Options["gpath"])));
         }
 
+        private string r2s(int level) {
+            switch(level) {
+                case -1:
+                    return "❓";
+                case 0:
+                    return "✅";
+                case 1:
+                    return "⚠️";
+                case 2:
+                    return "❗️";
+                default:
+                    return "what the fuck";
+            }
+        }
+
         private void otherMods_SelectedIndexChanged(object sender, EventArgs e) {
+            if (otherMods.SelectedIndex == -1) return;
+
             JToken mod = mods[otherMods.SelectedIndex];
 
             string desc = (string)mod["description"];
@@ -180,6 +227,10 @@ namespace ResourceHubLauncher {
             }
 
             label3.Text = newDesc.ToString();
+
+            modInfo.Items.Clear();
+            modInfo.Items.Add("Category: " + mod["category"]);
+            modInfo.Items.Add("Rating: " + r2s((int) mod["level"]));
         }
 
         private void metroButton2_Click(object sender, EventArgs e) {
@@ -204,7 +255,7 @@ namespace ResourceHubLauncher {
         }
 
         private void modListContextMenu_Opening(object sender, CancelEventArgs e) {
-            if (otherMods.SelectedIndex == -1) modListContextMenu.Close();
+            if (otherMods.SelectedIndex == -1) e.Cancel = true;
         }
 
         private void metroButton4_Click(object sender, EventArgs e) {
@@ -216,11 +267,13 @@ namespace ResourceHubLauncher {
         private void toolStripMenuItem1_Click(object sender, EventArgs e) {
             string mod = enabledMods.SelectedItem.ToString();
             string path = Path.Combine(modPath, mod);
-            try {
-                if (Directory.Exists(path)) Directory.Delete(path, true);
-                enabledMods.Items.Remove(mod);
-            } catch(Exception ex) {
-                MsgBox($"Error while uninstalling {mod}.\r\nPlease make sure you have Desktop Goose closed.\r\nError: {ex.Message}", "Uninstall error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if(MsgBox($"Are you sure you want to uninstall {mod}? This will erase all data in the Mods folder for {mod}!", "Uninstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                try {
+                    if(Directory.Exists(path)) Directory.Delete(path, true);
+                    enabledMods.Items.Remove(mod);
+                } catch(Exception ex) {
+                    MsgBox($"Error while uninstalling {mod}.\r\nPlease make sure you have Desktop Goose closed.\r\nError: {ex.Message}", "Uninstall error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -231,7 +284,7 @@ namespace ResourceHubLauncher {
         }
 
         private void installedModsContextMenu_Opening(object sender, CancelEventArgs e) {
-            if (enabledMods.SelectedIndex == -1) installedModsContextMenu.Close();
+            if (enabledMods.SelectedIndex == -1) e.Cancel = true;
         }
     }
 }
