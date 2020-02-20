@@ -196,8 +196,12 @@ namespace ResourceHubLauncher {
         private void toolStripMenuItem1_Click(object sender, EventArgs e) {
             string mod = enabledMods.SelectedItem.ToString();
             string path = Path.Combine(modPath, mod);
-            if (Directory.Exists(path)) Directory.Delete(path, true);
-            enabledMods.Items.Remove(mod);
+            try {
+                if (Directory.Exists(path)) Directory.Delete(path, true);
+                enabledMods.Items.Remove(mod);
+            } catch(Exception ex) {
+                MsgBox($"Error while uninstalling {mod}.\r\nPlease make sure you have Desktop Goose closed.\r\nError: {ex.Message}", "Uninstall error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void openInModsToolStripMenuItem_Click(object sender, EventArgs e) {
