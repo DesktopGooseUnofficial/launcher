@@ -178,12 +178,7 @@ namespace ResourceHubLauncher {
                             catch(IOException ex) {
                                 MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
-                            //N I C E
-                            //when you say that my code is useless but your is not working
-                            //I'm not sizzurp
-                            //Ikr
-                            //but that's just like a meme
-                            //right
+                            
                             download = false;
                         };
                     } else {
