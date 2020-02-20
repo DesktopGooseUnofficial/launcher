@@ -1,16 +1,15 @@
 ﻿using MetroFramework;
-using MetroFramework.Controls;
 using MetroFramework.Forms;
 using Newtonsoft.Json.Linq;
 using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Forms;
-using System.Net;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Windows.Forms;
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
@@ -44,8 +43,20 @@ namespace ResourceHubLauncher {
                 }
             }
 
-            foreach (string mod in Directory.GetDirectories(modPath)) {
-                enabledMods.Items.Add(mod.Substring(modPath.Length + 1));
+            foreach (string pMod in Directory.GetDirectories(modPath)) {
+                string modName = pMod.Substring(modPath.Length + 1);
+                string datPath = Path.Combine(modPath, "RHLInfo.json");
+                JToken mod = mods.ToList().Find(m => (string)m["name"] == modName);
+                if (File.Exists(datPath)) {
+                    JObject data = JObject.Parse(File.ReadAllText(datPath));
+                    if (data["mod-version"] != mod["mod-version"]) {
+                        if(MsgBox($"{data["name"]} is outdated.\r\nWould you like to download the new version?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                            otherMods.SelectedItem = mod["name"];
+                            installToolStripMenuItem_Click(sender, e);
+                        }
+                    }
+                }
+                enabledMods.Items.Add(modName);
             }
         }
 
@@ -139,7 +150,7 @@ namespace ResourceHubLauncher {
                             metroProgressBar1.Value = args.ProgressPercentage;
                             metroLabel1.Text = string.Format(format, m, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
                             int v = metroLabel1.Text.Length;
-                            Console.WriteLine(metroLabel1.Text.Substring(0, v-1) + $" {args.ProgressPercentage}%)");
+                            Console.WriteLine(metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
                         };
                         wc.DownloadFileCompleted += (object _sender, AsyncCompletedEventArgs args) => {
                             metroLabel1.Hide();
@@ -154,6 +165,10 @@ namespace ResourceHubLauncher {
                                     Process.Start("explorer.exe", "/select, " + f);
                                 }
                             }
+
+                            string dataPath = Path.Combine(filePath, (string)mod["name"], "RHLInfo.json");
+                            File.WriteAllText(dataPath, mod.ToString());
+                            
                             download = false;
                         };
                     } else {
@@ -164,7 +179,7 @@ namespace ResourceHubLauncher {
                         return;
                     }
                 } catch (Exception ex) {
-                    Console.WriteLine($"Could not download {(string) mod["name"]}: {ex.Message}");
+                    Console.WriteLine($"Could not download {(string)mod["name"]}: {ex.Message}");
                     download = false;
                     MsgBox("The download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     metroLabel1.Hide();
@@ -199,18 +214,16 @@ namespace ResourceHubLauncher {
         }
 
         private string r2s(int level) {
-            switch(level) {
+            switch (level) {
                 case -1:
                     return "Inapplicable";
                 case 0:
-                    return "Safe";
+                    return "Okay";
                 case 1:
-                    return "Unsafe";
+                    return "Moderate";
                 case 2:
-                    return "Severe";
+                    return "Pretty bad";
                 case 3:
-                    return "Dangerous";
-                case 4:
                     return "Malicious";
                 default:
                     return $"Unknown ({level})";
@@ -229,7 +242,7 @@ namespace ResourceHubLauncher {
             int num = 0;
 
             StringBuilder newDesc = new StringBuilder();
-            for(int i = 0; i < split.Length; i++) {
+            for (int i = 0; i < split.Length; i++) {
                 newDesc.Append(split[i]);
                 int len = split[i].Length;
                 if (num + len > 40) {
@@ -245,7 +258,7 @@ namespace ResourceHubLauncher {
 
             modInfo.Items.Clear();
             modInfo.Items.Add("Category: " + mod["category"]);
-            modInfo.Items.Add("Rating: " + r2s((int) mod["level"]));
+            modInfo.Items.Add("Rating: " + r2s((int)mod["level"]));
         }
 
         private void metroButton2_Click(object sender, EventArgs e) {
@@ -282,13 +295,18 @@ namespace ResourceHubLauncher {
         private void toolStripMenuItem1_Click(object sender, EventArgs e) {
             string mod = enabledMods.SelectedItem.ToString();
             string path = Path.Combine(modPath, mod);
-            if(MsgBox($"Are you sure you want to uninstall {mod}? This will erase all data in the Mods folder for {mod}!", "Uninstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox($"Are you sure you want to uninstall {mod}? This will erase all data in the Mods folder for {mod}!", "Uninstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                int geese = Process.GetProcessesByName("GooseDesktop").Count();
+                metroButton4_Click(sender, e);
                 try {
-                    if(Directory.Exists(path)) Directory.Delete(path, true);
+                    if (Directory.Exists(path)) Directory.Delete(path, true);
                     enabledMods.Items.Remove(mod);
                     metroSpinner.Hide();
-                } catch(Exception ex) {
+                } catch (Exception ex) {
                     MsgBox($"Error while uninstalling {mod}.\r\nPlease make sure you have Desktop Goose closed.\r\nError: {ex.Message}", "Uninstall error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                for (int i = 0; i < geese; i++) {
+                    RunGoose_Click(sender, e);
                 }
             }
         }

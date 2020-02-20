@@ -30,7 +30,7 @@ namespace ResourceHubLauncher {
 
             if (!_G.dev) ShowWindow(handle, SW_HIDE);
 
-            Console.Title = "ResourceHub Launcher";
+            Console.Title = "ResourceHub Launcher // Developer Console";
 
             Console.WriteLine("Getting latest data...");
 
