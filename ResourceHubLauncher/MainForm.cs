@@ -22,6 +22,8 @@ namespace ResourceHubLauncher {
         public MainForm() {
             InitializeComponent();
 
+            metroSpinner.Hide();
+
             Config.Theme(this);
 
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
@@ -123,9 +125,11 @@ namespace ResourceHubLauncher {
                         metroLabel1.Text = string.Format(format, m, ReadableBytes(0), ReadableBytes(0));
                         metroLabel1.Show();
                         metroProgressBar1.Show();
+                        metroSpinner.Show();
                         if (enabledMods.Items.Contains(m) && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                             metroLabel1.Hide();
                             metroProgressBar1.Hide();
+                            metroSpinner.Hide();
                             Console.WriteLine("Download cancelled by user.");
                             return;
                         }
@@ -140,6 +144,7 @@ namespace ResourceHubLauncher {
                         wc.DownloadFileCompleted += (object _sender, AsyncCompletedEventArgs args) => {
                             metroLabel1.Hide();
                             metroProgressBar1.Hide();
+                            metroSpinner.Hide();
                             if (!enabledMods.Items.Contains(m) && Directory.Exists(filePath)) enabledMods.Items.Add(m);
 
                             if (!d) {
@@ -155,6 +160,7 @@ namespace ResourceHubLauncher {
                         MsgBox("You already have a download in progress.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         metroLabel1.Hide();
                         metroProgressBar1.Hide();
+                        metroSpinner.Hide();
                         return;
                     }
                 } catch (Exception ex) {
@@ -163,6 +169,7 @@ namespace ResourceHubLauncher {
                     MsgBox("The download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     metroLabel1.Hide();
                     metroProgressBar1.Hide();
+                    metroSpinner.Hide();
                     return;
                 }
             }
@@ -279,6 +286,7 @@ namespace ResourceHubLauncher {
                 try {
                     if(Directory.Exists(path)) Directory.Delete(path, true);
                     enabledMods.Items.Remove(mod);
+                    metroSpinner.Hide();
                 } catch(Exception ex) {
                     MsgBox($"Error while uninstalling {mod}.\r\nPlease make sure you have Desktop Goose closed.\r\nError: {ex.Message}", "Uninstall error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
