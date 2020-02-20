@@ -92,6 +92,8 @@ namespace ResourceHubLauncher {
 
                     Console.WriteLine("Showing main window.");
 
+                    loading.Hide();
+                    loading.Visible = false;
                     loading.Close();
 
                     form.ShowDialog();
