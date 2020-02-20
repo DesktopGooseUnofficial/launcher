@@ -135,9 +135,8 @@ namespace ResourceHubLauncher {
 
                     if (!download) {
                         string format = "Installing {0} ({1}/{2})";
-                        metroLabel1.Text = string.Format(format, m, ReadableBytes(0), ReadableBytes(0));
+                        metroLabel1.Text = $"Preparing to install {(string)mod["name"]}";
                         metroLabel1.Show();
-                        metroProgressBar1.Show();
                         metroSpinner.Show();
                         metroProgressBar1.Value = 0;
                         if (enabledMods.Items.Contains(m) && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
@@ -150,6 +149,7 @@ namespace ResourceHubLauncher {
                         download = true;
                         wc.DownloadFileAsync(uri, f);
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
+                            metroProgressBar1.Show();
                             metroProgressBar1.Value = args.ProgressPercentage;
                             metroLabel1.Text = string.Format(format, m, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
                             int v = metroLabel1.Text.Length;
@@ -173,6 +173,7 @@ namespace ResourceHubLauncher {
                             dataPath = Path.Combine(dataPath, "RHLInfo.json");
 
                             try {
+                                if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
                                 if (!File.Exists(dataPath)) File.Create(dataPath).Close();
                                 File.WriteAllText(dataPath, mod.ToString());
                             }
