@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
@@ -165,10 +166,24 @@ namespace ResourceHubLauncher {
                                     Process.Start("explorer.exe", "/select, " + f);
                                 }
                             }
-
-                            string dataPath = Path.Combine(filePath, (string)mod["name"], "RHLInfo.json");
-                            File.WriteAllText(dataPath, mod.ToString());
                             
+                            string dataPath = Path.Combine(filePath, "RHLInfo.json");
+                            try {
+                                if(!File.Exists(dataPath)) {
+                                    FileStream fs= new FileStream(dataPath, FileMode.OpenOrCreate);
+                                    fs.Close();
+                                }
+                                File.WriteAllText(dataPath, mod.ToString());
+                            }
+                            catch(IOException ex) {
+                                MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            //N I C E
+                            //when you say that my code is useless but your is not working
+                            //I'm not sizzurp
+                            //Ikr
+                            //but that's just like a meme
+                            //right
                             download = false;
                         };
                     } else {
