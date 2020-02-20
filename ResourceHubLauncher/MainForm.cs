@@ -198,7 +198,7 @@ namespace ResourceHubLauncher {
                 case 0:
                     return "Safe";
                 case 1:
-                    return "Medium";
+                    return "Unsafe";
                 case 2:
                     return "Severe";
                 case 3:
