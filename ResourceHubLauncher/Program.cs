@@ -7,15 +7,31 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
 namespace ResourceHubLauncher {
     static class Program {
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+
         [STAThread]
         static void Main(string[] args) {
             Config.Load();
+
+            var handle = GetConsoleWindow();
+
+            if (!_G.dev) ShowWindow(handle, SW_HIDE);
+
+            Console.WriteLine("Getting latest data...");
 
             WebRequest request = WebRequest.Create("http://rhl.my.to/data");
             WebResponse response = request.GetResponse();
@@ -27,12 +43,6 @@ namespace ResourceHubLauncher {
             }
 
             JObject data = JObject.Parse(html);
-            
-            if (!Directory.Exists("Disabled Mods"))
-                Directory.CreateDirectory("Disabled Mods");
-
-            if (!Directory.Exists("Mods"))
-                Directory.CreateDirectory("Mods");
 
             string latest = data["app"]["md5"].ToString();
 
@@ -48,11 +58,16 @@ namespace ResourceHubLauncher {
                 md5.Append(hash[i].ToString("X2"));
             }
 
+            Console.WriteLine("Checking launcher version...");
+
             if (latest != md5.ToString()) {
+                Console.WriteLine("Launcher is outdated. Prompting user if they want to update.");
                 if (MetroMessageBox.Show(form, $"Launcher out of date.\nWould you like to update now?\n(MD5 {md5} does not match latest MD5: {latest})", "Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                     Process.Start("https://github.com/DesktopGooseUnofficial/launcher/releases");
                     Environment.Exit(0);
                 }
+            } else {
+                Console.WriteLine("Launcher is up to date!");
             }
 
             if (_G.dev && MetroMessageBox.Show(form, "Copy Version MD5 to clipboard?", "Developer Mode", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -73,6 +88,8 @@ namespace ResourceHubLauncher {
                     }
                 }
             }
+
+            Console.WriteLine("Showing main window.");
 
             Application.Run(form);
         }
