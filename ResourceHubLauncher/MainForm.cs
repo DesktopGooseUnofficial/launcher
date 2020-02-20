@@ -147,6 +147,7 @@ namespace ResourceHubLauncher {
                         }
                         download = true;
                         wc.DownloadFileAsync(uri, f);
+                        metroProgressBar1.Value = 0;
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
                             metroProgressBar1.Value = args.ProgressPercentage;
                             metroLabel1.Text = string.Format(format, m, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
