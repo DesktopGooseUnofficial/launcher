@@ -119,7 +119,7 @@ namespace ResourceHubLauncher {
 
                     int l = (int)mod["level"];
 
-                    if (l > 0 && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Error) != DialogResult.Yes) return;
+                    if (l > 0 && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
 
                     string n = Path.GetFileName(url);
                     string t = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1);
