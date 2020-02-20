@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,8 +46,6 @@ namespace ResourceHubLauncher {
                 c.BackColor = colors[i];
                 int _ = i;
                 c.Click += (object s, EventArgs e) => {
-                    Config.Save();
-                    Config.Load();
                     Config.Options["color"] = _;
                     Config.Options["theme"] = (int)Config.Options["theme"];
                     styleManager.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
@@ -56,8 +55,8 @@ namespace ResourceHubLauncher {
                 };
             }
 
-            metroTextBox1.Text = (string)Config.Options["gpath"];
-            metroTextBox2.Text = (string)Config.Options["cpath"];
+            metroTextBox1.Text = Path.GetFileName((string)Config.Options["gpath"]);
+            metroTextBox2.Text = Path.GetFileName((string)Config.Options["cpath"]);
         }
 
         private void Settings_Load(object sender, EventArgs e) {
@@ -85,7 +84,7 @@ namespace ResourceHubLauncher {
 
         private void goosePathDialog_FileOk(object sender, CancelEventArgs e) {
             Config.Options["gpath"] = goosePathDialog.FileName;
-            metroTextBox1.Text = (string)Config.Options["gpath"];
+            metroTextBox1.Text = Path.GetFileName((string)Config.Options["gpath"]);
             Config.Save();
         }
 
@@ -95,7 +94,7 @@ namespace ResourceHubLauncher {
 
         private void configPathDialog_FileOk(object sender, CancelEventArgs e) {
             Config.Options["cpath"] = configPathDialog.FileName;
-            metroTextBox2.Text = (string)Config.Options["cpath"];
+            metroTextBox2.Text = Path.GetFileName((string)Config.Options["cpath"]);
             Config.Save();
         }
     }
