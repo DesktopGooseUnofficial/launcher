@@ -50,11 +50,12 @@ namespace ResourceHubLauncher {
                 JToken mod = mods.ToList().Find(m => (string)m["name"] == modName);
                 if (File.Exists(datPath)) {
                     JObject data = JObject.Parse(File.ReadAllText(datPath));
-                    if (data["mod-version"] != mod["mod-version"]) {
-                        if(MsgBox($"{data["name"]} is outdated.\r\nWould you like to download the new version?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                    if ((string)data["mod-version"] != (string)mod["mod-version"]) {
+                        if (MsgBox($"{data["name"]} is outdated.\r\nWould you like to download the new version?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
                             otherMods.SelectedItem = mod["name"];
                             installToolStripMenuItem_Click(sender, e);
                         }
+                        continue;
                     }
                 }
                 enabledMods.Items.Add(modName);
@@ -96,10 +97,10 @@ namespace ResourceHubLauncher {
             int order = 0;
             while (len >= 1024 && order < sizes.Length - 1) {
                 order++;
-                len = len / 1024;
+                len /= 1024;
             }
 
-            return string.Format("{0:0.##} {1}", len, sizes[order]);
+            return string.Format("{0:0} {1}", len, sizes[order]);
         }
 
         private bool Log(string str) {
@@ -159,20 +160,19 @@ namespace ResourceHubLauncher {
                             metroSpinner.Hide();
                             if (!enabledMods.Items.Contains(m) && Directory.Exists(filePath)) enabledMods.Items.Add(m);
 
+                            string dataPath = filePath;
                             if (!d) {
+                                dataPath = Path.Combine(filePath, (string)mod["name"]);
                                 MsgBox($"This mod is not a DLL and therefore cannot be automatically installed.\r\nPlease manually install {m}.", "Unable to automatically install.", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                                 if (MsgBox("Should we open Explorer for you? (where we put the file, of course)", "One thing...", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                                     Process.Start("explorer.exe", "/select, " + f);
                                 }
                             }
-                            
-                            string dataPath = Path.Combine(filePath, "RHLInfo.json");
+                            dataPath = Path.Combine(dataPath, "RHLInfo.json");
+
                             try {
-                                if(!File.Exists(dataPath)) {
-                                    FileStream fs= new FileStream(dataPath, FileMode.OpenOrCreate);
-                                    fs.Close();
-                                }
+                                if (!File.Exists(dataPath)) File.Create(dataPath).Close();
                                 File.WriteAllText(dataPath, mod.ToString());
                             }
                             catch(IOException ex) {
