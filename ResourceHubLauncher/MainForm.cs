@@ -48,6 +48,8 @@ namespace ResourceHubLauncher {
                     if(!download) {
                         download = true;
                         metroLabel1.Text = $"Installing {f}";
+                        metroLabel1.Show();
+                        metroProgressBar1.Show();
                         wc.DownloadFileAsync(new Uri(url), f);
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
                             metroProgressBar1.Value = args.ProgressPercentage;
@@ -59,17 +61,25 @@ namespace ResourceHubLauncher {
                         };
                     } else {
                         MsgBox("You already have a download in progress.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        metroLabel1.Hide();
+                        metroProgressBar1.Hide();
+                        return;
                     }
-                } catch (Exception) {
+                } catch(Exception) {
                     download = false;
                     MsgBox("The download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    metroLabel1.Hide();
+                    metroProgressBar1.Hide();
+                    return;
                 }
+                metroLabel1.Hide();
+                metroProgressBar1.Hide();
                 enabledMods.Items.Add(Path.GetFileNameWithoutExtension(f));
                 string ext = f.Substring(Path.GetFileNameWithoutExtension(f).Length + 1);
                 string nme = f.Substring(f.Length - (ext.Length + 1));
+
                 if (ext != "dll") {
-                    MsgBox("This mod is not a DLL and therefore cannot be automatically installed.\r\n" + 
-                           "Please manually install " + nme + ".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MsgBox($"This mod is not a DLL and therefore cannot be automatically installed.\r\nPlease manually install {nme}.", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     string dest = Path.Combine(Config.getModPath(), "Assets", "Mods", f);
                     File.Move(f, dest);
