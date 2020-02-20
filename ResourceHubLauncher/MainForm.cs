@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
@@ -159,7 +160,26 @@ namespace ResourceHubLauncher {
         private void otherMods_SelectedIndexChanged(object sender, EventArgs e) {
             JToken mod = mods[otherMods.SelectedIndex];
 
-            label3.Text = (string)mod["description"];
+            string desc = (string)mod["description"];
+
+            string[] split = desc.Split(' ');
+
+            int num = 0;
+
+            StringBuilder newDesc = new StringBuilder();
+            for(int i = 0; i < split.Length; i++) {
+                newDesc.Append(split[i]);
+                int len = split[i].Length;
+                if (num + len > 40) {
+                    num = 0;
+                    newDesc.Append("\r\n");
+                } else {
+                    num += len;
+                    newDesc.Append(" ");
+                }
+            }
+
+            label3.Text = newDesc.ToString();
         }
 
         private void metroButton2_Click(object sender, EventArgs e) {
