@@ -82,6 +82,7 @@ namespace ResourceHubLauncher {
                     MsgBox($"This mod is not a DLL and therefore cannot be automatically installed.\r\nPlease manually install {nme}.", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     string dest = Path.Combine(Config.getModPath(), "Assets", "Mods", f);
+                    if (File.Exists(dest)) dest = Path.Combine(Config.getModPath(), "Assets", "Mods", nme + "-" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + "." + ext);
                     File.Move(f, dest);
                     Process.Start("explorer.exe", "/select, " + Path.Combine(Config.getModPath(), "Assets", "Mods", f));
                 } else {
