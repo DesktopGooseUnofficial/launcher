@@ -10,7 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
@@ -53,7 +52,7 @@ namespace ResourceHubLauncher {
                     if (data["mod-version"] != mod["mod-version"]) {
                         if(MsgBox($"{data["name"]} is outdated.\r\nWould you like to download the new version?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
                             otherMods.SelectedItem = mod["name"];
-                            installToolStripMenuItem_Click(sender, e);
+                            InstallToolStripMenuItem_Click(sender, e);
                         }
                     }
                 }
@@ -61,7 +60,7 @@ namespace ResourceHubLauncher {
             }
         }
 
-        private void metroButton6_Click(object sender, EventArgs e) {
+        private void MetroButton6_Click(object sender, EventArgs e) {
             metroButton6.Enabled = false;
             WebRequest request = WebRequest.Create("http://rhl.my.to/data");
             WebResponse response = request.GetResponse();
@@ -96,7 +95,7 @@ namespace ResourceHubLauncher {
             int order = 0;
             while (len >= 1024 && order < sizes.Length - 1) {
                 order++;
-                len = len / 1024;
+                len /= 1024;
             }
 
             return string.Format("{0:0.##} {1}", len, sizes[order]);
@@ -107,7 +106,7 @@ namespace ResourceHubLauncher {
             return true;
         }
 
-        private void installToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void InstallToolStripMenuItem_Click(object sender, EventArgs e) {
             JToken mod = mods[otherMods.SelectedIndex];
             string url = (string)mod["url"];
 
@@ -119,7 +118,7 @@ namespace ResourceHubLauncher {
 
                     int l = (int)mod["level"];
 
-                    if (l > 0 && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Error) != DialogResult.Yes) return;
+                    if (l > 0 && Log($"Mod is rated {R2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {R2s(l)}.\r\nAre you sure you want to install it?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Error) != DialogResult.Yes) return;
 
                     string n = Path.GetFileName(url);
                     string t = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1);
@@ -200,7 +199,7 @@ namespace ResourceHubLauncher {
             }
         }
 
-        private void resourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void ResourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
             JToken mod = mods[otherMods.SelectedIndex];
             try {
                 Process.Start(mod["resourcehub"].ToString());
@@ -223,7 +222,7 @@ namespace ResourceHubLauncher {
             Process.Start(Path.Combine(Config.getModPath(), Path.GetFileName((string)Config.Options["gpath"])));
         }
 
-        private string r2s(int level) {
+        private string R2s(int level) {
             switch (level) {
                 case -1:
                     return "Inapplicable";
@@ -240,7 +239,7 @@ namespace ResourceHubLauncher {
             }
         }
 
-        private void otherMods_SelectedIndexChanged(object sender, EventArgs e) {
+        private void OtherMods_SelectedIndexChanged(object sender, EventArgs e) {
             if (otherMods.SelectedIndex == -1) return;
 
             JToken mod = mods[otherMods.SelectedIndex];
@@ -268,22 +267,22 @@ namespace ResourceHubLauncher {
 
             modInfo.Items.Clear();
             modInfo.Items.Add("Category: " + mod["category"]);
-            modInfo.Items.Add("Rating: " + r2s((int)mod["level"]));
+            modInfo.Items.Add("Rating: " + R2s((int)mod["level"]));
         }
 
-        private void metroButton2_Click(object sender, EventArgs e) {
+        private void MetroButton2_Click(object sender, EventArgs e) {
             if (MsgBox("This will open a discord.gg link to our Discord server. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://discord.gg/uyUMhW8");
             }
         }
 
-        private void metroButton3_Click(object sender, EventArgs e) {
+        private void MetroButton3_Click(object sender, EventArgs e) {
             if (MsgBox("This will open a github.com link to our GitHub repo. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher");
             }
         }
 
-        private void metroButton1_Click(object sender, EventArgs e) {
+        private void MetroButton1_Click(object sender, EventArgs e) {
             Hide();
             new Settings().ShowDialog();
             Config.Theme(this);
@@ -292,22 +291,22 @@ namespace ResourceHubLauncher {
             Show();
         }
 
-        private void modListContextMenu_Opening(object sender, CancelEventArgs e) {
+        private void ModListContextMenu_Opening(object sender, CancelEventArgs e) {
             if (otherMods.SelectedIndex == -1) e.Cancel = true;
         }
 
-        private void metroButton4_Click(object sender, EventArgs e) {
+        private void MetroButton4_Click(object sender, EventArgs e) {
             foreach (Process p in Process.GetProcessesByName("GooseDesktop")) {
                 p.Kill();
             }
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e) {
+        private void ToolStripMenuItem1_Click(object sender, EventArgs e) {
             string mod = enabledMods.SelectedItem.ToString();
             string path = Path.Combine(modPath, mod);
             if (MsgBox($"Are you sure you want to uninstall {mod}? This will erase all data in the Mods folder for {mod}!", "Uninstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
-                metroButton4_Click(sender, e);
+                MetroButton4_Click(sender, e);
                 try {
                     if (Directory.Exists(path)) Directory.Delete(path, true);
                     enabledMods.Items.Remove(mod);
@@ -321,13 +320,13 @@ namespace ResourceHubLauncher {
             }
         }
 
-        private void openInModsToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void OpenInModsToolStripMenuItem_Click(object sender, EventArgs e) {
             string mod = enabledMods.SelectedItem.ToString();
             string path = Path.Combine(modPath, mod);
             Process.Start("explorer.exe", path);
         }
 
-        private void installedModsContextMenu_Opening(object sender, CancelEventArgs e) {
+        private void InstalledModsContextMenu_Opening(object sender, CancelEventArgs e) {
             if (enabledMods.SelectedIndex == -1) e.Cancel = true;
         }
     }

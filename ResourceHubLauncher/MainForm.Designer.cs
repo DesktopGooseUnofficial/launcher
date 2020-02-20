@@ -73,7 +73,7 @@
             this.otherMods.Size = new System.Drawing.Size(170, 173);
             this.otherMods.TabIndex = 0;
             this.otherMods.TabStop = false;
-            this.otherMods.SelectedIndexChanged += new System.EventHandler(this.otherMods_SelectedIndexChanged);
+            this.otherMods.SelectedIndexChanged += new System.EventHandler(this.OtherMods_SelectedIndexChanged);
             // 
             // modListContextMenu
             // 
@@ -87,21 +87,21 @@
             this.modListContextMenu.Name = "modListContextMenu";
             this.modListContextMenu.ShowImageMargin = false;
             this.modListContextMenu.Size = new System.Drawing.Size(121, 48);
-            this.modListContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.modListContextMenu_Opening);
+            this.modListContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ModListContextMenu_Opening);
             // 
             // installToolStripMenuItem
             // 
             this.installToolStripMenuItem.Name = "installToolStripMenuItem";
             this.installToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.installToolStripMenuItem.Text = "Install";
-            this.installToolStripMenuItem.Click += new System.EventHandler(this.installToolStripMenuItem_Click);
+            this.installToolStripMenuItem.Click += new System.EventHandler(this.InstallToolStripMenuItem_Click);
             // 
             // resourceHubToolStripMenuItem
             // 
             this.resourceHubToolStripMenuItem.Name = "resourceHubToolStripMenuItem";
             this.resourceHubToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.resourceHubToolStripMenuItem.Text = "ResourceHub";
-            this.resourceHubToolStripMenuItem.Click += new System.EventHandler(this.resourceHubToolStripMenuItem_Click);
+            this.resourceHubToolStripMenuItem.Click += new System.EventHandler(this.ResourceHubToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -156,21 +156,21 @@
             this.installedModsContextMenu.Name = "modListContextMenu";
             this.installedModsContextMenu.ShowImageMargin = false;
             this.installedModsContextMenu.Size = new System.Drawing.Size(125, 48);
-            this.installedModsContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.installedModsContextMenu_Opening);
+            this.installedModsContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.InstalledModsContextMenu_Opening);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem1.Text = "Uninstall";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
             // 
             // openInModsToolStripMenuItem
             // 
             this.openInModsToolStripMenuItem.Name = "openInModsToolStripMenuItem";
             this.openInModsToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.openInModsToolStripMenuItem.Text = "Open in Mods";
-            this.openInModsToolStripMenuItem.Click += new System.EventHandler(this.openInModsToolStripMenuItem_Click);
+            this.openInModsToolStripMenuItem.Click += new System.EventHandler(this.OpenInModsToolStripMenuItem_Click);
             // 
             // label4
             // 
@@ -247,7 +247,7 @@
             this.metroButton1.Text = "Settings";
             this.metroButton1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton1.UseSelectable = true;
-            this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click);
+            this.metroButton1.Click += new System.EventHandler(this.MetroButton1_Click);
             // 
             // metroButton2
             // 
@@ -262,7 +262,7 @@
             this.metroButton2.Text = "Discord";
             this.metroButton2.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton2.UseSelectable = true;
-            this.metroButton2.Click += new System.EventHandler(this.metroButton2_Click);
+            this.metroButton2.Click += new System.EventHandler(this.MetroButton2_Click);
             // 
             // metroButton3
             // 
@@ -278,7 +278,7 @@
             this.metroButton3.Text = "GitHub";
             this.metroButton3.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton3.UseSelectable = true;
-            this.metroButton3.Click += new System.EventHandler(this.metroButton3_Click);
+            this.metroButton3.Click += new System.EventHandler(this.MetroButton3_Click);
             // 
             // metroButton4
             // 
@@ -293,7 +293,7 @@
             this.metroButton4.Text = "Stop Goose";
             this.metroButton4.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton4.UseSelectable = true;
-            this.metroButton4.Click += new System.EventHandler(this.metroButton4_Click);
+            this.metroButton4.Click += new System.EventHandler(this.MetroButton4_Click);
             // 
             // metroProgressBar1
             // 
@@ -355,7 +355,7 @@
             this.metroButton6.Text = "↻";
             this.metroButton6.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton6.UseSelectable = true;
-            this.metroButton6.Click += new System.EventHandler(this.metroButton6_Click);
+            this.metroButton6.Click += new System.EventHandler(this.MetroButton6_Click);
             // 
             // metroSpinner
             // 
