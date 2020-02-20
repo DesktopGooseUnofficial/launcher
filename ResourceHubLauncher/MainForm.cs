@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Net;
+using System.ComponentModel;
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
@@ -42,6 +43,7 @@ namespace ResourceHubLauncher {
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
             JToken mod = mods[otherMods.SelectedIndex];
             string url = (string) mod["url"];
+            
             using (WebClient wc = new WebClient()) {
                 string f = Path.GetFileName((string)mod["url"]);
                 try {
@@ -50,13 +52,42 @@ namespace ResourceHubLauncher {
                         metroLabel1.Text = $"Installing {f}";
                         metroLabel1.Show();
                         metroProgressBar1.Show();
-                        wc.DownloadFileAsync(new Uri(url), f);
+                        Uri uri = new Uri(url);
+                        wc.DownloadFileAsync(uri, f);
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
                             metroProgressBar1.Value = args.ProgressPercentage;
                         };
-                        wc.DownloadDataCompleted += (object _sender, DownloadDataCompletedEventArgs args) => {
+                        wc.DownloadFileCompleted += (object _sender, AsyncCompletedEventArgs args) => {
                             metroLabel1.Hide();
                             metroProgressBar1.Hide();
+                            enabledMods.Items.Add(Path.GetFileNameWithoutExtension(f));
+                            string ext = f.Substring(Path.GetFileNameWithoutExtension(f).Length + 1);
+                            string nme = f.Substring(0, f.Length - (ext.Length + 1));
+
+                            if (ext != "dll") {
+                                MsgBox($"This mod is not a DLL and therefore cannot be automatically installed.\r\nPlease manually install {nme}.", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                string dest = Path.Combine(Config.getModPath(), "Assets", "Mods", f);
+                                if (File.Exists(dest)) dest = Path.Combine(Config.getModPath(), "Assets", "Mods", f + "-" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + "." + ext);
+                                try {
+                                    File.Move(f, dest);
+                                } catch (Exception ex) {
+                                    MsgBox($"Could not move {f} to {dest}!\r\nError: {ex.Message}.", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    return;
+                                }
+                                Process.Start("explorer.exe", "/select, " + dest);
+                            } else {
+                                string path = Path.Combine(Config.getModPath(), "Assets", "Mods", (string)mod["name"]);
+                                string dest = Path.Combine(path, f);
+                                if (File.Exists(dest)) dest = Path.Combine(Config.getModPath(), "Assets", "Mods", f + "-" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + "." + ext);
+                                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                                try {
+                                    File.Move(f, dest);
+                                } catch (Exception ex) {
+                                    MsgBox($"Could not move {f} to {dest}!\r\nError: {ex.Message}.", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    return;
+                                }
+                            }
                             download = false;
                         };
                     } else {
@@ -71,24 +102,6 @@ namespace ResourceHubLauncher {
                     metroLabel1.Hide();
                     metroProgressBar1.Hide();
                     return;
-                }
-                metroLabel1.Hide();
-                metroProgressBar1.Hide();
-                enabledMods.Items.Add(Path.GetFileNameWithoutExtension(f));
-                string ext = f.Substring(Path.GetFileNameWithoutExtension(f).Length + 1);
-                string nme = f.Substring(f.Length - (ext.Length + 1));
-
-                if (ext != "dll") {
-                    MsgBox($"This mod is not a DLL and therefore cannot be automatically installed.\r\nPlease manually install {nme}.", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    string dest = Path.Combine(Config.getModPath(), "Assets", "Mods", f);
-                    if (File.Exists(dest)) dest = Path.Combine(Config.getModPath(), "Assets", "Mods", nme + "-" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + "." + ext);
-                    File.Move(f, dest);
-                    Process.Start("explorer.exe", "/select, " + Path.Combine(Config.getModPath(), "Assets", "Mods", f));
-                } else {
-                    string path = Path.Combine(Config.getModPath(), "Assets", "Mods", (string)mod["name"]);
-                    if(!Directory.Exists(path)) Directory.CreateDirectory(path);
-                    File.Move(f, Path.Combine(path, f));
                 }
             }
         }

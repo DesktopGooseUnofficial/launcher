@@ -293,9 +293,9 @@
             this.metroLabel1.AutoSize = true;
             this.metroLabel1.Location = new System.Drawing.Point(373, 273);
             this.metroLabel1.Name = "metroLabel1";
-            this.metroLabel1.Size = new System.Drawing.Size(149, 19);
+            this.metroLabel1.Size = new System.Drawing.Size(106, 19);
             this.metroLabel1.TabIndex = 21;
-            this.metroLabel1.Text = "Installing <Mod Name>";
+            this.metroLabel1.Text = "Installing Foobar";
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroLabel1.Visible = false;
             // 
