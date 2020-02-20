@@ -312,7 +312,7 @@
             this.metroLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel1.AutoSize = true;
-            this.metroLabel1.Location = new System.Drawing.Point(206, 270);
+            this.metroLabel1.Location = new System.Drawing.Point(200, 275);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(106, 19);
             this.metroLabel1.TabIndex = 21;
@@ -360,7 +360,7 @@
             // 
             // metroSpinner
             // 
-            this.metroSpinner.Location = new System.Drawing.Point(186, 275);
+            this.metroSpinner.Location = new System.Drawing.Point(185, 278);
             this.metroSpinner.Maximum = 100;
             this.metroSpinner.Name = "metroSpinner";
             this.metroSpinner.Size = new System.Drawing.Size(16, 16);
