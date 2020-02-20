@@ -103,6 +103,10 @@ namespace ResourceHubLauncher {
                 try {
                     Uri uri = new Uri(url);
 
+                    int l = (int)mod["level"];
+
+                    if (l > 0 && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Error) != DialogResult.Yes) return;
+
                     string n = Path.GetFileName(url);
                     string t = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1);
                     string m = (string)mod["name"];
@@ -130,8 +134,8 @@ namespace ResourceHubLauncher {
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
                             metroProgressBar1.Value = args.ProgressPercentage;
                             metroLabel1.Text = string.Format(format, m, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
-                            int l = metroLabel1.Text.Length;
-                            Console.WriteLine(metroLabel1.Text.Substring(0, l-1) + $" {args.ProgressPercentage}%)");
+                            int v = metroLabel1.Text.Length;
+                            Console.WriteLine(metroLabel1.Text.Substring(0, v-1) + $" {args.ProgressPercentage}%)");
                         };
                         wc.DownloadFileCompleted += (object _sender, AsyncCompletedEventArgs args) => {
                             metroLabel1.Hide();
@@ -190,15 +194,19 @@ namespace ResourceHubLauncher {
         private string r2s(int level) {
             switch(level) {
                 case -1:
-                    return "❓";
+                    return "Inapplicable";
                 case 0:
-                    return "✅";
+                    return "Safe";
                 case 1:
-                    return "⚠️";
+                    return "Medium";
                 case 2:
-                    return "❗️";
+                    return "Severe";
+                case 3:
+                    return "Dangerous";
+                case 4:
+                    return "Malicious";
                 default:
-                    return "what the fuck";
+                    return $"Unknown ({level})";
             }
         }
 

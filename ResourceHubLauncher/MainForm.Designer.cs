@@ -42,6 +42,7 @@
             this.label4 = new MetroFramework.Controls.MetroLabel();
             this.label6 = new MetroFramework.Controls.MetroLabel();
             this.styleExtender = new MetroFramework.Components.MetroStyleExtender(this.components);
+            this.modInfo = new System.Windows.Forms.ListBox();
             this.RunGoose = new MetroFramework.Controls.MetroButton();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.metroButton2 = new MetroFramework.Controls.MetroButton();
@@ -50,7 +51,6 @@
             this.metroProgressBar1 = new MetroFramework.Controls.MetroProgressBar();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
-            this.modInfo = new System.Windows.Forms.ListBox();
             this.metroButton5 = new MetroFramework.Controls.MetroButton();
             this.metroButton6 = new MetroFramework.Controls.MetroButton();
             this.modListContextMenu.SuspendLayout();
@@ -199,6 +199,26 @@
             // 
             this.styleExtender.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
+            // modInfo
+            // 
+            this.modInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.styleExtender.SetApplyMetroTheme(this.modInfo, true);
+            this.modInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.modInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.modInfo.ContextMenuStrip = this.installedModsContextMenu;
+            this.modInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.modInfo.FormattingEnabled = true;
+            this.modInfo.IntegralHeight = false;
+            this.modInfo.Items.AddRange(new object[] {
+            "Category:",
+            "Rating:"});
+            this.modInfo.Location = new System.Drawing.Point(427, 275);
+            this.modInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.modInfo.Name = "modInfo";
+            this.modInfo.Size = new System.Drawing.Size(170, 91);
+            this.modInfo.TabIndex = 22;
+            this.modInfo.TabStop = false;
+            // 
             // RunGoose
             // 
             this.RunGoose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -310,26 +330,6 @@
             this.metroLabel2.TabIndex = 23;
             this.metroLabel2.Text = "Mod Info:";
             this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // modInfo
-            // 
-            this.modInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.styleExtender.SetApplyMetroTheme(this.modInfo, true);
-            this.modInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.modInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.modInfo.ContextMenuStrip = this.installedModsContextMenu;
-            this.modInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
-            this.modInfo.FormattingEnabled = true;
-            this.modInfo.IntegralHeight = false;
-            this.modInfo.Items.AddRange(new object[] {
-            "Category:",
-            "Rating:"});
-            this.modInfo.Location = new System.Drawing.Point(427, 275);
-            this.modInfo.Margin = new System.Windows.Forms.Padding(2);
-            this.modInfo.Name = "modInfo";
-            this.modInfo.Size = new System.Drawing.Size(170, 91);
-            this.modInfo.TabIndex = 22;
-            this.modInfo.TabStop = false;
             // 
             // metroButton5
             // 
