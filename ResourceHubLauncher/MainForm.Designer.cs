@@ -53,6 +53,7 @@
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.metroButton5 = new MetroFramework.Controls.MetroButton();
             this.metroButton6 = new MetroFramework.Controls.MetroButton();
+            this.metroSpinner = new MetroFramework.Controls.MetroProgressSpinner();
             this.modListContextMenu.SuspendLayout();
             this.installedModsContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -357,11 +358,22 @@
             this.metroButton6.UseSelectable = true;
             this.metroButton6.Click += new System.EventHandler(this.metroButton6_Click);
             // 
+            // metroSpinner
+            // 
+            this.metroSpinner.Location = new System.Drawing.Point(165, 256);
+            this.metroSpinner.Maximum = 100;
+            this.metroSpinner.Name = "metroSpinner";
+            this.metroSpinner.Size = new System.Drawing.Size(16, 16);
+            this.metroSpinner.TabIndex = 26;
+            this.metroSpinner.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroSpinner.UseSelectable = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(610, 380);
+            this.Controls.Add(this.metroSpinner);
             this.Controls.Add(this.metroButton6);
             this.Controls.Add(this.metroButton5);
             this.Controls.Add(this.metroLabel2);
@@ -421,6 +433,7 @@
         private System.Windows.Forms.ListBox modInfo;
         private MetroFramework.Controls.MetroButton metroButton5;
         private MetroFramework.Controls.MetroButton metroButton6;
+        private MetroFramework.Controls.MetroProgressSpinner metroSpinner;
     }
 }
 
