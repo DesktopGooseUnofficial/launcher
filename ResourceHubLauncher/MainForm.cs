@@ -139,6 +139,7 @@ namespace ResourceHubLauncher {
                         metroLabel1.Show();
                         metroProgressBar1.Show();
                         metroSpinner.Show();
+                        metroProgressBar1.Value = 0;
                         if (enabledMods.Items.Contains(m) && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                             metroLabel1.Hide();
                             metroProgressBar1.Hide();
@@ -148,7 +149,6 @@ namespace ResourceHubLauncher {
                         }
                         download = true;
                         wc.DownloadFileAsync(uri, f);
-                        metroProgressBar1.Value = 0;
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
                             metroProgressBar1.Value = args.ProgressPercentage;
                             metroLabel1.Text = string.Format(format, m, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
