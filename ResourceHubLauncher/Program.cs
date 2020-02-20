@@ -21,7 +21,6 @@ namespace ResourceHubLauncher {
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         const int SW_HIDE = 0;
-        const int SW_SHOW = 5;
 
         [STAThread]
         static void Main(string[] args) {
@@ -30,6 +29,8 @@ namespace ResourceHubLauncher {
             var handle = GetConsoleWindow();
 
             if (!_G.dev) ShowWindow(handle, SW_HIDE);
+
+            Console.Title = "ResourceHub Launcher";
 
             Console.WriteLine("Getting latest data...");
 
