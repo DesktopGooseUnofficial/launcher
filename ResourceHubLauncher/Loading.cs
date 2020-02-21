@@ -18,5 +18,13 @@ namespace ResourceHubLauncher {
         private void Loading_Load(object sender, EventArgs e) {
             Config.Theme(this);
         }
+
+        private void metroLabel1_Click_1(object sender, EventArgs e) {
+
+        }
+
+        private void metroProgressSpinner1_Click(object sender, EventArgs e) {
+
+        }
     }
 }

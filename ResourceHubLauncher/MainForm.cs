@@ -332,5 +332,9 @@ namespace ResourceHubLauncher {
         private void installedModsContextMenu_Opening(object sender, CancelEventArgs e) {
             if (enabledMods.SelectedIndex == -1) e.Cancel = true;
         }
+
+        private void metroLabel3_Click(object sender, EventArgs e) {
+
+        }
     }
 }

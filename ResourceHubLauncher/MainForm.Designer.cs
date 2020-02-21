@@ -54,6 +54,7 @@
             this.metroButton5 = new MetroFramework.Controls.MetroButton();
             this.metroButton6 = new MetroFramework.Controls.MetroButton();
             this.metroSpinner = new MetroFramework.Controls.MetroProgressSpinner();
+            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
             this.modListContextMenu.SuspendLayout();
             this.installedModsContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -369,11 +370,24 @@
             this.metroSpinner.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroSpinner.UseSelectable = true;
             // 
+            // metroLabel3
+            // 
+            this.metroLabel3.AutoSize = true;
+            this.metroLabel3.FontSize = MetroFramework.MetroLabelSize.Small;
+            this.metroLabel3.Location = new System.Drawing.Point(492, 10);
+            this.metroLabel3.Name = "metroLabel3";
+            this.metroLabel3.Size = new System.Drawing.Size(105, 15);
+            this.metroLabel3.TabIndex = 27;
+            this.metroLabel3.Text = "Launcher version 1.3";
+            this.metroLabel3.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroLabel3.Click += new System.EventHandler(this.metroLabel3_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(609, 380);
+            this.Controls.Add(this.metroLabel3);
             this.Controls.Add(this.metroSpinner);
             this.Controls.Add(this.metroButton6);
             this.Controls.Add(this.metroButton5);
@@ -435,6 +449,7 @@
         private MetroFramework.Controls.MetroButton metroButton5;
         private MetroFramework.Controls.MetroButton metroButton6;
         private MetroFramework.Controls.MetroProgressSpinner metroSpinner;
+        private MetroFramework.Controls.MetroLabel metroLabel3;
     }
 }
 
