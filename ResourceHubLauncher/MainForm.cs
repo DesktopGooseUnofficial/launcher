@@ -270,26 +270,7 @@ namespace ResourceHubLauncher {
 
             JToken mod = mods[otherMods.SelectedIndex];
 
-            string desc = (string)mod["description"];
-
-            string[] split = desc.Split(' ');
-
-            int num = 0;
-
-            StringBuilder newDesc = new StringBuilder();
-            for (int i = 0; i < split.Length; i++) {
-                newDesc.Append(split[i]);
-                int len = split[i].Length;
-                if (num + len > 40) {
-                    num = 0;
-                    newDesc.Append("\r\n");
-                } else {
-                    num += len;
-                    newDesc.Append(" ");
-                }
-            }
-
-            label3.Text = newDesc.ToString();
+            label3.Text = (string)mod["description"];
 
             modInfo.Items.Clear();
             modInfo.Items.Add("Category: " + mod["category"]);

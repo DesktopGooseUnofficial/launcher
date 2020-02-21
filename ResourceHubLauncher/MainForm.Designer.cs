@@ -234,6 +234,7 @@
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.label3.Location = new System.Drawing.Point(195, 77);
             this.label3.Name = "label3";
+            this.label3.ReadOnly = true;
             this.label3.Size = new System.Drawing.Size(512, 253);
             this.label3.TabIndex = 28;
             this.label3.Text = "";
