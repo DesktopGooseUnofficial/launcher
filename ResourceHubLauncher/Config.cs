@@ -71,6 +71,9 @@ namespace ResourceHubLauncher {
                 } else if (c is MetroTextBox) {
                     ((MetroTextBox)c).Theme = (MetroThemeStyle)(int)Options["theme"];
                     ((MetroTextBox)c).Style = (MetroColorStyle)(int)Options["color"];
+                } else if (c is MetroProgressSpinner) {
+                    ((MetroProgressSpinner)c).Theme = (MetroThemeStyle)(int)Options["theme"];
+                    ((MetroProgressSpinner)c).Style = (MetroColorStyle)(int)Options["color"];
                 }
                 c.Refresh();
             }

@@ -36,7 +36,6 @@
             this.metroProgressSpinner1.Maximum = 100;
             this.metroProgressSpinner1.Name = "metroProgressSpinner1";
             this.metroProgressSpinner1.Size = new System.Drawing.Size(40, 35);
-            this.metroProgressSpinner1.Style = MetroFramework.MetroColorStyle.Green;
             this.metroProgressSpinner1.TabIndex = 0;
             this.metroProgressSpinner1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroProgressSpinner1.UseSelectable = true;

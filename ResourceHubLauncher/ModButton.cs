@@ -1,25 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MetroFramework;
-using MetroFramework.Forms;
+﻿using MetroFramework.Controls;
 using System.Drawing;
 
-namespace ResourceHubLauncher
-{
+namespace ResourceHubLauncher {
 
-    enum ModButtonStates
-    {
+    enum ModButtonStates {
         Installed,
         Disabled,
         Available
     }
-    class ModButton
-    {
-        public ModButton(string modName_, string modSafetyName, int modSafetyLevel, ModButtonStates modState_, Image backgroundImage) {
+    class ModButton {
+        public ModButton(string modName_, string modSafetyName, int modSafetyLevel, ModButtonStates modState_) {
             button.Text = "";
             modName.Text = modName_;
             modName.Parent = button;
@@ -29,9 +19,8 @@ namespace ResourceHubLauncher
             modSafety.BackColor = Color.Transparent;
             modState.Parent = button;
             modState.BackColor = Color.Transparent;
-            button.BackgroundImage = backgroundImage;
 
-            switch(modState_) {
+            switch (modState_) {
                 case ModButtonStates.Available:
                     modState.Text = "Available";
                     break;
@@ -41,6 +30,8 @@ namespace ResourceHubLauncher
                 case ModButtonStates.Installed:
                     modState.Text = "Installed";
                     break;
+                default:
+                    break;
             }
         }
 
@@ -48,10 +39,10 @@ namespace ResourceHubLauncher
             button.Location = newLocation;
         }
         //Change to metro things later
-        private  Button button;
-        
-        private Label modName;
-        private Label modSafety;
-        private Label modState;
+        private MetroButton button;
+
+        private MetroLabel modName;
+        private MetroLabel modSafety;
+        private MetroLabel modState;
     }
 }

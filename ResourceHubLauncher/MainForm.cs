@@ -152,6 +152,7 @@ namespace ResourceHubLauncher {
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
                             metroProgressBar1.Show();
                             metroProgressBar1.Value = args.ProgressPercentage;
+                            metroSpinner.Value = args.ProgressPercentage;
                             metroLabel1.Text = string.Format(format, m, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
                             int v = metroLabel1.Text.Length;
                             Console.WriteLine(metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
