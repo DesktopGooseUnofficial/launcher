@@ -11,6 +11,7 @@ using System.Net;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using System.Drawing;
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
@@ -19,10 +20,12 @@ namespace ResourceHubLauncher {
         bool download = false;
         string modPath = "";
 
+        ModButton test = new ModButton("mod mod", "Safe", 3, ModButtonStates.Available);
+
         public MainForm() {
             InitializeComponent();
-
-            
+            //metroLabel1.Parent = metroProgressBar1;
+            //metroLabel1.BackColor = Color.Transparent;
 
             Config.Theme(this);
 
@@ -374,5 +377,11 @@ namespace ResourceHubLauncher {
         private void metroButton5_Click(object sender, EventArgs e) {
 
         }
+
+        private void metroSpinner_Click(object sender, EventArgs e) {
+
+        }
+
+
     }
 }
