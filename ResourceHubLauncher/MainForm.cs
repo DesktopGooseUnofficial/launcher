@@ -22,7 +22,7 @@ namespace ResourceHubLauncher {
         public MainForm() {
             InitializeComponent();
 
-            metroSpinner.Hide();
+            
 
             Config.Theme(this);
 
@@ -135,14 +135,15 @@ namespace ResourceHubLauncher {
 
                     if (!download) {
                         string format = "Installing {0} ({1}/{2})";
+
                         metroLabel1.Text = $"Preparing to install {(string)mod["name"]}";
                         metroLabel1.Show();
-                        metroSpinner.Show();
+                        
                         metroProgressBar1.Value = 0;
                         if (enabledMods.Items.Contains(m) && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                             metroLabel1.Hide();
                             metroProgressBar1.Hide();
-                            metroSpinner.Hide();
+                            
                             Console.WriteLine("Download cancelled by user.");
                             return;
                         }
@@ -158,7 +159,7 @@ namespace ResourceHubLauncher {
                         wc.DownloadFileCompleted += (object _sender, AsyncCompletedEventArgs args) => {
                             metroLabel1.Hide();
                             metroProgressBar1.Hide();
-                            metroSpinner.Hide();
+                            
                             if (!enabledMods.Items.Contains(m) && Directory.Exists(filePath)) enabledMods.Items.Add(m);
 
                             string dataPath = filePath;
@@ -187,7 +188,7 @@ namespace ResourceHubLauncher {
                         MsgBox("You already have a download in progress.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         metroLabel1.Hide();
                         metroProgressBar1.Hide();
-                        metroSpinner.Hide();
+                        
                         return;
                     }
                 } catch (Exception ex) {
@@ -196,7 +197,7 @@ namespace ResourceHubLauncher {
                     MsgBox("The download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     metroLabel1.Hide();
                     metroProgressBar1.Hide();
-                    metroSpinner.Hide();
+                    
                     return;
                 }
             }
@@ -222,7 +223,7 @@ namespace ResourceHubLauncher {
         }
 
         private void RunGoose_Click(object sender, EventArgs e) {
-            Process.Start(Path.Combine(Config.getModPath(), Path.GetFileName((string)Config.Options["gpath"])));
+            
         }
 
         private string r2s(int level) {
@@ -230,13 +231,13 @@ namespace ResourceHubLauncher {
                 case -1:
                     return "Inapplicable";
                 case 0:
-                    return "Okay";
+                    return "Safe";
                 case 1:
                     return "Moderate";
                 case 2:
-                    return "Pretty bad";
-                case 3:
                     return "Malicious";
+                case 3:
+                    return "Destructive";
                 default:
                     return $"Unknown ({level})";
             }
@@ -274,24 +275,15 @@ namespace ResourceHubLauncher {
         }
 
         private void metroButton2_Click(object sender, EventArgs e) {
-            if (MsgBox("This will open a discord.gg link to our Discord server. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
-                Process.Start("https://discord.gg/uyUMhW8");
-            }
+            
         }
 
         private void metroButton3_Click(object sender, EventArgs e) {
-            if (MsgBox("This will open a github.com link to our GitHub repo. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
-                Process.Start("https://github.com/DesktopGooseUnofficial/launcher");
-            }
+            
         }
 
         private void metroButton1_Click(object sender, EventArgs e) {
-            Hide();
-            new Settings().ShowDialog();
-            Config.Theme(this);
-            styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
-            styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
-            Show();
+            
         }
 
         private void modListContextMenu_Opening(object sender, CancelEventArgs e) {
@@ -299,9 +291,7 @@ namespace ResourceHubLauncher {
         }
 
         private void metroButton4_Click(object sender, EventArgs e) {
-            foreach (Process p in Process.GetProcessesByName("GooseDesktop")) {
-                p.Kill();
-            }
+            
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e) {
@@ -313,7 +303,7 @@ namespace ResourceHubLauncher {
                 try {
                     if (Directory.Exists(path)) Directory.Delete(path, true);
                     enabledMods.Items.Remove(mod);
-                    metroSpinner.Hide();
+                    
                 } catch (Exception ex) {
                     MsgBox($"Error while uninstalling {mod}.\r\nPlease make sure you have Desktop Goose closed.\r\nError: {ex.Message}", "Uninstall error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -334,6 +324,53 @@ namespace ResourceHubLauncher {
         }
 
         private void metroLabel3_Click(object sender, EventArgs e) {
+
+        }
+
+        private void rHLWebToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void discordToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (MsgBox("This will open a discord.gg link to our Discord server. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Process.Start("https://discord.gg/uyUMhW8");
+            }
+        }
+
+        private void githubToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (MsgBox("This will open a github.com link to our GitHub repo. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Process.Start("https://github.com/DesktopGooseUnofficial/launcher");
+            }
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e) {
+            Hide();
+            new Settings().ShowDialog();
+            Config.Theme(this);
+            styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
+            styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
+            Show();
+        }
+
+        private void runToolStripMenuItem_Click(object sender, EventArgs e) {
+            Process.Start(Path.Combine(Config.getModPath(), Path.GetFileName((string)Config.Options["gpath"])));
+        }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e) {
+            foreach (Process p in Process.GetProcessesByName("GooseDesktop")) {
+                p.Kill();
+            }
+        }
+
+        private void metroProgressBar1_Click(object sender, EventArgs e) {
+
+        }
+
+        private void metroLabel1_Click(object sender, EventArgs e) {
+
+        }
+
+        private void metroButton5_Click(object sender, EventArgs e) {
 
         }
     }
