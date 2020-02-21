@@ -25,45 +25,43 @@
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             this.styleExtender = new MetroFramework.Components.MetroStyleExtender(this.components);
-            this.metroProgressSpinner1 = new MetroFramework.Controls.MetroProgressSpinner();
+            this.progress = new MetroFramework.Controls.MetroProgressSpinner();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.SuspendLayout();
             // 
-            // metroProgressSpinner1
+            // progress
             // 
-            this.metroProgressSpinner1.Location = new System.Drawing.Point(185, 63);
-            this.metroProgressSpinner1.Maximum = 100;
-            this.metroProgressSpinner1.Name = "metroProgressSpinner1";
-            this.metroProgressSpinner1.Size = new System.Drawing.Size(40, 35);
-            this.metroProgressSpinner1.TabIndex = 0;
-            this.metroProgressSpinner1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroProgressSpinner1.UseSelectable = true;
-            this.metroProgressSpinner1.UseWaitCursor = true;
-            this.metroProgressSpinner1.Click += new System.EventHandler(this.metroProgressSpinner1_Click);
+            this.progress.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.progress.Location = new System.Drawing.Point(185, 60);
+            this.progress.Maximum = 100;
+            this.progress.Name = "progress";
+            this.progress.Size = new System.Drawing.Size(40, 35);
+            this.progress.TabIndex = 0;
+            this.progress.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.progress.UseSelectable = true;
             // 
             // metroLabel1
             // 
             this.metroLabel1.AutoSize = true;
+            this.metroLabel1.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.metroLabel1.Location = new System.Drawing.Point(15, 60);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(164, 19);
             this.metroLabel1.TabIndex = 1;
             this.metroLabel1.Text = "Now checking for updates.";
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroLabel1.UseWaitCursor = true;
-            this.metroLabel1.Click += new System.EventHandler(this.metroLabel1_Click_1);
             // 
             // metroLabel2
             // 
             this.metroLabel2.AutoSize = true;
+            this.metroLabel2.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.metroLabel2.Location = new System.Drawing.Point(15, 79);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Size = new System.Drawing.Size(156, 19);
             this.metroLabel2.TabIndex = 2;
             this.metroLabel2.Text = "This may take a moment.";
             this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroLabel2.UseWaitCursor = true;
             // 
             // Loading
             // 
@@ -73,7 +71,8 @@
             this.ControlBox = false;
             this.Controls.Add(this.metroLabel2);
             this.Controls.Add(this.metroLabel1);
-            this.Controls.Add(this.metroProgressSpinner1);
+            this.Controls.Add(this.progress);
+            this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Name = "Loading";
             this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
@@ -81,8 +80,6 @@
             this.ShowInTaskbar = false;
             this.Text = "Launcher Updater";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.UseWaitCursor = true;
-            this.Load += new System.EventHandler(this.Loading_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -91,8 +88,8 @@
         #endregion
 
         private MetroFramework.Components.MetroStyleExtender styleExtender;
-        private MetroFramework.Controls.MetroProgressSpinner metroProgressSpinner1;
         private MetroFramework.Controls.MetroLabel metroLabel1;
         private MetroFramework.Controls.MetroLabel metroLabel2;
+        public MetroFramework.Controls.MetroProgressSpinner progress;
     }
 }

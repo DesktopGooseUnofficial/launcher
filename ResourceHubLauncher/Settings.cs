@@ -3,12 +3,8 @@ using MetroFramework.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ResourceHubLauncher {
@@ -39,10 +35,15 @@ namespace ResourceHubLauncher {
             styleManager.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleManager.Style = (MetroColorStyle)(int)Config.Options["color"];
 
-            metroCheckBox1.Checked = (int)Config.Options["theme"] != 2;
+            lightTheme.Checked = (int)Config.Options["theme"] != 2;
+            allowUnsafe.Checked = (bool)Config.Options["unsfe"];
 
-            for(int i = 0; i < colors.Count; i++) {
-                Control c = Controls[(Controls.Count - 1) - i];
+            Control.ControlCollection d = metroPanel2.Controls;
+
+            for (int i = 0; i < colors.Count; i++) {
+                Control[] a = d.Find($"colorPicker{i}", true);
+                if (a.Length == 0) continue;
+                Control c = a[0];
                 c.BackColor = colors[i];
                 int _ = i;
                 c.Click += (object s, EventArgs e) => {
@@ -55,8 +56,8 @@ namespace ResourceHubLauncher {
                 };
             }
 
-            metroTextBox1.Text = Path.GetFileName((string)Config.Options["gpath"]);
-            metroTextBox2.Text = Path.GetFileName((string)Config.Options["cpath"]);
+            goosePath.Text = Path.GetFileName((string)Config.Options["gpath"]);
+            configPath.Text = Path.GetFileName((string)Config.Options["cpath"]);
         }
 
         private void Settings_Load(object sender, EventArgs e) {
@@ -67,7 +68,7 @@ namespace ResourceHubLauncher {
             Config.Save();
             Config.Load();
             Config.Options["color"] = (int)Config.Options["color"];
-            Config.Options["theme"] = metroCheckBox1.Checked ? 1 : 2;
+            Config.Options["theme"] = lightTheme.Checked ? 1 : 2;
             styleManager.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleManager.Style = (MetroColorStyle)(int)Config.Options["color"];
             Config.Save();
@@ -84,7 +85,7 @@ namespace ResourceHubLauncher {
 
         private void goosePathDialog_FileOk(object sender, CancelEventArgs e) {
             Config.Options["gpath"] = goosePathDialog.FileName;
-            metroTextBox1.Text = Path.GetFileName((string)Config.Options["gpath"]);
+            goosePath.Text = Path.GetFileName((string)Config.Options["gpath"]);
             Config.Save();
         }
 
@@ -94,7 +95,16 @@ namespace ResourceHubLauncher {
 
         private void configPathDialog_FileOk(object sender, CancelEventArgs e) {
             Config.Options["cpath"] = configPathDialog.FileName;
-            metroTextBox2.Text = Path.GetFileName((string)Config.Options["cpath"]);
+            configPath.Text = Path.GetFileName((string)Config.Options["cpath"]);
+            Config.Save();
+        }
+
+        private void metroPanel2_Paint(object sender, PaintEventArgs e) {
+
+        }
+
+        private void metroCheckBox2_CheckedChanged(object sender, EventArgs e) {
+            Config.Options["unsfe"] = allowUnsafe.Checked;
             Config.Save();
         }
     }

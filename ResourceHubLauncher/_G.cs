@@ -1,5 +1,5 @@
 ﻿namespace ResourceHubLauncher {
     class _G {
-        public static bool dev => (bool)Config.Options["devmode"];
+        public static bool dev => (bool)Config.Options["devmd"];
     }
 }

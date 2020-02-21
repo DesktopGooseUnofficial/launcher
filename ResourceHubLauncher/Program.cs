@@ -44,6 +44,9 @@ namespace ResourceHubLauncher {
 
             using (WebClient wc = new WebClient()) {
                 wc.DownloadStringAsync(dat);
+                wc.DownloadProgressChanged += (object s, DownloadProgressChangedEventArgs r) => {
+                    loading.progress.Value = r.ProgressPercentage;
+                };
                 wc.DownloadStringCompleted += (object s, DownloadStringCompletedEventArgs r) => {
                     JObject data = JObject.Parse(r.Result);
 
