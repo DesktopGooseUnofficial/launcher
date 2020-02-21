@@ -56,7 +56,7 @@
             this.metroButton6 = new MetroFramework.Controls.MetroButton();
             this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
             this.metroSpinner = new MetroFramework.Controls.MetroProgressSpinner();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.label3 = new System.Windows.Forms.RichTextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.modListContextMenu.SuspendLayout();
             this.installedModsContextMenu.SuspendLayout();
@@ -367,19 +367,19 @@
             this.metroSpinner.Value = 10;
             this.metroSpinner.Visible = false;
             // 
-            // richTextBox1
+            // label3
             // 
-            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.styleExtender.SetApplyMetroTheme(this.richTextBox1, true);
-            this.richTextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Location = new System.Drawing.Point(188, 77);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(526, 306);
-            this.richTextBox1.TabIndex = 28;
-            this.richTextBox1.Text = "";
+            this.styleExtender.SetApplyMetroTheme(this.label3, true);
+            this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.label3.Location = new System.Drawing.Point(188, 77);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(526, 306);
+            this.label3.TabIndex = 28;
+            this.label3.Text = "";
             // 
             // listBox1
             // 
@@ -406,7 +406,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(728, 515);
             this.ContextMenuStrip = this.mainContextMenu;
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.metroSpinner);
@@ -465,7 +465,7 @@
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private MetroFramework.Controls.MetroProgressSpinner metroSpinner;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox label3;
         private System.Windows.Forms.ListBox listBox1;
     }
 }
