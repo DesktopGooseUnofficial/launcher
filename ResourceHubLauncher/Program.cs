@@ -61,6 +61,10 @@ namespace ResourceHubLauncher {
 
                     Console.WriteLine("Checking launcher version...");
 
+                    loading.Hide();
+                    loading.Visible = false;
+                    loading.Close();
+
                     if (latest != md5.ToString()) {
                         Console.WriteLine("Launcher is outdated. Prompting user if they want to update.");
                         if (MetroMessageBox.Show(form, $"Launcher out of date.\nWould you like to update now?\n(MD5 {md5} does not match latest MD5: {latest})", "Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
@@ -91,10 +95,6 @@ namespace ResourceHubLauncher {
                     }
 
                     Console.WriteLine("Showing main window.");
-
-                    loading.Hide();
-                    loading.Visible = false;
-                    loading.Close();
 
                     form.ShowDialog();
                 };
