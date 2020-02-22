@@ -19,15 +19,21 @@ namespace ResourceHubLauncher {
         IList<JToken> mods = new List<JToken>();
         bool download = false;
         string modPath = "";
+        string actualMod = "";
 
-        ModButton test = new ModButton("mod mod", "Mod Loader", 3, ModButtonStates.Available);
+        ModButton test;
 
         public MainForm() {
             InitializeComponent();
+            test = new ModButton("mod mod", "Mod Loader", 3, ModButtonStates.Available, actualMod);
+            
             Controls.Add(test);
-
+            test.BringToFront();
+            
             Config.Theme(this);
-
+            test.Parent = metroPanel2;
+            installedModsContextMenu.CreateControl();
+            test.ContextMenuStrip = installedModsContextMenu;
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
         }
@@ -37,6 +43,7 @@ namespace ResourceHubLauncher {
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
+            
             modPath = Path.Combine(Config.getModPath(), "Assets", "Mods");
 
             Icon = Icon.FromHandle(Properties.Resources.RHLTSmall.GetHicon());
@@ -66,6 +73,7 @@ namespace ResourceHubLauncher {
             }
         }
 
+        
         private void metroButton6_Click(object sender, EventArgs e) {
             metroButton6.Enabled = false;
             WebRequest request = WebRequest.Create("http://rhl.my.to/data");
@@ -126,7 +134,7 @@ namespace ResourceHubLauncher {
 
                     if (l > 0) {
                         if (!(bool)Config.Options["unsfe"] && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
-                            MsgBox($"This mod is rated as {r2s(l)} and will not be installed.\r\nIf you want to ignore this go into Settigns and enable \"Allow Unsafe Mods\".", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MsgBox($"This mod is rated as {r2s(l)} and will not be installed.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         } else if (Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                             return;
@@ -337,7 +345,8 @@ namespace ResourceHubLauncher {
         }
 
         private void metroButton2_Click_1(object sender, EventArgs e) {
-            linksContextMenu.Show();
+            linksContextMenu.Show(Cursor.Position);
+            
         }
 
         private void discordToolStripMenuItem_Click_1(object sender, EventArgs e) {
