@@ -10,8 +10,15 @@ namespace ResourceHubLauncher {
         Disabled,
         Available
     }
+    enum ModSafety {
+        Inapplicable = -1,
+        Safe = 0,
+        Moderate = 1,
+        Unsafe = 2,
+        Dangerous = 3
+    }
     class ModButton {
-        public ModButton(string modName_, string modSafetyName, int modSafetyLevel, ModButtonStates modState_) {
+        public ModButton(string _modName, int _modSafety, ModButtonStates _modState) {
             button = new MetroButton();
             modName = new MetroLabel();
             modSafety = new MetroLabel();
@@ -22,16 +29,13 @@ namespace ResourceHubLauncher {
             modName.Theme = MetroFramework.MetroThemeStyle.Dark;
             modSafety.Theme = MetroFramework.MetroThemeStyle.Dark;
             modState.Theme = MetroFramework.MetroThemeStyle.Dark;
-            modName.Text = modName_;
+            modName.Text = _modName;
             modName.Parent = button;
             modName.BackColor = Color.Transparent;
-            modSafety.Text = modSafetyName;
-            modSafety.Parent = button;
-            modSafety.BackColor = Color.Transparent;
             modState.Parent = button;
             modState.BackColor = Color.Transparent;
 
-            switch (modState_) {
+            switch (_modState) {
                 case ModButtonStates.Available:
                     modState.Text = "Available";
                     break;
@@ -45,6 +49,17 @@ namespace ResourceHubLauncher {
                     break;
             }
 
+            Color[] safety = {
+                Color.Gray,
+                Color.Green,
+                Color.Orange,
+                Color.Red
+            };
+
+            modSafety.Text = ((ModSafety)_modSafety).ToString();
+            modSafety.Parent = button;
+            modSafety.BackColor = safety[_modSafety];
+
             setLocation(new Point(0, 0));
         }
 
@@ -56,8 +71,6 @@ namespace ResourceHubLauncher {
 
 
         }
-
-
 
         private MetroButton button;
         private MetroLabel modName;

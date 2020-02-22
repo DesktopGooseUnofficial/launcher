@@ -20,12 +20,10 @@ namespace ResourceHubLauncher {
         bool download = false;
         string modPath = "";
 
-        ModButton test = new ModButton("mod mod", "Safe", 3, ModButtonStates.Available);
+        ModButton test = new ModButton("mod mod", "Mod Loader", 3, ModButtonStates.Available);
 
         public MainForm() {
             InitializeComponent();
-            //metroLabel1.Parent = metroProgressBar1;
-            //metroLabel1.BackColor = Color.Transparent;
 
             Config.Theme(this);
 
