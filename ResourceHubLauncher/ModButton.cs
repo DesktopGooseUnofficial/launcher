@@ -11,24 +11,17 @@ namespace ResourceHubLauncher {
         Disabled,
         Available
     }
-    enum ModSafety {
-        Inapplicable = -1,
-        Safe = 0,
-        Moderate = 1,
-        Unsafe = 2,
-        Dangerous = 3
-    }
-    class ModButton : Control {
+
+    class ModButton : MetroPanel {
         public ModButton(string _modName, string modCategory, int _modSafety, ModButtonStates _modState) {
-            container = new MetroPanel();
             modName = new MetroLabel();
             modSafety = new MetroLabel();
             modState = new MetroLabel();
-            container.Size = new Size(177, 88);
+            Size = new Size(177, 88);
             modName.Text = _modName;
-            modName.Parent = container;
+            modName.Parent = this;
             modName.BackColor = Color.Transparent;
-            modState.Parent = container;
+            modState.Parent = this;
             modState.BackColor = Color.Transparent;
 
             switch (_modState) {
@@ -52,31 +45,51 @@ namespace ResourceHubLauncher {
                 Color.Gray,
                 Color.Green,
                 Color.Orange,
+                Color.OrangeRed,
                 Color.Red
             };
 
-            modSafety.Text = ((ModSafety)_modSafety).ToString();
-            modSafety.Parent = container;
-            modSafety.BackColor = safety[_modSafety];
+            switch(_modSafety) {
+                case -1:
+                    modSafety.Text = "Inapplicable";
+                    break;
+                case 0:
+                    modSafety.Text = "Safe";
+                    break;
+                case 1:
+                    modSafety.Text = "Medium";
+                    break;
+                case 2:
+                    modSafety.Text = "Unsafe";
+                    break;
+                case 3:
+                    modSafety.Text = "Dangerous";
+                    break;
+                default:
+                    modSafety.Text = "N/A";
+                    break;
+            }
+            modSafety.Parent = this;
+            modSafety.BackColor = safety[_modSafety + 1];
 
-            setLocation(new Point(0, 0));
+            setLocation(new Point(100, 100));
+            BringToFront();
             Controls.AddRange(new Control[] {
-                container,
                 modName,
                 modSafety,
                 modState
             });
             Config.Theme(Controls);
+            Theme = MetroThemeStyle.Light;
         }
 
         public void setLocation(Point newLocation) {
-            container.Location = newLocation;
+            Location = newLocation;
             modName.Location = new Point(newLocation.X + 10, newLocation.Y + 9);
             modState.Location = new Point(newLocation.X + 10, newLocation.Y + 59);
-            modSafety.Location = new Point(newLocation.X + container.Size.Width - modSafety.Size.Width - 10, newLocation.Y + 59);
+            modSafety.Location = new Point(newLocation.X + Size.Width - modSafety.Size.Width - 10, newLocation.Y + 59);
         }
 
-        private MetroPanel container;
         private MetroLabel modName;
         private MetroLabel modSafety;
         private MetroLabel modState;
