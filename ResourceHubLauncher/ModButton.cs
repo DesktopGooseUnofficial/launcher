@@ -1,4 +1,5 @@
 ﻿using MetroFramework.Controls;
+using MetroFramework;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -17,33 +18,35 @@ namespace ResourceHubLauncher {
         Unsafe = 2,
         Dangerous = 3
     }
-    class ModButton {
-        public ModButton(string _modName, int _modSafety, ModButtonStates _modState) {
-            button = new MetroButton();
+    class ModButton : Control {
+        ControlCollection Controls;
+
+        public ModButton(string _modName, string modCategory, int _modSafety, ModButtonStates _modState) {
+            Controls = new ControlCollection(this);
+
+            container = new MetroPanel();
             modName = new MetroLabel();
             modSafety = new MetroLabel();
             modState = new MetroLabel();
-            button.Size = new Size(177, 88);
-            button.Text = "";
-            button.Theme = MetroFramework.MetroThemeStyle.Dark;
-            modName.Theme = MetroFramework.MetroThemeStyle.Dark;
-            modSafety.Theme = MetroFramework.MetroThemeStyle.Dark;
-            modState.Theme = MetroFramework.MetroThemeStyle.Dark;
+            container.Size = new Size(177, 88);
             modName.Text = _modName;
-            modName.Parent = button;
+            modName.Parent = container;
             modName.BackColor = Color.Transparent;
-            modState.Parent = button;
+            modState.Parent = container;
             modState.BackColor = Color.Transparent;
 
             switch (_modState) {
                 case ModButtonStates.Available:
                     modState.Text = "Available";
+                    modState.ForeColor = Color.DodgerBlue;
                     break;
                 case ModButtonStates.Disabled:
                     modState.Text = "Disabled";
+                    modState.ForeColor = Color.Red;
                     break;
                 case ModButtonStates.Installed:
                     modState.Text = "Installed";
+                    modState.ForeColor = Color.Green;
                     break;
                 default:
                     break;
@@ -57,22 +60,27 @@ namespace ResourceHubLauncher {
             };
 
             modSafety.Text = ((ModSafety)_modSafety).ToString();
-            modSafety.Parent = button;
+            modSafety.Parent = container;
             modSafety.BackColor = safety[_modSafety];
 
             setLocation(new Point(0, 0));
+            Controls.AddRange(new Control[] {
+                container,
+                modName,
+                modSafety,
+                modState
+            });
+            Config.Theme(Controls);
         }
 
         public void setLocation(Point newLocation) {
-            button.Location = newLocation;
+            container.Location = newLocation;
             modName.Location = new Point(newLocation.X + 10, newLocation.Y + 9);
             modState.Location = new Point(newLocation.X + 10, newLocation.Y + 59);
-            modSafety.Location = new Point(newLocation.X + button.Size.Width - modSafety.Size.Width - 10, newLocation.Y + 59);
-
-
+            modSafety.Location = new Point(newLocation.X + container.Size.Width - modSafety.Size.Width - 10, newLocation.Y + 59);
         }
 
-        private MetroButton button;
+        private MetroPanel container;
         private MetroLabel modName;
         private MetroLabel modSafety;
         private MetroLabel modState;
