@@ -15,5 +15,9 @@ namespace ResourceHubLauncher {
             InitializeComponent();
             Config.Theme(this);
         }
+
+        private void Loading_Load(object sender, EventArgs e) {
+            Icon = Icon.FromHandle(Properties.Resources.RHLTSmall.GetHicon());
+        }
     }
 }

@@ -54,9 +54,11 @@
             this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.metroButton2 = new MetroFramework.Controls.MetroButton();
+            this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
             this.modListContextMenu.SuspendLayout();
             this.installedModsContextMenu.SuspendLayout();
             this.linksContextMenu.SuspendLayout();
+            this.metroPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // otherMods
@@ -337,11 +339,10 @@
             // 
             // metroButton1
             // 
-            this.metroButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.metroButton1.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.metroButton1.Location = new System.Drawing.Point(458, 441);
+            this.metroButton1.Location = new System.Drawing.Point(2, 26);
             this.metroButton1.Name = "metroButton1";
-            this.metroButton1.Size = new System.Drawing.Size(75, 23);
+            this.metroButton1.Size = new System.Drawing.Size(76, 23);
             this.metroButton1.TabIndex = 30;
             this.metroButton1.Text = "Settings";
             this.metroButton1.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -350,16 +351,31 @@
             // 
             // metroButton2
             // 
-            this.metroButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.metroButton2.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.metroButton2.Location = new System.Drawing.Point(458, 412);
+            this.metroButton2.Location = new System.Drawing.Point(2, 2);
             this.metroButton2.Name = "metroButton2";
-            this.metroButton2.Size = new System.Drawing.Size(75, 23);
+            this.metroButton2.Size = new System.Drawing.Size(76, 23);
             this.metroButton2.TabIndex = 31;
             this.metroButton2.Text = "Links";
             this.metroButton2.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton2.UseSelectable = true;
             this.metroButton2.Click += new System.EventHandler(this.metroButton2_Click_1);
+            // 
+            // metroPanel1
+            // 
+            this.metroPanel1.Controls.Add(this.metroButton2);
+            this.metroPanel1.Controls.Add(this.metroButton1);
+            this.metroPanel1.HorizontalScrollbarBarColor = true;
+            this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroPanel1.HorizontalScrollbarSize = 10;
+            this.metroPanel1.Location = new System.Drawing.Point(453, 413);
+            this.metroPanel1.Name = "metroPanel1";
+            this.metroPanel1.Size = new System.Drawing.Size(80, 51);
+            this.metroPanel1.TabIndex = 32;
+            this.metroPanel1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroPanel1.VerticalScrollbarBarColor = true;
+            this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
+            this.metroPanel1.VerticalScrollbarSize = 10;
             // 
             // MainForm
             // 
@@ -379,8 +395,7 @@
             this.Controls.Add(this.enabledMods);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.otherMods);
-            this.Controls.Add(this.metroButton1);
-            this.Controls.Add(this.metroButton2);
+            this.Controls.Add(this.metroPanel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
@@ -392,6 +407,7 @@
             this.modListContextMenu.ResumeLayout(false);
             this.installedModsContextMenu.ResumeLayout(false);
             this.linksContextMenu.ResumeLayout(false);
+            this.metroPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -424,6 +440,7 @@
         private MetroFramework.Controls.MetroButton metroButton2;
         private System.Windows.Forms.ToolStripMenuItem githubToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem discordToolStripMenuItem;
+        private MetroFramework.Controls.MetroPanel metroPanel1;
     }
 }
 

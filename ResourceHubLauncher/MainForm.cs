@@ -40,6 +40,8 @@ namespace ResourceHubLauncher {
         private void MainForm_Load(object sender, EventArgs e) {
             modPath = Path.Combine(Config.getModPath(), "Assets", "Mods");
 
+            Icon = Icon.FromHandle(Properties.Resources.RHLTSmall.GetHicon());
+
             foreach (JToken ok in results) {
                 foreach (JToken mod in ok) {
                     mods.Add(mod);
@@ -155,9 +157,8 @@ namespace ResourceHubLauncher {
                             return;
                         }
                         modInfo.Size -= new Size(0, 16);
-                        enabledMods.Size -= new Size(0, 16); 
-                        metroButton1.Location = new Point(metroButton1.Location.X, metroButton1.Location.Y - 16);
-                        metroButton2.Location = new Point(metroButton2.Location.X, metroButton2.Location.Y - 16);
+                        enabledMods.Size -= new Size(0, 16);
+                        metroPanel1.Location = new Point(metroPanel1.Location.X, metroPanel1.Location.Y - 16);
                         download = true;
                         wc.DownloadFileAsync(uri, f);
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
@@ -173,8 +174,7 @@ namespace ResourceHubLauncher {
 
                             modInfo.Size += new Size(0, 16);
                             enabledMods.Size += new Size(0, 16);
-                            metroButton1.Location = new Point(metroButton1.Location.X, metroButton1.Location.Y + 16);
-                            metroButton2.Location = new Point(metroButton2.Location.X, metroButton2.Location.Y + 16);
+                            metroPanel1.Location = new Point(metroPanel1.Location.X, metroPanel1.Location.Y + 16);
 
                             if (!enabledMods.Items.Contains(m) && Directory.Exists(filePath)) enabledMods.Items.Add(m);
 
@@ -206,8 +206,7 @@ namespace ResourceHubLauncher {
                         metroProgressBar1.Hide();
                         modInfo.Size += new Size(0, 16);
                         enabledMods.Size += new Size(0, 16);
-                        metroButton1.Location = new Point(metroButton1.Location.X, metroButton1.Location.Y + 16);
-                        metroButton2.Location = new Point(metroButton2.Location.X, metroButton2.Location.Y + 16);
+                        metroPanel1.Location = new Point(metroPanel1.Location.X, metroPanel1.Location.Y + 16);
                         return;
                     }
                 } catch (Exception ex) {
@@ -218,8 +217,7 @@ namespace ResourceHubLauncher {
                     metroProgressBar1.Hide();
                     modInfo.Size += new Size(0, 16);
                     enabledMods.Size += new Size(0, 16);
-                    metroButton1.Location = new Point(metroButton1.Location.X, metroButton1.Location.Y + 16);
-                    metroButton2.Location = new Point(metroButton2.Location.X, metroButton2.Location.Y + 16);
+                    metroPanel1.Location = new Point(metroPanel1.Location.X, metroPanel1.Location.Y + 16);
                     return;
                 }
             }

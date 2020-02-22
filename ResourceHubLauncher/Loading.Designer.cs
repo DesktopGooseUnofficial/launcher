@@ -80,6 +80,7 @@
             this.ShowInTaskbar = false;
             this.Text = "Launcher Updater";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.Load += new System.EventHandler(this.Loading_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

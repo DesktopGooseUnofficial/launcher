@@ -27,14 +27,14 @@ namespace ResourceHubLauncher {
         static void Main(string[] args) {
             Config.Load();
 
+            var handle = GetConsoleWindow();
+
+            if (!_G.dev) ShowWindow(handle, SW_HIDE);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             Loading loading = new Loading();
-
-            var handle = GetConsoleWindow();
-
-            if (!_G.dev) ShowWindow(handle, SW_HIDE);
 
             Console.Title = "ResourceHub Launcher // Developer Console";
 
