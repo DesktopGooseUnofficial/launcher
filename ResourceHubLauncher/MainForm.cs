@@ -24,6 +24,7 @@ namespace ResourceHubLauncher {
 
         public MainForm() {
             InitializeComponent();
+            Controls.Add(test);
 
             Config.Theme(this);
 

@@ -19,11 +19,7 @@ namespace ResourceHubLauncher {
         Dangerous = 3
     }
     class ModButton : Control {
-        ControlCollection Controls;
-
         public ModButton(string _modName, string modCategory, int _modSafety, ModButtonStates _modState) {
-            Controls = new ControlCollection(this);
-
             container = new MetroPanel();
             modName = new MetroLabel();
             modSafety = new MetroLabel();
