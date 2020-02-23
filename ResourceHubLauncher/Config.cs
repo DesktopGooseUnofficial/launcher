@@ -45,7 +45,7 @@ namespace ResourceHubLauncher {
             Check();
             Defaults();
             string data = File.ReadAllText(configFile);
-            foreach(KeyValuePair<string, JToken> option in JObject.Parse(data)) {
+            foreach (KeyValuePair<string, JToken> option in JObject.Parse(data)) {
                 Options[option.Key] = option.Value;
             }
         }
@@ -56,35 +56,39 @@ namespace ResourceHubLauncher {
             File.WriteAllText(configFile, Options.ToString());
         }
 
+        public static void Theme(Control c) {
+            if (c is MetroButton) {
+                ((MetroButton)c).Theme = (MetroThemeStyle)(int)Options["theme"];
+                ((MetroButton)c).Style = (MetroColorStyle)(int)Options["color"];
+            } else if (c is MetroLabel) {
+                ((MetroLabel)c).Theme = (MetroThemeStyle)(int)Options["theme"];
+                ((MetroLabel)c).Style = (MetroColorStyle)(int)Options["color"];
+            } else if (c is MetroCheckBox) {
+                ((MetroCheckBox)c).Theme = (MetroThemeStyle)(int)Options["theme"];
+                ((MetroCheckBox)c).Style = (MetroColorStyle)(int)Options["color"];
+            } else if (c is MetroTextBox) {
+                ((MetroTextBox)c).Theme = (MetroThemeStyle)(int)Options["theme"];
+                ((MetroTextBox)c).Style = (MetroColorStyle)(int)Options["color"];
+            } else if (c is MetroPanel) {
+                ((MetroPanel)c).Theme = (MetroThemeStyle)(int)Options["theme"];
+                ((MetroPanel)c).Style = (MetroColorStyle)(int)Options["color"];
+                Theme(((MetroPanel)c).Controls);
+            } else if (c is MetroTabControl) {
+                ((MetroTabControl)c).Theme = (MetroThemeStyle)(int)Options["theme"];
+                ((MetroTabControl)c).Style = (MetroColorStyle)(int)Options["color"];
+                foreach (TabPage tab in ((MetroTabControl)c).TabPages) {
+                    Theme(tab.Controls);
+                }
+            } else if (c is MetroProgressSpinner) {
+                ((MetroProgressSpinner)c).Theme = (MetroThemeStyle)(int)Options["theme"];
+                ((MetroProgressSpinner)c).Style = (MetroColorStyle)(int)Options["color"];
+            }
+            c.Refresh();
+        }
+
         public static void Theme(ControlCollection controls) {
             foreach (Control c in controls) {
-                if (c is MetroButton) {
-                    ((MetroButton)c).Theme = (MetroThemeStyle)(int)Options["theme"];
-                    ((MetroButton)c).Style = (MetroColorStyle)(int)Options["color"];
-                } else if (c is MetroLabel) {
-                    ((MetroLabel)c).Theme = (MetroThemeStyle)(int)Options["theme"];
-                    ((MetroLabel)c).Style = (MetroColorStyle)(int)Options["color"];
-                } else if (c is MetroCheckBox) {
-                    ((MetroCheckBox)c).Theme = (MetroThemeStyle)(int)Options["theme"];
-                    ((MetroCheckBox)c).Style = (MetroColorStyle)(int)Options["color"];
-                } else if (c is MetroTextBox) {
-                    ((MetroTextBox)c).Theme = (MetroThemeStyle)(int)Options["theme"];
-                    ((MetroTextBox)c).Style = (MetroColorStyle)(int)Options["color"];
-                } else if (c is MetroPanel) {
-                    ((MetroPanel)c).Theme = (MetroThemeStyle)(int)Options["theme"];
-                    ((MetroPanel)c).Style = (MetroColorStyle)(int)Options["color"];
-                    Theme(((MetroPanel)c).Controls);
-                } else if (c is MetroTabControl) {
-                    ((MetroTabControl)c).Theme = (MetroThemeStyle)(int)Options["theme"];
-                    ((MetroTabControl)c).Style = (MetroColorStyle)(int)Options["color"];
-                    foreach (TabPage tab in ((MetroTabControl)c).TabPages) {
-                        Theme(tab.Controls);
-                    }
-                } else if (c is MetroProgressSpinner) {
-                    ((MetroProgressSpinner)c).Theme = (MetroThemeStyle)(int)Options["theme"];
-                    ((MetroProgressSpinner)c).Style = (MetroColorStyle)(int)Options["color"];
-                }
-                c.Refresh();
+                Theme(c);
             }
         }
 
