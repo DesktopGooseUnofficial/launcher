@@ -85,13 +85,23 @@ namespace ResourceHubLauncher {
         private void ModClick(string actualMod) {
             mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
             actualModButton = modsButtons.Find(actualMod);
-            label3.Text = (string)mod["description"];
+            try {
+                label3.Text = (string)mod["description"];
+            }
+            catch (Exception ex) {
+                label3.Text = "Mod description not available";
+            }
+            
         }
 
         private void ModHover(string actualMod, bool hovered) {
             mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
             actualModButton = modsButtons.Find(actualMod);
-            label3.Text = (string)mod["description"];
+            try {
+                label3.Text = (string)mod["description"];
+            } catch (Exception ex) {
+                label3.Text = "Mod description not available";
+            }
         }
 
         private void metroButton6_Click(object sender, EventArgs e) {
