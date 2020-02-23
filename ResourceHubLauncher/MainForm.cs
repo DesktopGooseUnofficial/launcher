@@ -19,21 +19,20 @@ namespace ResourceHubLauncher {
         IList<JToken> mods = new List<JToken>();
         bool download = false;
         string modPath = "";
-        string actualMod = "";
+        JToken mod;
+        ModButton actualModButton;
 
-        ModButton test;
+
+        ModButtonList modsButtons= new ModButtonList();
 
         public MainForm() {
             InitializeComponent();
-            test = new ModButton("mod mod", "Mod Loader", 3, ModButtonStates.Available, actualMod);
             
-            Controls.Add(test);
-            test.BringToFront();
+            
+            
             
             Config.Theme(this);
-            test.Parent = metroPanel2;
-            installedModsContextMenu.CreateControl();
-            test.ContextMenuStrip = installedModsContextMenu;
+            
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
         }
@@ -51,6 +50,13 @@ namespace ResourceHubLauncher {
             foreach (JToken ok in results) {
                 foreach (JToken mod in ok) {
                     mods.Add(mod);
+                    ModButton modB = new ModButton((string)mod["name"], (int)mod["level"], ModButtonStates.Available, ModClick);
+                    Controls.Add(modB);
+                    modB.refreshParent(metroPanel2);
+                    modsButtons.Add(modB);
+                    modB.Parent = metroPanel2;
+                    modB.changeContextMenu(modListContextMenu);
+                    
                     otherMods.Items.Add(mod["name"]);
                 }
             }
@@ -69,11 +75,29 @@ namespace ResourceHubLauncher {
                         continue;
                     }
                 }
-                enabledMods.Items.Add(modName);
+                ModButton foundObj = modsButtons.Find(modName);
+                if(foundObj != null) {
+                    foundObj.InstalledMod = true;
+                    foundObj.changeContextMenu(installedModsContextMenu);
+                } else {
+                    ModButton newMod = new ModButton(modName, 5, ModButtonStates.Installed, ModClick);
+                    Controls.Add(newMod);
+                    newMod.refreshParent(metroPanel2);
+                    modsButtons.Add(newMod);
+                    newMod.Parent = metroPanel2;
+                    newMod.changeContextMenu(installedModsContextMenu);
+                }
+                
+                
             }
         }
 
-        
+        private bool ModClick(string actualMod) {
+             mod = mods.ToList().Find(modd => (string) modd["name"]== actualMod);
+            actualModButton = modsButtons.Find(actualMod);
+            label3.Text = (string)mod["description"];
+            return false;
+        }
         private void metroButton6_Click(object sender, EventArgs e) {
             metroButton6.Enabled = false;
             WebRequest request = WebRequest.Create("http://rhl.my.to/data");
@@ -88,18 +112,51 @@ namespace ResourceHubLauncher {
 
             results = data["mods"].Children().ToList();
 
-            mods.Clear();
-            otherMods.Items.Clear();
+            foreach(Control c in modsButtons.list) Controls.Remove(c);
+            modsButtons.list.Clear();
+
             foreach (JToken ok in results) {
                 foreach (JToken mod in ok) {
                     mods.Add(mod);
+                    ModButton modB = new ModButton((string)mod["name"], (int)mod["level"], ModButtonStates.Available, ModClick);
+                    Controls.Add(modB);
+                    modB.refreshParent(metroPanel2);
+                    modsButtons.Add(modB);
+                    modB.Parent = metroPanel2;
+                    modB.changeContextMenu(modListContextMenu);
+
                     otherMods.Items.Add(mod["name"]);
                 }
             }
 
-            enabledMods.Items.Clear();
-            foreach (string mod in Directory.GetDirectories(modPath)) {
-                enabledMods.Items.Add(mod.Substring(modPath.Length + 1));
+
+            foreach (string pMod in Directory.GetDirectories(modPath)) {
+
+                string modName = pMod.Substring(modPath.Length + 1);
+                string datPath = Path.Combine(modPath, "RHLInfo.json");
+                JToken mod = mods.ToList().Find(m => (string)m["name"] == modName);
+                if (File.Exists(datPath)) {
+                    JObject _data = JObject.Parse(File.ReadAllText(datPath));
+                    if ((string)_data["mod-version"] != (string)mod["mod-version"]) {
+                        if (MsgBox($"{data["name"]} is outdated.\r\nWould you like to download the new version?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                            otherMods.SelectedItem = mod["name"];
+                            installToolStripMenuItem_Click(sender, e);
+                        }
+                        continue;
+                    }
+                }
+                ModButton foundObj = modsButtons.Find(modName);
+                if (foundObj != null) {
+                    foundObj.InstalledMod = true;
+                    foundObj.changeContextMenu(installedModsContextMenu);
+                } else {
+                    ModButton newMod = new ModButton(modName, 5, ModButtonStates.Installed, ModClick);
+                    Controls.Add(newMod);
+                    newMod.refreshParent(metroPanel2);
+                    modsButtons.Add(newMod);
+                    newMod.Parent = metroPanel2;
+                    newMod.changeContextMenu(installedModsContextMenu);
+                }
             }
             metroButton6.Enabled = true;
         }
@@ -121,7 +178,7 @@ namespace ResourceHubLauncher {
         }
 
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
-            JToken mod = mods[otherMods.SelectedIndex];
+             
             string url = (string)mod["url"];
 
             Console.WriteLine($"Downloading {(string)mod["name"]} from {url}");
@@ -158,14 +215,13 @@ namespace ResourceHubLauncher {
                         metroLabel1.Show();
 
                         metroProgressBar1.Value = 0;
-                        if (enabledMods.Items.Contains(m) && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                        if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                             metroLabel1.Hide();
                             Console.WriteLine("Download cancelled by user.");
                             return;
                         }
-                        modInfo.Size -= new Size(0, 16);
-                        enabledMods.Size -= new Size(0, 16);
-                        metroPanel1.Location = new Point(metroPanel1.Location.X, metroPanel1.Location.Y - 16);
+                        
+
                         download = true;
                         wc.DownloadFileAsync(uri, f);
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
@@ -179,13 +235,14 @@ namespace ResourceHubLauncher {
                             metroLabel1.Hide();
                             metroProgressBar1.Hide();
 
-                            modInfo.Size += new Size(0, 16);
-                            enabledMods.Size += new Size(0, 16);
-                            metroPanel1.Location = new Point(metroPanel1.Location.X, metroPanel1.Location.Y + 16);
+                            
 
-                            if (!enabledMods.Items.Contains(m) && Directory.Exists(filePath)) enabledMods.Items.Add(m);
+
+                            if (!actualModButton.InstalledMod && Directory.Exists(filePath)) actualModButton.InstalledMod=true;
 
                             string dataPath = filePath;
+                            actualModButton.InstalledMod=true;
+                            actualModButton.changeContextMenu(installedModsContextMenu);
                             if (!d) {
                                 dataPath = Path.Combine(filePath, (string)mod["name"]);
                                 MsgBox($"This mod is not a DLL and therefore cannot be automatically installed.\r\nPlease manually install {m}.", "Unable to automatically install.", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -211,9 +268,8 @@ namespace ResourceHubLauncher {
                         MsgBox("You already have a download in progress.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         metroLabel1.Hide();
                         metroProgressBar1.Hide();
-                        modInfo.Size += new Size(0, 16);
-                        enabledMods.Size += new Size(0, 16);
-                        metroPanel1.Location = new Point(metroPanel1.Location.X, metroPanel1.Location.Y + 16);
+                        
+
                         return;
                     }
                 } catch (Exception ex) {
@@ -222,16 +278,15 @@ namespace ResourceHubLauncher {
                     MsgBox("The download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     metroLabel1.Hide();
                     metroProgressBar1.Hide();
-                    modInfo.Size += new Size(0, 16);
-                    enabledMods.Size += new Size(0, 16);
-                    metroPanel1.Location = new Point(metroPanel1.Location.X, metroPanel1.Location.Y + 16);
+                    
+
                     return;
                 }
             }
         }
 
         private void resourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
-            JToken mod = mods[otherMods.SelectedIndex];
+            
             try {
                 Process.Start(mod["resourcehub"].ToString());
             } catch (Exception) {
@@ -273,13 +328,11 @@ namespace ResourceHubLauncher {
         private void otherMods_SelectedIndexChanged(object sender, EventArgs e) {
             if (otherMods.SelectedIndex == -1) return;
 
-            JToken mod = mods[otherMods.SelectedIndex];
+            
 
             label3.Text = (string)mod["description"];
 
-            modInfo.Items.Clear();
-            modInfo.Items.Add("Category: " + mod["category"]);
-            modInfo.Items.Add("Rating: " + r2s((int)mod["level"]));
+            
         }
 
         private void metroButton2_Click(object sender, EventArgs e) {
@@ -295,7 +348,7 @@ namespace ResourceHubLauncher {
         }
 
         private void modListContextMenu_Opening(object sender, CancelEventArgs e) {
-            if (otherMods.SelectedIndex == -1) e.Cancel = true;
+            //if (otherMods.SelectedIndex == -1) e.Cancel = true;
         }
 
         private void metroButton4_Click(object sender, EventArgs e) {
@@ -303,17 +356,19 @@ namespace ResourceHubLauncher {
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e) {
-            string mod = enabledMods.SelectedItem.ToString();
-            string path = Path.Combine(modPath, mod);
-            if (MsgBox($"Are you sure you want to uninstall {mod}? This will erase all data in the Mods folder for {mod}!", "Uninstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            string modd = (string)mod["name"];
+            string path = Path.Combine(modPath, modd);
+            if (MsgBox($"Are you sure you want to uninstall {modd}? This will erase all data in the Mods folder for {modd}!", "Uninstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
                 metroButton4_Click(sender, e);
                 try {
                     if (Directory.Exists(path)) Directory.Delete(path, true);
-                    enabledMods.Items.Remove(mod);
-                    
+                    actualModButton.InstalledMod=false;
+                    actualModButton.changeContextMenu(modListContextMenu);
+
+
                 } catch (Exception ex) {
-                    MsgBox($"Error while uninstalling {mod}.\r\nPlease make sure you have Desktop Goose closed.\r\nError: {ex.Message}", "Uninstall error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MsgBox($"Error while uninstalling {modd}.\r\nPlease make sure you have Desktop Goose closed.\r\nError: {ex.Message}", "Uninstall error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 for (int i = 0; i < geese; i++) {
                     RunGoose_Click(sender, e);
@@ -322,13 +377,13 @@ namespace ResourceHubLauncher {
         }
 
         private void openInModsToolStripMenuItem_Click(object sender, EventArgs e) {
-            string mod = enabledMods.SelectedItem.ToString();
-            string path = Path.Combine(modPath, mod);
+            string modd = (string)mod["name"];
+            string path = Path.Combine(modPath, modd);
             Process.Start("explorer.exe", path);
         }
 
         private void installedModsContextMenu_Opening(object sender, CancelEventArgs e) {
-            if (enabledMods.SelectedIndex == -1) e.Cancel = true;
+            //if (enabledMods.SelectedIndex == -1) e.Cancel = true;
         }
 
         private void metroLabel3_Click(object sender, EventArgs e) {

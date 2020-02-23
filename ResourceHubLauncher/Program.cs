@@ -98,7 +98,7 @@ namespace ResourceHubLauncher {
                     }
 
                     Console.WriteLine("Showing main window.");
-
+                    
                     form.ShowDialog();
                 };
             };
