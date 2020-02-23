@@ -71,7 +71,7 @@ namespace ResourceHubLauncher {
                     foundObj.InstalledMod = true;
                     foundObj.changeContextMenu(installedModsContextMenu);
                 } else {
-                    ModButton newMod = new ModButton(modName, 5, ModButtonStates.Installed, ModClick, ModHover);
+                    ModButton newMod = new ModButton(modName, 0, ModButtonStates.Installed, ModClick, ModHover);
                     metroPanel2.Controls.Add(newMod);
                     modsButtons.Add(newMod);
                     newMod.Parent = metroPanel2;
