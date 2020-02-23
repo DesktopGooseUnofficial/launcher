@@ -35,6 +35,9 @@
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.Goose = new System.Windows.Forms.TabPage();
             this.metroPanel3 = new MetroFramework.Controls.MetroPanel();
+            this.Mods = new System.Windows.Forms.TabPage();
+            this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
+            this.allowUnsafe = new MetroFramework.Controls.MetroCheckBox();
             this.Style = new System.Windows.Forms.TabPage();
             this.metroPanel2 = new MetroFramework.Controls.MetroPanel();
             this.colorPicker1 = new System.Windows.Forms.Panel();
@@ -53,17 +56,14 @@
             this.colorPicker9 = new System.Windows.Forms.Panel();
             this.colorPicker8 = new System.Windows.Forms.Panel();
             this.colorPicker7 = new System.Windows.Forms.Panel();
-            this.Mods = new System.Windows.Forms.TabPage();
-            this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
-            this.allowUnsafe = new MetroFramework.Controls.MetroCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.styleManager)).BeginInit();
             this.metroTabControl1.SuspendLayout();
             this.Goose.SuspendLayout();
             this.metroPanel3.SuspendLayout();
-            this.Style.SuspendLayout();
-            this.metroPanel2.SuspendLayout();
             this.Mods.SuspendLayout();
             this.metroPanel1.SuspendLayout();
+            this.Style.SuspendLayout();
+            this.metroPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // styleManager
@@ -226,6 +226,43 @@
             this.metroPanel3.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel3.VerticalScrollbarSize = 10;
             // 
+            // Mods
+            // 
+            this.Mods.Controls.Add(this.metroPanel1);
+            this.Mods.Location = new System.Drawing.Point(4, 38);
+            this.Mods.Name = "Mods";
+            this.Mods.Size = new System.Drawing.Size(646, 317);
+            this.Mods.TabIndex = 3;
+            this.Mods.Text = "Mods";
+            // 
+            // metroPanel1
+            // 
+            this.metroPanel1.Controls.Add(this.allowUnsafe);
+            this.metroPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metroPanel1.HorizontalScrollbarBarColor = true;
+            this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroPanel1.HorizontalScrollbarSize = 10;
+            this.metroPanel1.Location = new System.Drawing.Point(0, 0);
+            this.metroPanel1.Name = "metroPanel1";
+            this.metroPanel1.Size = new System.Drawing.Size(646, 317);
+            this.metroPanel1.TabIndex = 0;
+            this.metroPanel1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroPanel1.VerticalScrollbarBarColor = true;
+            this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
+            this.metroPanel1.VerticalScrollbarSize = 10;
+            // 
+            // allowUnsafe
+            // 
+            this.allowUnsafe.AutoSize = true;
+            this.allowUnsafe.Location = new System.Drawing.Point(8, 8);
+            this.allowUnsafe.Name = "allowUnsafe";
+            this.allowUnsafe.Size = new System.Drawing.Size(125, 15);
+            this.allowUnsafe.TabIndex = 2;
+            this.allowUnsafe.Text = "Allow Unsafe Mods";
+            this.allowUnsafe.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.allowUnsafe.UseSelectable = true;
+            this.allowUnsafe.CheckedChanged += new System.EventHandler(this.metroCheckBox2_CheckedChanged);
+            // 
             // Style
             // 
             this.Style.Controls.Add(this.metroPanel2);
@@ -348,6 +385,7 @@
             this.lightTheme.Text = "Light Theme";
             this.lightTheme.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.lightTheme.UseSelectable = true;
+            this.lightTheme.CheckedChanged += new System.EventHandler(this.lightTheme_CheckedChanged);
             // 
             // colorPicker11
             // 
@@ -399,43 +437,6 @@
             this.colorPicker7.Size = new System.Drawing.Size(32, 32);
             this.colorPicker7.TabIndex = 9;
             // 
-            // Mods
-            // 
-            this.Mods.Controls.Add(this.metroPanel1);
-            this.Mods.Location = new System.Drawing.Point(4, 38);
-            this.Mods.Name = "Mods";
-            this.Mods.Size = new System.Drawing.Size(646, 317);
-            this.Mods.TabIndex = 3;
-            this.Mods.Text = "Mods";
-            // 
-            // metroPanel1
-            // 
-            this.metroPanel1.Controls.Add(this.allowUnsafe);
-            this.metroPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metroPanel1.HorizontalScrollbarBarColor = true;
-            this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel1.HorizontalScrollbarSize = 10;
-            this.metroPanel1.Location = new System.Drawing.Point(0, 0);
-            this.metroPanel1.Name = "metroPanel1";
-            this.metroPanel1.Size = new System.Drawing.Size(646, 317);
-            this.metroPanel1.TabIndex = 0;
-            this.metroPanel1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroPanel1.VerticalScrollbarBarColor = true;
-            this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel1.VerticalScrollbarSize = 10;
-            // 
-            // allowUnsafe
-            // 
-            this.allowUnsafe.AutoSize = true;
-            this.allowUnsafe.Location = new System.Drawing.Point(8, 8);
-            this.allowUnsafe.Name = "allowUnsafe";
-            this.allowUnsafe.Size = new System.Drawing.Size(125, 15);
-            this.allowUnsafe.TabIndex = 2;
-            this.allowUnsafe.Text = "Allow Unsafe Mods";
-            this.allowUnsafe.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.allowUnsafe.UseSelectable = true;
-            this.allowUnsafe.CheckedChanged += new System.EventHandler(this.metroCheckBox2_CheckedChanged);
-            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -454,12 +455,12 @@
             this.metroTabControl1.ResumeLayout(false);
             this.Goose.ResumeLayout(false);
             this.metroPanel3.ResumeLayout(false);
-            this.Style.ResumeLayout(false);
-            this.metroPanel2.ResumeLayout(false);
-            this.metroPanel2.PerformLayout();
             this.Mods.ResumeLayout(false);
             this.metroPanel1.ResumeLayout(false);
             this.metroPanel1.PerformLayout();
+            this.Style.ResumeLayout(false);
+            this.metroPanel2.ResumeLayout(false);
+            this.metroPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }

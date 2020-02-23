@@ -131,7 +131,7 @@ namespace ResourceHubLauncher {
                         stateText = "Enable";
                         break;
                     case ModButtonStates.Available:
-                        stateText = "Install";
+                        stateText = "Install"; 
                         break;
                     default:
                         break;

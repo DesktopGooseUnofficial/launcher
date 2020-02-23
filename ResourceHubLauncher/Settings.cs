@@ -64,7 +64,7 @@ namespace ResourceHubLauncher {
             
         }
 
-        private void metroCheckBox1_CheckedChanged(object sender, EventArgs e) {
+        private void lightTheme_CheckedChanged(object sender, EventArgs e) {
             Config.Save();
             Config.Load();
             Config.Options["color"] = (int)Config.Options["color"];
