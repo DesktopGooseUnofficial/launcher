@@ -88,7 +88,9 @@ namespace ResourceHubLauncher {
 
         private void ModClick(string actualMod) {
             mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
+            
             actualModButton = modsButtons.Find(actualMod);
+
             try {
                 label3.Text = (string)mod["description"];
             }
@@ -100,7 +102,7 @@ namespace ResourceHubLauncher {
 
         private void ModHover(string actualMod, bool hovered) {
             mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
-            actualModButton = modsButtons.Find(actualMod);
+            //actualModButton = modsButtons.Find(actualMod);
             try {
                 label3.Text = (string)mod["description"];
             } catch (Exception ex) {
@@ -153,6 +155,7 @@ namespace ResourceHubLauncher {
                     string n = Path.GetFileName(url);
                     string t = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1);
                     string m = (string)mod["name"];
+
                     bool d = t == "dll";
 
                     string filePath = modPath;
@@ -168,15 +171,19 @@ namespace ResourceHubLauncher {
                         metroLabel1.Show();
 
                         metroProgressBar1.Value = 0;
+
+                        Console.WriteLine(actualModButton == null);
+
+                        
+                        
                         if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                             metroLabel1.Hide();
                             Console.WriteLine("Download cancelled by user.");
                             return;
                         }
-                        
-
                         download = true;
                         wc.DownloadFileAsync(uri, f);
+
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
                             metroProgressBar1.Show();
                             metroProgressBar1.Value = args.ProgressPercentage;
@@ -184,6 +191,7 @@ namespace ResourceHubLauncher {
                             int v = metroLabel1.Text.Length;
                             Console.WriteLine(metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
                         };
+
                         wc.DownloadFileCompleted += (object _sender, AsyncCompletedEventArgs args) => {
                             metroLabel1.Hide();
                             metroProgressBar1.Hide();
@@ -213,6 +221,7 @@ namespace ResourceHubLauncher {
                             
                             download = false;
                         };
+
                     } else {
                         MsgBox("You already have a download in progress.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         metroLabel1.Hide();

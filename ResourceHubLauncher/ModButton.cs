@@ -20,7 +20,7 @@ namespace ResourceHubLauncher {
             { "modState", 0 },
         };
 
-        string modName;
+        public string modName;
         string modSafety;
         Color modSafetyColor;
         string modState;
@@ -180,12 +180,12 @@ namespace ResourceHubLauncher {
         }
 
         public void Remove(string modName) {
-            list.RemoveAt(list.FindIndex(mod => mod.state["modName"] == modName));
+            list.RemoveAt(list.FindIndex(mod => mod.modName == modName));
             RefreshLocation();
         }
 
         public ModButton Find(string modName) {
-            return list.Find(mod => mod.state["modName"] == modName);
+            return list.Find(mod => mod.modName == modName);
         }
         public void setLocation(Point newLocation) {
             Location = newLocation;
