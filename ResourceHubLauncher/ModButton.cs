@@ -181,27 +181,17 @@ namespace ResourceHubLauncher {
 
         public void Remove(string modName) {
             list.RemoveAt(list.FindIndex(mod => mod.modName == modName));
-            RefreshLocation();
+            
+        }
+
+        public void Clear() {
+            latestAddedPos = new Point(0, -88);
+            list.Clear();
         }
 
         public ModButton Find(string modName) {
             return list.Find(mod => mod.modName == modName);
         }
-        public void setLocation(Point newLocation) {
-            Location = newLocation;
-            int actualButton = 0;
-            foreach (ModButton b in list) {
-                b.setLocation(new Point(newLocation.X, newLocation.Y + 88 * actualButton));
-                actualButton++;
-            }
-        }
-
-        public void RefreshLocation() {
-            int actualButton = 0;
-            foreach (ModButton b in list) {
-                b.setLocation(new Point(Location.X, Location.Y + 88 * actualButton));
-                actualButton++;
-            }
-        }
+        
     }
 }

@@ -267,12 +267,12 @@
             this.metroLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel3.AutoSize = true;
             this.metroLabel3.FontSize = MetroFramework.MetroLabelSize.Small;
-            this.metroLabel3.Location = new System.Drawing.Point(804, 70);
+            this.metroLabel3.Location = new System.Drawing.Point(768, 71);
             this.metroLabel3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.metroLabel3.Name = "metroLabel3";
-            this.metroLabel3.Size = new System.Drawing.Size(120, 17);
+            this.metroLabel3.Size = new System.Drawing.Size(156, 17);
             this.metroLabel3.TabIndex = 27;
-            this.metroLabel3.Text = "Launcher version 1.3";
+            this.metroLabel3.Text = "Launcher version 1.3 (DEV)";
             this.metroLabel3.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroLabel3.Click += new System.EventHandler(this.metroLabel3_Click);
             // 
@@ -328,13 +328,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(971, 596);
+            this.Controls.Add(this.metroButton6);
             this.Controls.Add(this.metroPanel2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.metroProgressBar1);
             this.Controls.Add(this.metroLabel3);
-            this.Controls.Add(this.metroButton6);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.otherMods);

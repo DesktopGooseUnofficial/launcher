@@ -45,12 +45,16 @@ namespace ResourceHubLauncher {
                 foreach (JToken mod in ok) {
                     mods.Add(mod);
                     ModButton modB = new ModButton((string)mod["name"], (int)mod["level"], ModButtonStates.Available, ModClick);
+                    
                     Controls.Add(modB);
+                    modB.Visible = false;
                     modsButtons.Add(modB);
+                    
                     modB.Parent = metroPanel2;
                     modB.changeContextMenu(modListContextMenu);
                     
                     otherMods.Items.Add(mod["name"]);
+                    modB.Visible = true;
                 }
             }
 
@@ -111,6 +115,10 @@ namespace ResourceHubLauncher {
         }
 
         private void metroButton6_Click(object sender, EventArgs e) {
+
+            foreach (Control c in modsButtons.list) { c.Parent = null; Controls.Remove(c); }
+            modsButtons.Clear();
+
             metroButton6.Enabled = false;
             MainForm_Load(sender, e);
             metroButton6.Enabled = true;
