@@ -172,7 +172,7 @@ namespace ResourceHubLauncher {
 
                         metroProgressBar1.Value = 0;
 
-                        Console.WriteLine(actualModButton == null);
+                        
 
                         
                         
@@ -200,6 +200,7 @@ namespace ResourceHubLauncher {
                             string dataPath = filePath;
                             actualModButton.InstalledMod=true;
                             actualModButton.changeContextMenu(installedModsContextMenu);
+                            actualModButton.Refresh();
                             if (!d) {
                                 dataPath = Path.Combine(filePath, (string)mod["name"]);
                                 MsgBox($"This mod is not a DLL and therefore cannot be automatically installed.\r\nPlease manually install {m}.", "Unable to automatically install.", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -298,7 +299,7 @@ namespace ResourceHubLauncher {
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e) {
-            string modd = (string)mod["name"];
+            string modd = actualModButton.modName;
             string path = Path.Combine(modPath, modd);
             if (MsgBox($"Are you sure you want to uninstall {modd}? This will erase all data in the Mods folder for {modd}!", "Uninstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
@@ -307,6 +308,7 @@ namespace ResourceHubLauncher {
                     if (Directory.Exists(path)) Directory.Delete(path, true);
                     actualModButton.InstalledMod=false;
                     actualModButton.changeContextMenu(modListContextMenu);
+                    actualModButton.Refresh();
                 } catch (Exception ex) {
                     MsgBox($"Error while uninstalling {modd}.\r\nPlease make sure you have Desktop Goose closed.\r\nError: {ex.Message}", "Uninstall error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
