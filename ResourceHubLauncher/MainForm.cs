@@ -21,10 +21,12 @@ namespace ResourceHubLauncher {
         ModButton actualModButton;
         ModButtonList modsButtons= new ModButtonList();
 
+        
+
         public MainForm() {
             InitializeComponent();
             
-            Config.Theme(this);
+            
             
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
@@ -42,7 +44,7 @@ namespace ResourceHubLauncher {
             foreach (JToken ok in results) {
                 foreach (JToken mod in ok) {
                     mods.Add(mod);
-                    ModButton modB = new ModButton((string)mod["name"], (int)mod["level"], ModButtonStates.Available, ModClick, ModHover);
+                    ModButton modB = new ModButton((string)mod["name"], (int)mod["level"], ModButtonStates.Available, ModClick);
                     Controls.Add(modB);
                     modsButtons.Add(modB);
                     modB.Parent = metroPanel2;
@@ -68,10 +70,11 @@ namespace ResourceHubLauncher {
                 }
                 ModButton foundObj = modsButtons.Find(modName);
                 if(foundObj != null) {
+                    Console.WriteLine("mod found in list!");
                     foundObj.InstalledMod = true;
                     foundObj.changeContextMenu(installedModsContextMenu);
                 } else {
-                    ModButton newMod = new ModButton(modName, 0, ModButtonStates.Installed, ModClick, ModHover);
+                    ModButton newMod = new ModButton(modName, 0, ModButtonStates.Installed, ModClick);
                     metroPanel2.Controls.Add(newMod);
                     modsButtons.Add(newMod);
                     newMod.Parent = metroPanel2;
@@ -80,6 +83,7 @@ namespace ResourceHubLauncher {
                 
                 
             }
+            Config.Theme(this);
         }
 
         private void ModClick(string actualMod) {

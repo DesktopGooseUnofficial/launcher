@@ -13,166 +13,155 @@ namespace ResourceHubLauncher {
     }
 
     class ModButton : MetroPanel {
-        Action<string, bool> hover;
-        Action<string> click;
-
         public Dictionary<string, dynamic> state = new Dictionary<string, dynamic>() {
             { "modName", "" },
             { "modType", "" },
             { "modSafety", 0 },
-            { "modState", ModButtonStates.Available },
-            { "mouseOver", false },
-            { "btnHover", false },
+            { "modState", 0 },
         };
 
-        Color[] safety = {
-            Color.Gray,
-            Color.Green,
-            Color.Orange,
-            Color.OrangeRed,
-            Color.Red
-        };
+        string modName;
+        string modSafety;
+        Color modSafetyColor;
+        string modState;
+        Color modStateColor;
+        protected Font font = new Font("Segoe UI Light", 10f);
 
-        protected Font font = new Font("Segoe UI Light", 8f);
+        Action<string> clickR;
 
-        public ModButton(string _modName, int _modSafety, ModButtonStates _modState, Action<string> click, Action<string, bool> hover) {
+        public ModButton(string _modName, int _modSafety, ModButtonStates _modState, Action<string> clickResult) {
+            
             Size = new Size(177, 88);
-            Config.Theme(this);
-            state["modName"] = _modName;
-            state["modState"] = _modState;
-            state["modSafety"] = _modSafety;
-
-            this.click = click;
-            this.hover = hover;
-
-            Click += (object sender, EventArgs e) => {
-                if(state["btnHover"]) {
-                    click(state["modName"]);
-                    ContextMenuStrip.Show(Cursor.Position);
-                }
-            };
-
-            MouseEnter += (object sender, EventArgs e) => {
-                this.hover(state["modName"], true);
-                state["mouseOver"] = true;
-            };
-
-            MouseLeave += (object sender, EventArgs e) => {
-                this.hover(state["modName"], false);
-                state["mouseOver"] = false;
-            };
-
-            Timer timer = new Timer();
-            timer.Interval = 50;
-            timer.Tick += (object sender, EventArgs e) => {
-                Draw(CreateGraphics());
-            };
-            timer.Start();
-        }
-
-        public void Draw(Graphics g) {
-            g.Clear(BackColor);
-
-            string[] safetyR = {
-                "Inapplicable",
-                "Safe",
-                "Medium",
-                "Unsafe",
-                "Dangerous"
-            };
-
-            Color[] states = {
-                Color.Green,
-                Color.Red,
-                Color.DodgerBlue
-            };
-
-            if (state["mouseOver"] == true) {
-                g.FillRectangle(new SolidBrush(Color.FromArgb(20, 255, 255, 255)), new Rectangle(new Point(0, 0), Size));
+            modName = _modName;
+            BorderStyle = BorderStyle.FixedSingle;
+            switch (_modState) {
+                case ModButtonStates.Available:
+                    modState = "Available";
+                    modStateColor = Color.DodgerBlue;
+                    break;
+                case ModButtonStates.Disabled:
+                    modState = "Disabled";
+                    modStateColor = Color.Red;
+                    break;
+                case ModButtonStates.Installed:
+                    modState = "Installed";
+                    modStateColor = Color.Green;
+                    break;
+                default:
+                    break;
             }
 
-            Color color = Color.FromArgb(200, 200, 200);
-            Brush brush = new SolidBrush(color);
-            Pen pen = new Pen(brush);
-            Point curPos = PointToClient(Cursor.Position);
+            
 
-            g.DrawString(state["modName"], font, brush, 5, 5);
-
-            float h1 = Size.Height;
-            float w1 = Size.Width;
-
-            g.DrawLine(new Pen(new SolidBrush(Color.FromArgb(100, 255, 255, 255))), 0, h1 - 1, w1, h1 - 1);
-
-            {
-                string safetyText = safetyR[state["modSafety"] + 1];
-                Color drawColor = safety[state["modSafety"] + 1];
-                SizeF size = g.MeasureString(safetyText, font);
-
-                g.DrawString(safetyText, font, new SolidBrush(drawColor), 5, h1 - size.Height - 5);
+            switch (_modSafety) {
+                case -1:
+                    modSafety = "Mod Loader";
+                    modSafetyColor = Color.FromArgb(170,170,170);
+                    break;
+                case 0:
+                    modSafety = "Safe";
+                    modSafetyColor = Color.Green;
+                    break;
+                case 1:
+                    modSafety = "Medium";
+                    modSafetyColor = Color.Orange;
+                    break;
+                case 2:
+                    modSafety = "Unsafe";
+                    modSafetyColor = Color.OrangeRed;
+                    break;
+                case 3:
+                    modSafety = "Dangerous";
+                    modSafetyColor = Color.Red;
+                    break;
+                default:
+                    modSafety = "N/A";
+                    modSafetyColor = Color.FromArgb(170, 170, 170);
+                    break;
             }
+            
 
-            {
-                string stateText = ((object)state["modState"]).ToString();
-                SizeF size = g.MeasureString(stateText, font);
 
-                float h2 = size.Height;
-                float w2 = size.Width;
+            setLocation(new Point(0, 0));
+            BringToFront();
 
-                g.DrawString(stateText, font, new SolidBrush(states[(int)state["modState"]]), w1 - w2 - 5, h1 - h2 - 21);
-            }
 
-            {
-                string stateText = "";
-                switch ((ModButtonStates)state["modState"]) {
-                    case ModButtonStates.Installed:
-                        stateText = "Uninstall";
-                        break;
-                    case ModButtonStates.Disabled:
-                        stateText = "Enable";
-                        break;
-                    case ModButtonStates.Available:
-                        stateText = "Install"; 
-                        break;
-                    default:
-                        break;
-                };
-                SizeF size = g.MeasureString(stateText, font);
 
-                float h2 = size.Height;
-                float w2 = size.Width;
 
-                Point pos = new Point((int)Math.Floor(w1 - w2 - 10), (int)Math.Floor(h1 - h2 - 5));
-                size = new SizeF(w2 + 7, h2);
-                Brush b = new SolidBrush(Color.FromArgb(20, 255, 255, 255));
-                if (curPos.X > pos.X && curPos.Y > pos.Y && curPos.X - pos.X < size.Width && curPos.Y - pos.Y < size.Height) {
-                    b = new SolidBrush(Color.FromArgb(60, 255, 255, 255));
-                    state["btnHover"] = true;
-                } else {
-                    state["btnHover"] = false;
-                }
 
-                g.FillRectangle(b, new Rectangle(pos, size.ToSize()));
-                g.DrawRectangle(pen, new Rectangle(pos, size.ToSize()));
-                g.DrawString(stateText, font, brush, w1 - w2 - 6, h1 - h2 - 5);
-            }
 
-            GC.Collect();
+            clickR = clickResult;
+
+            MouseDown += button1_Click;//Why the heck this does not work? (Nothing happens on mouse click)
+
+
+
         }
 
         public void setLocation(Point newLocation) {
             Location = newLocation;
+
         }
 
+        override protected void OnPaint(PaintEventArgs e) {
+            Graphics graph = e.Graphics;
+            base.OnPaint(e);
+            SolidBrush brush = new SolidBrush(Color.FromArgb(170, 170, 170));
+            graph.DrawString(modName, font, brush, new Point(10, 9));
+            brush = new SolidBrush(modStateColor);
+            graph.DrawString(modState, font, brush, new Point(10, 59));
+            brush = new SolidBrush(modSafetyColor);
+            SizeF safetySize= graph.MeasureString(modSafety, font);
+            graph.DrawString(modSafety, font, brush, new Point(Size.Width- ((int)safetySize.Width)-11, 59));
+            GC.Collect();
+        }
+
+
+
         public bool InstalledMod {
-            get { return state["modState"] == ModButtonStates.Installed; }
+            get { return modState == "Installed"; }
             set {
-                state["modState"] = value ? ModButtonStates.Installed : ModButtonStates.Available;
+                if (value) {
+                    modState = "Installed";
+                    modStateColor = Color.Green;
+                } else {
+                    modState = "Available";
+                    modStateColor = Color.DodgerBlue;
+                }
             }
+        }
+
+        public bool EnabledMod {
+            get { return modState == "Installed"; }
+            set {
+                if (value) {
+                    modState = "Installed";
+                    modStateColor = Color.Green;
+                } else {
+                    modState = "Disabled";
+                    modStateColor = Color.Red;
+                }
+            }
+        }
+
+
+
+        private void button1_Click(object sender, System.EventArgs e) {
+            clickR(modName);
+
+            ContextMenuStrip.Show(Cursor.Position);
+
         }
 
         public void changeContextMenu(ContextMenuStrip cMS) {
             ContextMenuStrip = cMS;
+            
+
         }
+
+        
+        
+        
     }
 
     class ModButtonList {
