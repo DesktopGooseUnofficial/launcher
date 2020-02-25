@@ -13,13 +13,6 @@ namespace ResourceHubLauncher {
     }
 
     class ModButton : MetroPanel {
-        public Dictionary<string, dynamic> state = new Dictionary<string, dynamic>() {
-            { "modName", "" },
-            { "modType", "" },
-            { "modSafety", 0 },
-            { "modState", 0 },
-        };
-
         public string modName;
         string modSafety;
         Color modSafetyColor;
@@ -51,11 +44,9 @@ namespace ResourceHubLauncher {
                     break;
             }
 
-            
-
             switch (_modSafety) {
                 case -1:
-                    modSafety = "Mod Loader";
+                    modSafety = "Inapplicable";
                     modSafetyColor = Color.FromArgb(170,170,170);
                     break;
                 case 0:
@@ -80,22 +71,12 @@ namespace ResourceHubLauncher {
                     break;
             }
             
-
-
             setLocation(new Point(0, 0));
             BringToFront();
 
-
-
-
-
-
             clickR = clickResult;
 
-            MouseDown += button1_Click;//Why the heck this does not work? (Nothing happens on mouse click)
-
-
-
+            MouseDown += button1_Click;
         }
 
         public void setLocation(Point newLocation) {
@@ -111,12 +92,10 @@ namespace ResourceHubLauncher {
             brush = new SolidBrush(modStateColor);
             graph.DrawString(modState, font, brush, new Point(10, 59));
             brush = new SolidBrush(modSafetyColor);
-            SizeF safetySize= graph.MeasureString(modSafety, font);
+            SizeF safetySize = graph.MeasureString(modSafety, font);
             graph.DrawString(modSafety, font, brush, new Point(Size.Width- ((int)safetySize.Width)-11, 59));
             GC.Collect();
         }
-
-
 
         public bool InstalledMod {
             get { return modState == "Installed"; }
@@ -144,8 +123,6 @@ namespace ResourceHubLauncher {
             }
         }
 
-
-
         private void button1_Click(object sender, System.EventArgs e) {
             clickR(modName);
 
@@ -155,13 +132,7 @@ namespace ResourceHubLauncher {
 
         public void changeContextMenu(ContextMenuStrip cMS) {
             ContextMenuStrip = cMS;
-            
-
-        }
-
-        
-        
-        
+        }        
     }
 
     class ModButtonList {
