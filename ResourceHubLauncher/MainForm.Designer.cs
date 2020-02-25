@@ -369,7 +369,7 @@
             // 
             this.pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pictureBox2.InitialImage = global::ResourceHubLauncher.Properties.Resources.RHLTSmall;
-            this.pictureBox2.Location = new System.Drawing.Point(69, 187);
+            this.pictureBox2.Location = new System.Drawing.Point(69, 190);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(100, 100);
             this.pictureBox2.TabIndex = 3;
@@ -386,7 +386,7 @@
             this.resizingPanel.HorizontalScrollbarSize = 10;
             this.resizingPanel.Location = new System.Drawing.Point(20, 94);
             this.resizingPanel.Name = "resizingPanel";
-            this.resizingPanel.Size = new System.Drawing.Size(238, 474);
+            this.resizingPanel.Size = new System.Drawing.Size(238, 481);
             this.resizingPanel.TabIndex = 35;
             this.resizingPanel.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.resizingPanel.VerticalScrollbarBarColor = true;
@@ -446,7 +446,7 @@
             this.toolStripMenuItem2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.toolStripMenuItem2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(185, 24);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(130, 24);
             this.toolStripMenuItem2.Text = "Run Goose";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -455,7 +455,7 @@
             this.toolStripMenuItem3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.toolStripMenuItem3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(185, 24);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(130, 24);
             this.toolStripMenuItem3.Text = "Stop Goose";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
@@ -479,6 +479,7 @@
             this.Controls.Add(this.resizingPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MinimumSize = new System.Drawing.Size(971, 596);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(27, 74, 27, 25);
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;

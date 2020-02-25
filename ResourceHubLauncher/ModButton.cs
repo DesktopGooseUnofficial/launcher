@@ -14,17 +14,20 @@ namespace ResourceHubLauncher {
 
     class ModButton : MetroPanel {
         public string modName;
+        Color modNameColor;
         string modSafety;
         Color modSafetyColor;
         string modState;
         Color modStateColor;
+        
         protected Font font = new Font("Segoe UI Light", 10f);
 
         Action<string> clickR;
         Action<string> hoverR;
 
         public ModButton(string _modName, int _modSafety, ModButtonStates _modState, Action<string> clickResult, Action<string> hoverResult) {
-            
+
+            modNameColor = Color.FromArgb(170, 170, 170);
             Size = new Size(177, 88);
             modName = _modName;
             BorderStyle = BorderStyle.FixedSingle;
@@ -80,7 +83,7 @@ namespace ResourceHubLauncher {
 
             MouseDown += button1_Click;
             MouseHover += MouseHover_;
-
+            //BackColorChanged += ColorChanged;
         }
 
         public void setLocation(Point newLocation) {
@@ -91,7 +94,7 @@ namespace ResourceHubLauncher {
         override protected void OnPaint(PaintEventArgs e) {
             Graphics graph = e.Graphics;
             base.OnPaint(e);
-            SolidBrush brush = new SolidBrush(Color.FromArgb(170, 170, 170));
+            SolidBrush brush = new SolidBrush(modNameColor);
             graph.DrawString(modName, font, brush, new Point(10, 9));
             brush = new SolidBrush(modStateColor);
             graph.DrawString(modState, font, brush, new Point(10, 59));
@@ -138,7 +141,39 @@ namespace ResourceHubLauncher {
             hoverR(modName);
         }
 
+        /*private void ColorChanged(object sender, EventArgs e) {
+            if(modSafety== "Inapplicable" || modSafety == "N/A") {
+                Console.WriteLine(BackColor);
+                if (BackColor == Color.FromArgb(17, 17, 17)) {
+                    modSafetyColor = Color.FromArgb(170, 170, 170);
+                } else {
+                    modSafetyColor = Color.FromArgb(17, 17, 17);
+                }
+            }
+        }*/
 
+            public void ThemeChanged(bool lightTheme) {
+            if(modSafetyColor == Color.FromArgb(17, 17, 17) || modSafetyColor == Color.FromArgb(170, 170, 170)) {
+                if (lightTheme) {
+                    modSafetyColor = Color.FromArgb(17, 17, 17);
+                } else {
+                    modSafetyColor = Color.FromArgb(170, 170, 170);
+
+                }
+            }
+                
+
+            if (lightTheme) {
+                
+                modNameColor = Color.FromArgb(17, 17, 17);
+            } else {
+                
+                modNameColor = Color.FromArgb(170, 170, 170);
+            }
+        }
+
+
+        
         public void changeContextMenu(ContextMenuStrip cMS) {
             ContextMenuStrip = cMS;
         }        
@@ -173,5 +208,10 @@ namespace ResourceHubLauncher {
             return list.Find(mod => mod.modName == modName);
         }
         
+        public void ThemeChanged(bool lightTheme) {
+            foreach (ModButton button in list) {
+                button.ThemeChanged(lightTheme);
+            }
+        }
     }
 }

@@ -93,6 +93,7 @@ namespace ResourceHubLauncher {
                 
             }
             Config.Theme(this);
+            modsButtons.ThemeChanged((int)Config.Options["theme"] == 1);
         }
 
         private void changeModDescription() {
@@ -351,6 +352,7 @@ namespace ResourceHubLauncher {
             Hide();
             new Settings().ShowDialog();
             Config.Theme(this);
+            modsButtons.ThemeChanged((int)Config.Options["theme"] == 1);
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
             Show();
