@@ -61,6 +61,11 @@
             this.UtilitiesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disabledModsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.modListContextMenu.SuspendLayout();
             this.installedModsContextMenu.SuspendLayout();
             this.linksContextMenu.SuspendLayout();
@@ -70,6 +75,7 @@
             this.resizingPanel.SuspendLayout();
             this.DownloadPanel.SuspendLayout();
             this.UtilitiesContextMenu.SuspendLayout();
+            this.disabledModsContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // modListContextMenu
@@ -119,11 +125,12 @@
             this.installedModsContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.installedModsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
-            this.openInModsToolStripMenuItem});
+            this.openInModsToolStripMenuItem,
+            this.disableToolStripMenuItem});
             this.installedModsContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.installedModsContextMenu.Name = "modListContextMenu";
             this.installedModsContextMenu.ShowImageMargin = false;
-            this.installedModsContextMenu.Size = new System.Drawing.Size(147, 52);
+            this.installedModsContextMenu.Size = new System.Drawing.Size(147, 76);
             this.installedModsContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.installedModsContextMenu_Opening);
             // 
             // toolStripMenuItem1
@@ -137,7 +144,7 @@
             // 
             this.openInModsToolStripMenuItem.Name = "openInModsToolStripMenuItem";
             this.openInModsToolStripMenuItem.Size = new System.Drawing.Size(146, 24);
-            this.openInModsToolStripMenuItem.Text = "Open in Mods";
+            this.openInModsToolStripMenuItem.Text = "Disable";
             this.openInModsToolStripMenuItem.Click += new System.EventHandler(this.openInModsToolStripMenuItem_Click);
             // 
             // label6
@@ -459,6 +466,49 @@
             this.toolStripMenuItem3.Text = "Stop Goose";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
+            // disableToolStripMenuItem
+            // 
+            this.disableToolStripMenuItem.Name = "disableToolStripMenuItem";
+            this.disableToolStripMenuItem.Size = new System.Drawing.Size(146, 24);
+            this.disableToolStripMenuItem.Text = "Open in Mods";
+            this.disableToolStripMenuItem.Click += new System.EventHandler(this.disableToolStripMenuItem_Click);
+            // 
+            // disabledModsContextMenu
+            // 
+            this.styleExtender.SetApplyMetroTheme(this.disabledModsContextMenu, true);
+            this.disabledModsContextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.disabledModsContextMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.disabledModsContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.disabledModsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem4,
+            this.toolStripMenuItem5,
+            this.toolStripMenuItem6});
+            this.disabledModsContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
+            this.disabledModsContextMenu.Name = "modListContextMenu";
+            this.disabledModsContextMenu.ShowImageMargin = false;
+            this.disabledModsContextMenu.Size = new System.Drawing.Size(186, 104);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(185, 24);
+            this.toolStripMenuItem4.Text = "Uninstall";
+            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(185, 24);
+            this.toolStripMenuItem5.Text = "Enable";
+            this.toolStripMenuItem5.Click += new System.EventHandler(this.toolStripMenuItem5_Click);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(185, 24);
+            this.toolStripMenuItem6.Text = "Open in Mods";
+            this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -504,6 +554,7 @@
             this.DownloadPanel.ResumeLayout(false);
             this.DownloadPanel.PerformLayout();
             this.UtilitiesContextMenu.ResumeLayout(false);
+            this.disabledModsContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -542,6 +593,11 @@
         private System.Windows.Forms.ContextMenuStrip UtilitiesContextMenu;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip disabledModsContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
     }
 }
 

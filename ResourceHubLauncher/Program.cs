@@ -48,7 +48,7 @@ namespace ResourceHubLauncher {
             Console.Title = "ResourceHub Launcher // Developer Console";
             Console.WriteLine("Checking internet connection...");
             if (!CheckForInternetConnection()) {
-                if (MessageBox.Show("Internet Connection Failed", "ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK) {
+                if (MessageBox.Show("Hmm... It doesn't look like you have any internet connection.\nThe ResourceHub Launcher cannot function properly without any internet connection.", "ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK) {
                     return;
                 }
             }
@@ -86,7 +86,7 @@ namespace ResourceHubLauncher {
 
                     if (latest != md5.ToString()) {
                         Console.WriteLine("Launcher is outdated. Prompting user if they want to update.");
-                        if (MetroMessageBox.Show(form, $"Launcher out of date.\nWould you like to update now?\n(MD5 {md5} does not match latest MD5: {latest})", "Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                        if (MetroMessageBox.Show(form, $"This Launcher is out of date.\nWould you like to update it now?\n(For advanced users: MD5 {md5} does not match latest MD5: {latest})", "Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                             Process.Start("https://github.com/DesktopGooseUnofficial/launcher/releases/latest");
                             Environment.Exit(0);
                         }

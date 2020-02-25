@@ -320,6 +320,7 @@ namespace ResourceHubLauncher {
             string path = Path.Combine(modPath, modd);
             if (MsgBox($"Are you sure you want to uninstall {modd}? This will erase all data in the Mods folder for {modd}!", "Uninstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
+                toolStripMenuItem3_Click(sender, e);
                 metroButton4_Click(sender, e);
                 try {
                     if (Directory.Exists(path)) Directory.Delete(path, true);
@@ -336,9 +337,36 @@ namespace ResourceHubLauncher {
         }
 
         private void openInModsToolStripMenuItem_Click(object sender, EventArgs e) {
-            string modd = (string)mod["name"];
+            string modd = actualModButton.modName;
             string path = Path.Combine(modPath, modd);
-            Process.Start("explorer.exe", path);
+
+            path = Path.Combine(path, modd+".dll");
+            string newPath = path + ".RHLdisabled";
+            if (MsgBox($"Are you sure you want to disable {modd}? This will restart goose if enabled!", "Disabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                int geese = Process.GetProcessesByName("GooseDesktop").Count();
+                toolStripMenuItem3_Click(sender, e);
+                metroButton4_Click(sender, e);
+                try {
+                    if (Directory.Exists(path)) {
+                        //FileInfo file = new FileInfo(path);
+                        //file.MoveTo(newPath);
+
+                        File.Copy(path, newPath, true);
+                        File.Delete(path);
+                        //File.Move(path, newPath);
+                        
+                    }
+                    actualModButton.EnabledMod = false;
+                    actualModButton.changeContextMenu(disabledModsContextMenu);
+                    actualModButton.Refresh();
+                } catch (Exception ex) {
+                    MsgBox($"Error while disabling {modd}.\r\nError: {ex.Message}", "Disable error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                for (int i = 0; i < geese; i++) {
+                    RunGoose_Click(sender, e);
+                }
+            }
+
         }
 
         private void installedModsContextMenu_Opening(object sender, CancelEventArgs e) {
@@ -423,6 +451,43 @@ namespace ResourceHubLauncher {
         private void toolStripMenuItem3_Click(object sender, EventArgs e) {
             foreach (Process p in Process.GetProcessesByName("GooseDesktop")) {
                 p.Kill();
+            }
+        }
+
+        private void disableToolStripMenuItem_Click(object sender, EventArgs e) {
+            string modd = (string)mod["name"];
+            string path = Path.Combine(modPath, modd);
+            Process.Start("explorer.exe", path);
+        }
+
+        private void toolStripMenuItem4_Click(object sender, EventArgs e) {
+            toolStripMenuItem1_Click(sender, e);
+        }
+
+        private void toolStripMenuItem6_Click(object sender, EventArgs e) {
+            disableToolStripMenuItem_Click(sender, e);
+        }
+
+        private void toolStripMenuItem5_Click(object sender, EventArgs e) {
+            string modd = actualModButton.modName;
+            string path = Path.Combine(modPath, modd);
+            path = Path.Combine(path, modd + ".dll.RHLdisabled");
+            string newPath = path.Substring(0, path.Length-12);
+            if (MsgBox($"Are you sure you want to enable {modd}? This will restart goose if disabled!", "Enabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                int geese = Process.GetProcessesByName("GooseDesktop").Count();
+                toolStripMenuItem3_Click(sender, e);
+                metroButton4_Click(sender, e);
+                try {
+                    if (Directory.Exists(path)) File.Move(path, newPath);
+                    actualModButton.EnabledMod = true;
+                    actualModButton.changeContextMenu(installedModsContextMenu);
+                    actualModButton.Refresh();
+                } catch (Exception ex) {
+                    MsgBox($"Error while enabling {modd}.\r\nError: {ex.Message}", "Enable error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                for (int i = 0; i < geese; i++) {
+                    RunGoose_Click(sender, e);
+                }
             }
         }
     }
