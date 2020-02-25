@@ -98,7 +98,7 @@ namespace ResourceHubLauncher {
                         Clipboard.SetText(md5.ToString());
 
                     if ((string)Config.Options["gpath"] == "") {
-                        if (MetroMessageBox.Show(form, "Do you want to select it yourself?", "We couldn't find the Goose .exe file.", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                        if (MetroMessageBox.Show(form, "Select it!", "We couldn't find the Goose .exe file.", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK) {
                             using (OpenFileDialog oFileDialog = new OpenFileDialog()) {
                                 oFileDialog.InitialDirectory = @"C:\";
                                 oFileDialog.Filter = "GooseDesktop.exe|GooseDesktop.exe";
@@ -110,6 +110,7 @@ namespace ResourceHubLauncher {
                                 };
                                 oFileDialog.ShowDialog();
                             }
+                            form.Focus();
                         }
                     }
 
