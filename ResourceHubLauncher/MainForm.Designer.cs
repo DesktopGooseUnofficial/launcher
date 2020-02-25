@@ -464,11 +464,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(971, 596);
+            this.Controls.Add(this.RefreshPanel);
             this.Controls.Add(this.metroButton3);
             this.Controls.Add(this.DownloadPanel);
             this.Controls.Add(this.metroButton6);
             this.Controls.Add(this.metroPanel2);
-            this.Controls.Add(this.RefreshPanel);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.metroLabel3);
