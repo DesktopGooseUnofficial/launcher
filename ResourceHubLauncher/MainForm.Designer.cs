@@ -197,7 +197,7 @@
             this.label3.Margin = new System.Windows.Forms.Padding(4);
             this.label3.Name = "label3";
             this.label3.ReadOnly = true;
-            this.label3.Size = new System.Drawing.Size(683, 470);
+            this.label3.Size = new System.Drawing.Size(683, 481);
             this.label3.TabIndex = 28;
             this.label3.Text = "Hover or click on the mod button (in list on the left) to see mod description and" +
     " options!";
@@ -312,7 +312,7 @@
             this.metroPanel2.Location = new System.Drawing.Point(20, 94);
             this.metroPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.metroPanel2.Name = "metroPanel2";
-            this.metroPanel2.Size = new System.Drawing.Size(238, 475);
+            this.metroPanel2.Size = new System.Drawing.Size(238, 481);
             this.metroPanel2.TabIndex = 33;
             this.metroPanel2.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroPanel2.VerticalScrollbar = true;
