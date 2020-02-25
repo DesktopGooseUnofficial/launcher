@@ -95,9 +95,9 @@ namespace ResourceHubLauncher {
             Config.Theme(this);
         }
 
-        private void changeModDescription(string newModDescription) {
+        private void changeModDescription() {
             try {
-                label3.Text = newModDescription;
+                label3.Text = (string)mod["description"];
             } catch (Exception ex) {
                 label3.Text = "Mod description not available";
             }
@@ -108,7 +108,7 @@ namespace ResourceHubLauncher {
             mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
             
             actualModButton = modsButtons.Find(actualMod);
-            changeModDescription((string)mod["description"]);
+            changeModDescription();
             
             
         }
@@ -116,7 +116,7 @@ namespace ResourceHubLauncher {
         private void ModHover(string actualMod) {
             mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
             //actualModButton = modsButtons.Find(actualMod);
-            changeModDescription((string)mod["description"]);
+            changeModDescription();
         }
 
         private void metroButton6_Click(object sender, EventArgs e) {
