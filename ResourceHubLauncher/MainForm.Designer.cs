@@ -66,6 +66,7 @@
             this.resizingPanel = new MetroFramework.Controls.MetroPanel();
             this.DownloadPanel = new MetroFramework.Controls.MetroPanel();
             this.metroButton3 = new MetroFramework.Controls.MetroButton();
+            this.twitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modListContextMenu.SuspendLayout();
             this.installedModsContextMenu.SuspendLayout();
             this.linksContextMenu.SuspendLayout();
@@ -178,19 +179,20 @@
             this.linksContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.linksContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.githubToolStripMenuItem,
-            this.discordToolStripMenuItem});
+            this.discordToolStripMenuItem,
+            this.twitterToolStripMenuItem});
             this.linksContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.linksContextMenu.Name = "modListContextMenu";
             this.linksContextMenu.ShowImageMargin = false;
-            this.linksContextMenu.Size = new System.Drawing.Size(90, 48);
+            this.linksContextMenu.Size = new System.Drawing.Size(156, 92);
             // 
             // githubToolStripMenuItem
             // 
             this.githubToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.githubToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.githubToolStripMenuItem.Name = "githubToolStripMenuItem";
-            this.githubToolStripMenuItem.Size = new System.Drawing.Size(89, 22);
-            this.githubToolStripMenuItem.Text = "Github";
+            this.githubToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.githubToolStripMenuItem.Text = "GitHub";
             this.githubToolStripMenuItem.Click += new System.EventHandler(this.githubToolStripMenuItem_Click_1);
             // 
             // discordToolStripMenuItem
@@ -198,7 +200,7 @@
             this.discordToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.discordToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.discordToolStripMenuItem.Name = "discordToolStripMenuItem";
-            this.discordToolStripMenuItem.Size = new System.Drawing.Size(89, 22);
+            this.discordToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.discordToolStripMenuItem.Text = "Discord";
             this.discordToolStripMenuItem.Click += new System.EventHandler(this.discordToolStripMenuItem_Click_1);
             // 
@@ -506,6 +508,13 @@
             this.metroButton3.UseSelectable = true;
             this.metroButton3.Click += new System.EventHandler(this.metroButton3_Click);
             // 
+            // twitterToolStripMenuItem
+            // 
+            this.twitterToolStripMenuItem.Name = "twitterToolStripMenuItem";
+            this.twitterToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.twitterToolStripMenuItem.Text = "Twitter";
+            this.twitterToolStripMenuItem.Click += new System.EventHandler(this.twitterToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -594,6 +603,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem twitterToolStripMenuItem;
     }
 }
 

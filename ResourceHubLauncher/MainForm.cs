@@ -403,6 +403,12 @@ namespace ResourceHubLauncher {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher");
             }
         }
+        private void twitterToolStripMenuItem_Click(object sender, EventArgs e) {
+            if(MsgBox("This will open a twitter.com link to our Twitter account. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Process.Start("https://twitter.com/dg_resource");
+            }
+        }
+
         //to remove
         private void MainForm_Resize(object sender, EventArgs e) {
             
