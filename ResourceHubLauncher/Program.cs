@@ -87,7 +87,7 @@ namespace ResourceHubLauncher {
                     if (latest != md5.ToString()) {
                         Console.WriteLine("Launcher is outdated. Prompting user if they want to update.");
                         if (MetroMessageBox.Show(form, $"Launcher out of date.\nWould you like to update now?\n(MD5 {md5} does not match latest MD5: {latest})", "Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
-                            Process.Start("https://github.com/DesktopGooseUnofficial/launcher/releases");
+                            Process.Start("https://github.com/DesktopGooseUnofficial/launcher/releases/latest");
                             Environment.Exit(0);
                         }
                     } else {
