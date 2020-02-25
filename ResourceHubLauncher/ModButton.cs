@@ -21,8 +21,9 @@ namespace ResourceHubLauncher {
         protected Font font = new Font("Segoe UI Light", 10f);
 
         Action<string> clickR;
+        Action<string> hoverR;
 
-        public ModButton(string _modName, int _modSafety, ModButtonStates _modState, Action<string> clickResult) {
+        public ModButton(string _modName, int _modSafety, ModButtonStates _modState, Action<string> clickResult, Action<string> hoverResult) {
             
             Size = new Size(177, 88);
             modName = _modName;
@@ -75,8 +76,11 @@ namespace ResourceHubLauncher {
             BringToFront();
 
             clickR = clickResult;
+            hoverR = hoverResult;
 
             MouseDown += button1_Click;
+            MouseHover += MouseHover_;
+
         }
 
         public void setLocation(Point newLocation) {
@@ -129,6 +133,11 @@ namespace ResourceHubLauncher {
             ContextMenuStrip.Show(Cursor.Position);
 
         }
+
+        private void MouseHover_(object sender, System.EventArgs e) {
+            hoverR(modName);
+        }
+
 
         public void changeContextMenu(ContextMenuStrip cMS) {
             ContextMenuStrip = cMS;

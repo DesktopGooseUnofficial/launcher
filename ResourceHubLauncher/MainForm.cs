@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Threading;
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
@@ -21,22 +22,27 @@ namespace ResourceHubLauncher {
         ModButton actualModButton;
         ModButtonList modsButtons= new ModButtonList();
 
-        
+        //TODO Issue Images in PictureBoxes are not shown
+        //TODO Show Mod Descripion on hover
+
 
         public MainForm() {
             InitializeComponent();
-            
-            
-            
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
+
         }
 
         private DialogResult MsgBox(object text, string title = "ResourceHub Launcher", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) {
             return MetroMessageBox.Show(this, text.ToString(), title, buttons, icon, defaultButton);
         }
 
+        
         private void MainForm_Load(object sender, EventArgs e) {
+            RefreshPanel.Location = new Point(0, 0);
+            resizingPanel.BringToFront();
+            resizingPanel.Hide();
+
             modPath = Path.Combine(Config.getModPath(), "Assets", "Mods");
 
             Icon = Icon.FromHandle(Properties.Resources.RHLTSmall.GetHicon());
@@ -44,7 +50,7 @@ namespace ResourceHubLauncher {
             foreach (JToken ok in results) {
                 foreach (JToken mod in ok) {
                     mods.Add(mod);
-                    ModButton modB = new ModButton((string)mod["name"], (int)mod["level"], ModButtonStates.Available, ModClick);
+                    ModButton modB = new ModButton((string)mod["name"], (int)mod["level"], ModButtonStates.Available, ModClick,ModHover);
                     
                     Controls.Add(modB);
                     modB.Visible = false;
@@ -53,7 +59,7 @@ namespace ResourceHubLauncher {
                     modB.Parent = metroPanel2;
                     modB.changeContextMenu(modListContextMenu);
                     
-                    otherMods.Items.Add(mod["name"]);
+
                     modB.Visible = true;
                 }
             }
@@ -66,7 +72,7 @@ namespace ResourceHubLauncher {
                     JObject data = JObject.Parse(File.ReadAllText(datPath));
                     if ((string)data["mod-version"] != (string)mod["mod-version"]) {
                         if (MsgBox($"{data["name"]} is outdated.\r\nWould you like to download the new version?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
-                            otherMods.SelectedItem = mod["name"];
+
                             installToolStripMenuItem_Click(sender, e);
                         }
                         continue;
@@ -78,7 +84,7 @@ namespace ResourceHubLauncher {
                     foundObj.InstalledMod = true;
                     foundObj.changeContextMenu(installedModsContextMenu);
                 } else {
-                    ModButton newMod = new ModButton(modName, 0, ModButtonStates.Installed, ModClick);
+                    ModButton newMod = new ModButton(modName, 0, ModButtonStates.Installed, ModClick, ModHover);
                     metroPanel2.Controls.Add(newMod);
                     modsButtons.Add(newMod);
                     newMod.Parent = metroPanel2;
@@ -90,38 +96,40 @@ namespace ResourceHubLauncher {
             Config.Theme(this);
         }
 
-        private void ModClick(string actualMod) {
-            mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
-            
-            actualModButton = modsButtons.Find(actualMod);
-
+        private void changeModDescription(string newModDescription) {
             try {
-                label3.Text = (string)mod["description"];
-            }
-            catch (Exception ex) {
-                label3.Text = "Mod description not available";
-            }
-            
-        }
-
-        private void ModHover(string actualMod, bool hovered) {
-            mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
-            //actualModButton = modsButtons.Find(actualMod);
-            try {
-                label3.Text = (string)mod["description"];
+                label3.Text = newModDescription;
             } catch (Exception ex) {
                 label3.Text = "Mod description not available";
             }
         }
 
+        //DO NOT DELETE!
+        private void ModClick(string actualMod) {
+            mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
+            
+            actualModButton = modsButtons.Find(actualMod);
+            changeModDescription((string)mod["description"]);
+            
+            
+        }
+
+        private void ModHover(string actualMod) {
+            mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
+            //actualModButton = modsButtons.Find(actualMod);
+            changeModDescription((string)mod["description"]);
+        }
+
         private void metroButton6_Click(object sender, EventArgs e) {
 
-            foreach (Control c in modsButtons.list) { c.Parent = null; Controls.Remove(c); }
+            RefreshPanel.Visible = true;
+            foreach (Control c in modsButtons.list) { Controls.Remove(c); }
             modsButtons.Clear();
 
             metroButton6.Enabled = false;
             MainForm_Load(sender, e);
             metroButton6.Enabled = true;
+            RefreshPanel.Visible = false;
         }
 
         private string ReadableBytes(double len) {
@@ -138,6 +146,10 @@ namespace ResourceHubLauncher {
         private bool Log(string str) {
             Console.WriteLine(str);
             return true;
+        }
+
+        private void CenterDownloadText() {
+            metroLabel1.Location= new Point(((DownloadPanel.Size.Width - metroLabel1.Size.Width) / 2), metroLabel1.Location.Y);
         }
 
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -176,16 +188,13 @@ namespace ResourceHubLauncher {
                         string format = "Installing {0} ({1}/{2})";
 
                         metroLabel1.Text = $"Preparing to install {(string)mod["name"]}";
-                        metroLabel1.Show();
+                        CenterDownloadText();
+                        DownloadPanel.Show();
 
                         metroProgressBar1.Value = 0;
 
-                        
-
-                        
-                        
                         if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
-                            metroLabel1.Hide();
+                            DownloadPanel.Hide();
                             Console.WriteLine("Download cancelled by user.");
                             return;
                         }
@@ -193,16 +202,16 @@ namespace ResourceHubLauncher {
                         wc.DownloadFileAsync(uri, f);
 
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
-                            metroProgressBar1.Show();
+                            
                             metroProgressBar1.Value = args.ProgressPercentage;
                             metroLabel1.Text = string.Format(format, m, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
                             int v = metroLabel1.Text.Length;
                             Console.WriteLine(metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
+                            CenterDownloadText();
                         };
 
                         wc.DownloadFileCompleted += (object _sender, AsyncCompletedEventArgs args) => {
-                            metroLabel1.Hide();
-                            metroProgressBar1.Hide();
+                            DownloadPanel.Hide();
                             if (!actualModButton.InstalledMod && Directory.Exists(filePath)) actualModButton.InstalledMod=true;
 
                             string dataPath = filePath;
@@ -211,6 +220,7 @@ namespace ResourceHubLauncher {
                             actualModButton.Refresh();
                             if (!d) {
                                 dataPath = Path.Combine(filePath, (string)mod["name"]);
+                                // TODO Add support for extracting ZIP files
                                 MsgBox($"This mod is not a DLL and therefore cannot be automatically installed.\r\nPlease manually install {m}.", "Unable to automatically install.", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                                 if (MsgBox("Should we open Explorer for you? (where we put the file, of course)", "One thing...", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
@@ -233,16 +243,14 @@ namespace ResourceHubLauncher {
 
                     } else {
                         MsgBox("You already have a download in progress.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        metroLabel1.Hide();
-                        metroProgressBar1.Hide();
+                        DownloadPanel.Hide();
                         return;
                     }
                 } catch (Exception ex) {
                     Console.WriteLine($"Could not download {(string)mod["name"]}: {ex.Message}");
                     download = false;
                     MsgBox("The download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    metroLabel1.Hide();
-                    metroProgressBar1.Hide();
+                    DownloadPanel.Hide();
                     return;
                 }
             }
@@ -268,7 +276,7 @@ namespace ResourceHubLauncher {
         }
 
         private void RunGoose_Click(object sender, EventArgs e) {
-            
+            //TODO Change label to Start Geese on click (or if goosedesktop.exe is found running), change back to Start Goose on Stop Goose click
         }
 
         private string r2s(int level) {
@@ -289,7 +297,7 @@ namespace ResourceHubLauncher {
         }
 
         private void otherMods_SelectedIndexChanged(object sender, EventArgs e) {
-            if (otherMods.SelectedIndex == -1) return;
+
 
             
 
@@ -363,6 +371,56 @@ namespace ResourceHubLauncher {
         private void githubToolStripMenuItem_Click_1(object sender, EventArgs e) {
             if (MsgBox("This will open a github.com link to our GitHub repo. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher");
+            }
+        }
+        //to remove
+        private void MainForm_Resize(object sender, EventArgs e) {
+            
+
+        }
+        //to remove
+        private void metroPanel2_SizeChanged(object sender, EventArgs e) {
+
+        }
+        //to remove
+        private void MainForm_SizeChanged(object sender, EventArgs e) {
+            
+        }
+        //to remove
+        private void listBox1_MouseUp(object sender, MouseEventArgs e) {
+
+        }
+        //to remove
+        private void MainForm_MouseUp(object sender, MouseEventArgs e) {
+
+            
+        }
+        //to remove
+        private void MainForm_DragDrop(object sender, DragEventArgs e) {
+            
+        }
+
+        private void MainForm_ResizeBegin(object sender, EventArgs e) {
+            resizingPanel.Show();
+
+        }
+
+        private void MainForm_ResizeEnd(object sender, EventArgs e) {
+            resizingPanel.Hide();
+
+        }
+
+        private void metroButton3_Click(object sender, EventArgs e) {
+            UtilitiesContextMenu.Show(Cursor.Position);
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e) {
+            Process.Start(Path.Combine(Config.getModPath(), Path.GetFileName((string)Config.Options["gpath"])));
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e) {
+            foreach (Process p in Process.GetProcessesByName("GooseDesktop")) {
+                p.Kill();
             }
         }
     }
