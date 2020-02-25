@@ -23,7 +23,7 @@ namespace ResourceHubLauncher {
         ModButtonList modsButtons= new ModButtonList();
 
         //TODO Issue Images in PictureBoxes are not shown
-
+        //TODO Issue ModButtons theme changing is not working properly after refresh
 
         public MainForm() {
             InitializeComponent();
@@ -128,6 +128,7 @@ namespace ResourceHubLauncher {
 
             metroButton6.Enabled = false;
             MainForm_Load(sender, e);
+            
             metroButton6.Enabled = true;
             RefreshPanel.Visible = false;
         }
