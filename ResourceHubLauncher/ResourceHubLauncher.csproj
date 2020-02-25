@@ -38,6 +38,9 @@
   <PropertyGroup>
     <StartupObject>ResourceHubLauncher.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>RHLTSmall.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
@@ -137,6 +140,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RHLTSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\RHLTSmall.ico" />
+    <Content Include="RHLTSmall.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.1.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.1.0\build\Fody.targets')" />

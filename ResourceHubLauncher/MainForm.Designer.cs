@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.modListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.installToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resourceHubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -476,6 +477,7 @@
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.metroButton2);
             this.Controls.Add(this.resizingPanel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(27, 74, 27, 25);
