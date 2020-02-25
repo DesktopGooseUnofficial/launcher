@@ -23,7 +23,6 @@ namespace ResourceHubLauncher {
         ModButtonList modsButtons= new ModButtonList();
 
         //TODO Issue Images in PictureBoxes are not shown
-        //TODO Show Mod Descripion on hover
 
 
         public MainForm() {
