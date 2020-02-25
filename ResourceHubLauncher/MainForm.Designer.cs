@@ -197,7 +197,7 @@
             this.label3.Margin = new System.Windows.Forms.Padding(4);
             this.label3.Name = "label3";
             this.label3.ReadOnly = true;
-            this.label3.Size = new System.Drawing.Size(683, 481);
+            this.label3.Size = new System.Drawing.Size(683, 479);
             this.label3.TabIndex = 28;
             this.label3.Text = "Hover or click on the mod button (in list on the left) to see mod description and" +
     " options!";
@@ -218,7 +218,7 @@
             this.listBox1.Location = new System.Drawing.Point(264, 94);
             this.listBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(685, 475);
+            this.listBox1.Size = new System.Drawing.Size(685, 481);
             this.listBox1.TabIndex = 29;
             this.listBox1.TabStop = false;
             this.listBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseUp);
