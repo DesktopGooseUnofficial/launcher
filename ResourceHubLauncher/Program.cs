@@ -34,11 +34,10 @@ namespace ResourceHubLauncher {
 
         public static void RestartForm(MainForm form) {
             form.Hide();
+            form.Dispose();
             form.Close();
+            Application.Restart();
 
-            Loading loading = new Loading();
-
-            Start(loading);
         }
             
         public static void Start(Loading loading) {

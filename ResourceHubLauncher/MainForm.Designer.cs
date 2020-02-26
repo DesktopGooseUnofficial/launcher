@@ -182,7 +182,7 @@
             this.linksContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.linksContextMenu.Name = "modListContextMenu";
             this.linksContextMenu.ShowImageMargin = false;
-            this.linksContextMenu.Size = new System.Drawing.Size(208, 128);
+            this.linksContextMenu.Size = new System.Drawing.Size(182, 100);
             // 
             // githubToolStripMenuItem
             // 
@@ -496,8 +496,8 @@
             // futureOfTheLauncherToolStripMenuItem
             // 
             this.futureOfTheLauncherToolStripMenuItem.Name = "futureOfTheLauncherToolStripMenuItem";
-            this.futureOfTheLauncherToolStripMenuItem.Size = new System.Drawing.Size(207, 24);
-            this.futureOfTheLauncherToolStripMenuItem.Text = "Future Of This Launcher";
+            this.futureOfTheLauncherToolStripMenuItem.Size = new System.Drawing.Size(181, 24);
+            this.futureOfTheLauncherToolStripMenuItem.Text = "Upcoming Features";
             this.futureOfTheLauncherToolStripMenuItem.Click += new System.EventHandler(this.futureOfTheLauncherToolStripMenuItem_Click);
             // 
             // MainForm
