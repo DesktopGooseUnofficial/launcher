@@ -32,28 +32,16 @@ namespace ResourceHubLauncher {
             }
         }
 
-        [STAThread]
-        static void Main(string[] args) {
-            Config.Load();
-
-            var handle = GetConsoleWindow();
-
-            if (!_G.dev) ShowWindow(handle, SW_HIDE);
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+        public static void RestartForm(MainForm form) {
+            form.Hide();
+            form.Close();
 
             Loading loading = new Loading();
 
-            Console.Title = "ResourceHub Launcher // Developer Console";
-            Console.WriteLine("Checking internet connection...");
-            if (!CheckForInternetConnection()) {
-                if (MessageBox.Show("Hmm... It doesn't look like you have any internet connection.\nThe ResourceHub Launcher cannot function properly without any internet connection.", "ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK) {
-                    return;
-                }
-            }
-
-            Console.WriteLine("Getting latest data...");
+            Start(loading);
+        }
+            
+        public static void Start(Loading loading) {
             Uri dat = new Uri("http://rhl.my.to/data");
             using (WebClient wc = new WebClient()) {
 
@@ -68,7 +56,14 @@ namespace ResourceHubLauncher {
 
                     string latest = data["app"]["md5"].ToString();
 
-                    MainForm form = new MainForm();
+                    MainForm form = new MainForm(RestartForm);
+
+                    
+
+
+
+
+
                     form.results = data["mods"].Children().ToList();
 
                     byte[] hash = MD5.Create().ComputeHash(File.ReadAllBytes(Application.ExecutablePath));
@@ -121,9 +116,31 @@ namespace ResourceHubLauncher {
             };
 
             loading.ShowDialog();
+        }
 
+        [STAThread]
+        static void Main(string[] args) {
+            Config.Load();
 
+            var handle = GetConsoleWindow();
 
+            if (!_G.dev) ShowWindow(handle, SW_HIDE);
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            Loading loading = new Loading();
+
+            Console.Title = "ResourceHub Launcher // Developer Console";
+            Console.WriteLine("Checking internet connection...");
+            if (!CheckForInternetConnection()) {
+                if (MessageBox.Show("Hmm... It doesn't look like you have any internet connection.\nThe ResourceHub Launcher cannot function properly without any internet connection.", "ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK) {
+                    return;
+                }
+            }
+
+            Console.WriteLine("Getting latest data...");
+            Start(loading);
         }
     }
 }

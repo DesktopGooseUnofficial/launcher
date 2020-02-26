@@ -21,6 +21,8 @@ namespace ResourceHubLauncher {
         JToken mod;
         ModButton actualModButton;
         ModButtonList modsButtons= new ModButtonList();
+        bool closedSpecially = false;
+        Action<MainForm> restartForm;
 
         //TODO Issue Images in PictureBoxes are not shown
         //TODO Issue ModButtons theme changing is not working properly after refresh
@@ -32,13 +34,19 @@ namespace ResourceHubLauncher {
 
         }
 
+        public MainForm(Action<MainForm> restartForm_) {
+            InitializeComponent();
+            styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
+            styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
+            restartForm = restartForm_;
+        }
+
         private DialogResult MsgBox(object text, string title = "ResourceHub Launcher", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) {
             return MetroMessageBox.Show(this, text.ToString(), title, buttons, icon, defaultButton);
         }
 
         
         private void MainForm_Load(object sender, EventArgs e) {
-            RefreshPanel.Location = new Point(0, 0);
             resizingPanel.BringToFront();
             resizingPanel.Hide();
 
@@ -80,20 +88,35 @@ namespace ResourceHubLauncher {
                 ModButton foundObj = modsButtons.Find(modName);
                 if(foundObj != null) {
                     Console.WriteLine("mod found in list!");
-                    foundObj.InstalledMod = true;
-                    foundObj.changeContextMenu(installedModsContextMenu);
+                    if(File.Exists(Path.Combine( pMod, modName+".dll.RHLdisabled"))) {
+                        foundObj.EnabledMod = false;
+                        foundObj.changeContextMenu(disabledModsContextMenu);
+                    } else {
+                        foundObj.InstalledMod = true;
+                        foundObj.changeContextMenu(installedModsContextMenu);
+                    }
+                    
+                    
                 } else {
-                    ModButton newMod = new ModButton(modName, 0, ModButtonStates.Installed, ModClick, ModHover);
+                    ModButtonStates statee = File.Exists(Path.Combine(pMod, modName + ".dll.RHLdisabled")) ? ModButtonStates.Disabled : ModButtonStates.Installed;
+                    ModButton newMod = new ModButton(modName, 0, statee, ModClick, ModHover);
                     metroPanel2.Controls.Add(newMod);
                     modsButtons.Add(newMod);
                     newMod.Parent = metroPanel2;
-                    newMod.changeContextMenu(installedModsContextMenu);
+                    if(statee== ModButtonStates.Installed) {
+                        newMod.changeContextMenu(installedModsContextMenu);
+                    } else {
+                        foundObj.changeContextMenu(disabledModsContextMenu);
+                    }
                 }
                 
                 
             }
             Config.Theme(this);
             modsButtons.ThemeChanged((int)Config.Options["theme"] == 1);
+
+            pictureBox2.Image = Properties.Resources.RHLTSmall;
+
         }
 
         private void changeModDescription() {
@@ -104,7 +127,7 @@ namespace ResourceHubLauncher {
             }
         }
 
-        //DO NOT DELETE!
+        
         private void ModClick(string actualMod) {
             mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
             
@@ -121,16 +144,9 @@ namespace ResourceHubLauncher {
         }
 
         private void metroButton6_Click(object sender, EventArgs e) {
-
-            RefreshPanel.Visible = true;
-            foreach (Control c in modsButtons.list) { Controls.Remove(c); }
-            modsButtons.Clear();
-
-            metroButton6.Enabled = false;
-            MainForm_Load(sender, e);
-            
-            metroButton6.Enabled = true;
-            RefreshPanel.Visible = false;
+            Console.WriteLine("Restarting Form...");
+            closedSpecially = true;
+            restartForm(this);
         }
 
         private string ReadableBytes(double len) {
@@ -267,7 +283,10 @@ namespace ResourceHubLauncher {
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
-            e.Cancel = MsgBox("Are you sure you want to close ResourceHub Launcher?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes;
+            if(!closedSpecially) {
+                e.Cancel = MsgBox("Are you sure you want to close ResourceHub Launcher?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes;
+            }
+            
         }
 
         private void ResourceHubPage_Click(object sender, EventArgs e) {
@@ -336,26 +355,43 @@ namespace ResourceHubLauncher {
             }
         }
 
+        private void toolStripMenuItem5_Click(object sender, EventArgs e) {
+            string modd = actualModButton.modName;
+            string path = Path.Combine(modPath, modd);
+            path = Path.Combine(path, modd + ".dll.RHLdisabled");
+            string newPath = path.Substring(0, path.Length - 12);
+            Console.WriteLine($"Now enabling {modd}, new path will be {newPath}");
+            if(MsgBox($"Are you sure you want to enable {modd}? This will restart goose if disabled!", "Enabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                int geese = Process.GetProcessesByName("GooseDesktop").Count();
+                toolStripMenuItem3_Click(sender, e);
+                metroButton4_Click(sender, e);
+                try {
+                    if (File.Exists(path)) File.Move(path, newPath);
+                    actualModButton.EnabledMod = true;
+                    actualModButton.changeContextMenu(installedModsContextMenu);
+                    actualModButton.Refresh();
+                } catch(Exception ex) {
+                    MsgBox($"Error while enabling {modd}.\r\nError: {ex.Message}", "Enable error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                for(int i = 0; i < geese; i++) {
+                    RunGoose_Click(sender, e);
+                }
+            }
+        }
+
         private void openInModsToolStripMenuItem_Click(object sender, EventArgs e) {
             string modd = actualModButton.modName;
             string path = Path.Combine(modPath, modd);
 
             path = Path.Combine(path, modd+".dll");
             string newPath = path + ".RHLdisabled";
+            Console.WriteLine($"Now disabling {modd}, new path will be {newPath}");
             if (MsgBox($"Are you sure you want to disable {modd}? This will restart goose if enabled!", "Disabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
                 toolStripMenuItem3_Click(sender, e);
                 metroButton4_Click(sender, e);
                 try {
-                    if (Directory.Exists(path)) {
-                        //FileInfo file = new FileInfo(path);
-                        //file.MoveTo(newPath);
-
-                        File.Copy(path, newPath, true);
-                        File.Delete(path);
-                        //File.Move(path, newPath);
-                        
-                    }
+                    if (File.Exists(path)) File.Move(path, newPath);
                     actualModButton.EnabledMod = false;
                     actualModButton.changeContextMenu(disabledModsContextMenu);
                     actualModButton.Refresh();
@@ -378,13 +414,7 @@ namespace ResourceHubLauncher {
         }
 
         private void metroButton1_Click_1(object sender, EventArgs e) {
-            Hide();
-            new Settings().ShowDialog();
-            Config.Theme(this);
-            modsButtons.ThemeChanged((int)Config.Options["theme"] == 1);
-            styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
-            styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
-            Show();
+            
         }
 
         private void metroButton2_Click_1(object sender, EventArgs e) {
@@ -474,26 +504,25 @@ namespace ResourceHubLauncher {
             disableToolStripMenuItem_Click(sender, e);
         }
 
-        private void toolStripMenuItem5_Click(object sender, EventArgs e) {
-            string modd = actualModButton.modName;
-            string path = Path.Combine(modPath, modd);
-            path = Path.Combine(path, modd + ".dll.RHLdisabled");
-            string newPath = path.Substring(0, path.Length-12);
-            if (MsgBox($"Are you sure you want to enable {modd}? This will restart goose if disabled!", "Enabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
-                int geese = Process.GetProcessesByName("GooseDesktop").Count();
-                toolStripMenuItem3_Click(sender, e);
-                metroButton4_Click(sender, e);
-                try {
-                    if (Directory.Exists(path)) File.Move(path, newPath);
-                    actualModButton.EnabledMod = true;
-                    actualModButton.changeContextMenu(installedModsContextMenu);
-                    actualModButton.Refresh();
-                } catch (Exception ex) {
-                    MsgBox($"Error while enabling {modd}.\r\nError: {ex.Message}", "Enable error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                for (int i = 0; i < geese; i++) {
-                    RunGoose_Click(sender, e);
-                }
+        private void OptionsButton_Click(object sender, EventArgs e) {
+            OptionsContextMenu.Show(Cursor.Position);
+        }
+
+        private void toolStripMenuItem7_Click(object sender, EventArgs e) {
+            Hide();
+            new Settings().ShowDialog();
+            Config.Theme(this);
+
+            styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
+            styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
+            modsButtons.ThemeChanged((int)Config.Options["theme"] == 1);
+            Console.WriteLine((int)Config.Options["theme"] == 1);
+            Show();
+        }
+
+        private void futureOfTheLauncherToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (MsgBox("This will open a github link to our Milestones. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Process.Start("https://github.com/DesktopGooseUnofficial/launcher/milestones");
             }
         }
     }
