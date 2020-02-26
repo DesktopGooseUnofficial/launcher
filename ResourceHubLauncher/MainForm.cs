@@ -47,6 +47,7 @@ namespace ResourceHubLauncher {
 
         
         private void MainForm_Load(object sender, EventArgs e) {
+
             resizingPanel.BringToFront();
             resizingPanel.Hide();
 
@@ -117,6 +118,9 @@ namespace ResourceHubLauncher {
 
             pictureBox2.Image = Properties.Resources.RHLTSmall;
 
+            if(Process.GetProcessesByName("GooseDesktop").Count()>0) {
+                gooseToolStripMenuItem.Text = "Geese";
+            }
         }
 
         private void changeModDescription() {
@@ -481,6 +485,7 @@ namespace ResourceHubLauncher {
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e) {
+                gooseToolStripMenuItem.Text = "Geese";
             Process.Start(Path.Combine(Config.getModPath(), Path.GetFileName((string)Config.Options["gpath"])));
         }
 
@@ -488,6 +493,7 @@ namespace ResourceHubLauncher {
             foreach (Process p in Process.GetProcessesByName("GooseDesktop")) {
                 p.Kill();
             }
+                gooseToolStripMenuItem.Text = "Goose";
         }
 
         private void disableToolStripMenuItem_Click(object sender, EventArgs e) {
