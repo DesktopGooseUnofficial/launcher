@@ -24,9 +24,6 @@ namespace ResourceHubLauncher {
         bool closedSpecially = false;
         Action<MainForm> restartForm;
 
-        //TODO Issue Images in PictureBoxes are not shown
-        //TODO Issue ModButtons theme changing is not working properly after refresh
-
         public MainForm() {
             InitializeComponent();
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
@@ -88,7 +85,7 @@ namespace ResourceHubLauncher {
                 }
                 ModButton foundObj = modsButtons.Find(modName);
                 if(foundObj != null) {
-                    Console.WriteLine("mod found in list!");
+                    Console.WriteLine($"The mod \"{modName}\" was successfully found in list!");
                     if(File.Exists(Path.Combine( pMod, modName+".dll.RHLdisabled"))) {
                         foundObj.EnabledMod = false;
                         foundObj.changeContextMenu(disabledModsContextMenu);
@@ -527,8 +524,14 @@ namespace ResourceHubLauncher {
         }
 
         private void futureOfTheLauncherToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (MsgBox("This will open a github link to our Milestones. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox("This will open a GitHub link to our Milestones. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher/milestones");
+            }
+        }
+
+        private void giveUsFeedbackToolStripMenuItem_Click(object sender, EventArgs e) {
+            if(MsgBox("This will open a GitHub link where you can send us feedback. A GitHub account is required. Do you want to proceed?", "Before you send feedback...", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Process.Start("https://github.com/DesktopGooseUnofficial/launcher/issues/new/choose");
             }
         }
     }
