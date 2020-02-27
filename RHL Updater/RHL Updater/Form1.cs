@@ -51,7 +51,6 @@ namespace RHL_Updater {
                     string filePath = "ResourceHubLauncher.exe";
 
                     if (!download) {
-                        // maybe we should add text in the corner of the RHL settings that says "thank you for 1k downloads!"
                         string format = "{0} ({1}/{2})";
 
                         metroLabel1.Text = $"Preparing Launcher update";
