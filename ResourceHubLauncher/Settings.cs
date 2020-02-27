@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace ResourceHubLauncher {
     public partial class Settings : MetroForm {
@@ -105,6 +106,26 @@ namespace ResourceHubLauncher {
 
         private void metroCheckBox2_CheckedChanged(object sender, EventArgs e) {
             Config.Options["unsfe"] = allowUnsafe.Checked;
+            Config.Save();
+        }
+
+        private DialogResult MsgBox(object text, string title = "ResourceHub Launcher", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) {
+            return MetroMessageBox.Show(this, text.ToString(), title, buttons, icon, defaultButton);
+        }
+
+        private void metroButton1_Click_1(object sender, EventArgs e) {
+            if (MsgBox("This will open a GitHub link to our Contributors. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Process.Start("https://github.com/DesktopGooseUnofficial/launcher/graphs/contributors");
+            }
+        }
+
+        private void metroCheckBox1_CheckedChanged(object sender, EventArgs e) {
+            Config.Options["autoUpdate"] = metroCheckBox1.Checked;
+            Config.Save();
+        }
+
+        private void metroCheckBox2_CheckedChanged_1(object sender, EventArgs e) {
+            Config.Options["beta"] = metroCheckBox2.Checked;
             Config.Save();
         }
     }

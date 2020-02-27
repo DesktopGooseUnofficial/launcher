@@ -81,10 +81,11 @@ namespace ResourceHubLauncher {
                     if (latest != md5.ToString() && !_G.dev && _G.update) {
                         try {
                             Process.Start("Updater.exe");
+                            Environment.Exit(0);
                         } catch(Exception ex) {
 
                         }
-                        Environment.Exit(0);
+                        
 
                     } else {
                         Console.WriteLine("Launcher is up to date!");
@@ -109,7 +110,30 @@ namespace ResourceHubLauncher {
                             form.Focus();
                         }
                     }
-
+                    string[] parts;
+                    bool newConfigIni = false;
+                    string configPath = Path.Combine(Path.GetDirectoryName((string)Config.Options["gpath"]), "config.ini");
+                    using (StreamReader rrrr = new StreamReader(configPath)) {
+                            parts = rrrr.ReadToEnd().Split('\n');
+                        if (parts[1].Substring(11).ToLower()=="false") {
+                            if (MetroMessageBox.Show(form, "Do you want to enable them?", "Mods in goose are disabled.", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                                parts[1]=parts[1].Replace("False", "True");
+                                newConfigIni = true;
+                                form.Focus();
+                            }
+                        }
+                    }
+                    if(newConfigIni) {
+                        using (StreamWriter wwww = new StreamWriter(configPath)) {
+                            wwww.Flush();
+                            string all="";
+                            foreach(string sss in parts) {
+                                all += sss + '\n';
+                            }
+                            wwww.Write(all);
+                            form.Focus();
+                        }
+                    }
                     Console.WriteLine("Showing main window.");
 
                     form.ShowDialog();

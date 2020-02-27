@@ -21,6 +21,7 @@ namespace ResourceHubLauncher {
             Options["unsfe"] = false;
             Options["devmd"] = false;
             Options["autoUpdate"] = true;
+            Options["beta"] = false;
         }
 
         public static string getModPath() {
