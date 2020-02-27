@@ -85,7 +85,7 @@ namespace ResourceHubLauncher {
                 }
                 ModButton foundObj = modsButtons.Find(modName);
                 if(foundObj != null) {
-                    Console.WriteLine($"The mod \"{modName}\" was successfully found in list!");
+                    Console.WriteLine($"The mod \"{modName}\" was successfully found in the list!");
                     if(File.Exists(Path.Combine( pMod, modName+".dll.RHLdisabled"))) {
                         foundObj.EnabledMod = false;
                         foundObj.changeContextMenu(disabledModsContextMenu);

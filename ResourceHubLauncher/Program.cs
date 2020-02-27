@@ -40,7 +40,7 @@ namespace ResourceHubLauncher {
 
         }
             
-        public static void Start(Loading loading) {
+        public static void Start(Loading loading, string[] args) {
             Uri dat = new Uri("http://rhl.my.to/data");
             using (WebClient wc = new WebClient()) {
 
@@ -78,12 +78,11 @@ namespace ResourceHubLauncher {
                     loading.Visible = false;
                     loading.Close();
 
-                    if (latest != md5.ToString()) {
-                        Console.WriteLine("Launcher is outdated. Prompting user if they want to update.");
-                        if (MetroMessageBox.Show(form, $"This Launcher is out of date.\nWould you like to update it now?\n(For advanced users: MD5 {md5} does not match latest MD5: {latest})", "Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
-                            Process.Start("https://github.com/DesktopGooseUnofficial/launcher/releases/latest");
-                            Environment.Exit(0);
-                        }
+                    if (latest != md5.ToString() && !_G.dev) {
+
+                        Process.Start("Updater.exe");
+                        Environment.Exit(0);
+
                     } else {
                         Console.WriteLine("Launcher is up to date!");
                     }
