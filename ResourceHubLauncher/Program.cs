@@ -132,13 +132,13 @@ namespace ResourceHubLauncher {
             Console.Title = "ResourceHub Launcher // Developer Console";
             Console.WriteLine("Checking internet connection...");
             if (!CheckForInternetConnection()) {
-                if (MessageBox.Show("Hmm... It doesn't look like you have any internet connection.\nThe ResourceHub Launcher cannot function properly without any internet connection.", "ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK) {
+                if (MessageBox.Show("Hmm... It doesn't look like you have any internet connection.\nThe ResourceHub Launcher cannot function properly without any internet connection.\nPlease try again when you do get an internet connection though!", "ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK) {
                     return;
                 }
             }
 
             Console.WriteLine("Getting latest data...");
-            Start(loading);
+            Start(loading,args);
         }
     }
 }
