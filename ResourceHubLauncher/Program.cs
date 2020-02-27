@@ -79,8 +79,11 @@ namespace ResourceHubLauncher {
                     loading.Close();
 
                     if (latest != md5.ToString() && !_G.dev && _G.update) {
+                        try {
+                            Process.Start("Updater.exe");
+                        } catch(Exception ex) {
 
-                        Process.Start("Updater.exe");
+                        }
                         Environment.Exit(0);
 
                     } else {
