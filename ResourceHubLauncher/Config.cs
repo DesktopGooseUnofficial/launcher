@@ -20,6 +20,7 @@ namespace ResourceHubLauncher {
             Options["cpath"] = "";
             Options["unsfe"] = false;
             Options["devmd"] = false;
+            Options["autoUpdate"] = true;
         }
 
         public static string getModPath() {
