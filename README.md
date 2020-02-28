@@ -2,4 +2,13 @@
 
 welcome to the launcher for resourcehub!
 
-looking for the backend? check [this github repo](https://github.com/desktopgooseunofficial/launcher-backend).
+the resourcehub launcher is a easy and simple way to install mods for the desktop goose!
+
+looking for the backend? check [this github repo](https://github.com/desktopgooseunofficial/launcher-backend). 
+(this is NOT the launcher download. the launcher download is here: [latest release](https://github.com/desktopgooseunofficial/launcher/releases/latest))
+
+## FAQ:
+
+### When is 2.0 coming out?
+
+soon™️
