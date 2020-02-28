@@ -1,4 +1,11 @@
+
 # launcher ![GitHub All Releases](https://img.shields.io/github/downloads/desktopgooseunofficial/launcher/total) [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=DesktopGooseUnofficial/launcher)](https://dependabot.com) [![Build status](https://ci.appveyor.com/api/projects/status/q2iccrkgxriosdmd?svg=true)](https://ci.appveyor.com/project/VukAnd/launcher)
+
+<p align="center">
+<img width="200" height="200" src="https://i.imgur.com/ma8iAVM.png">
+</p>
+
+---
 
 welcome to the launcher for resourcehub!
 
