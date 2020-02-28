@@ -1,8 +1,0 @@
-launcher:
-  - ResourceHubLauncher/**/*
-
-updater:
-  - RHL Updater/**/*
-  
-github:
-  - .github/**/*
