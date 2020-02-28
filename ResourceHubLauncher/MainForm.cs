@@ -274,7 +274,7 @@ namespace ResourceHubLauncher {
                         };
 
                     } else {
-                        MsgBox("You already have a download in progress. Please wait for it to finish", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MsgBox("You already have a download in progress. Please wait for it to finish.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         DownloadPanel.Hide();
                         return;
                     }
