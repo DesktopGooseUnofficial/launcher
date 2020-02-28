@@ -8,6 +8,6 @@ the resourcehub launcher is a easy and simple way to install mods for the deskto
 
 ## FAQ:
 
-## When is 2.0 coming out?
+### When is 2.0 coming out?
 
 soon™️
