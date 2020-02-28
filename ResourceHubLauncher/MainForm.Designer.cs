@@ -68,7 +68,6 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.DownloadPanel = new MetroFramework.Controls.MetroPanel();
             this.OptionsButton = new MetroFramework.Controls.MetroButton();
-            this.metroScrollBar1 = new MetroFramework.Controls.MetroScrollBar();
             this.modListContextMenu.SuspendLayout();
             this.installedModsContextMenu.SuspendLayout();
             this.linksContextMenu.SuspendLayout();
@@ -183,6 +182,7 @@
             this.futureOfTheLauncherToolStripMenuItem});
             this.linksContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.linksContextMenu.Name = "modListContextMenu";
+            this.linksContextMenu.OwnerItem = this.toolStripMenuItem8;
             this.linksContextMenu.ShowImageMargin = false;
             this.linksContextMenu.Size = new System.Drawing.Size(182, 100);
             // 
@@ -228,7 +228,7 @@
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.label3.Location = new System.Drawing.Point(265, 95);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.label3.Margin = new System.Windows.Forms.Padding(4);
             this.label3.Name = "label3";
             this.label3.ReadOnly = true;
             this.label3.Size = new System.Drawing.Size(683, 479);
@@ -379,7 +379,7 @@
             this.metroProgressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.metroProgressBar1.Location = new System.Drawing.Point(4, 34);
-            this.metroProgressBar1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.metroProgressBar1.Margin = new System.Windows.Forms.Padding(4);
             this.metroProgressBar1.Name = "metroProgressBar1";
             this.metroProgressBar1.Size = new System.Drawing.Size(491, 14);
             this.metroProgressBar1.TabIndex = 20;
@@ -401,7 +401,7 @@
             // 
             this.metroButton6.FontWeight = MetroFramework.MetroButtonWeight.Light;
             this.metroButton6.Location = new System.Drawing.Point(236, 95);
-            this.metroButton6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.metroButton6.Margin = new System.Windows.Forms.Padding(4);
             this.metroButton6.Name = "metroButton6";
             this.metroButton6.Size = new System.Drawing.Size(21, 20);
             this.metroButton6.TabIndex = 25;
@@ -429,21 +429,22 @@
             this.metroPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.metroPanel2.AutoScroll = true;
+            this.metroPanel2.AutoScrollMinSize = new System.Drawing.Size(0, 481);
             this.metroPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.metroPanel2.HorizontalScrollbar = true;
             this.metroPanel2.HorizontalScrollbarBarColor = true;
             this.metroPanel2.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel2.HorizontalScrollbarSize = 10;
+            this.metroPanel2.HorizontalScrollbarSize = 7;
             this.metroPanel2.Location = new System.Drawing.Point(20, 94);
             this.metroPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.metroPanel2.Name = "metroPanel2";
-            this.metroPanel2.Size = new System.Drawing.Size(238, 481);
+            this.metroPanel2.Size = new System.Drawing.Size(245, 481);
             this.metroPanel2.TabIndex = 33;
             this.metroPanel2.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroPanel2.VerticalScrollbar = true;
             this.metroPanel2.VerticalScrollbarBarColor = true;
             this.metroPanel2.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel2.VerticalScrollbarSize = 11;
+            this.metroPanel2.VerticalScrollbarSize = 7;
             this.metroPanel2.SizeChanged += new System.EventHandler(this.metroPanel2_SizeChanged);
             // 
             // resizingPanel
@@ -512,27 +513,12 @@
             this.OptionsButton.UseSelectable = true;
             this.OptionsButton.Click += new System.EventHandler(this.OptionsButton_Click);
             // 
-            // metroScrollBar1
-            // 
-            this.metroScrollBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.metroScrollBar1.LargeChange = 10;
-            this.metroScrollBar1.Location = new System.Drawing.Point(258, 94);
-            this.metroScrollBar1.Maximum = 100;
-            this.metroScrollBar1.Minimum = 0;
-            this.metroScrollBar1.MouseWheelBarPartitions = 10;
-            this.metroScrollBar1.Name = "metroScrollBar1";
-            this.metroScrollBar1.Orientation = MetroFramework.Controls.MetroScrollOrientation.Vertical;
-            this.metroScrollBar1.ScrollbarSize = 6;
-            this.metroScrollBar1.Size = new System.Drawing.Size(6, 481);
-            this.metroScrollBar1.TabIndex = 39;
-            this.metroScrollBar1.UseSelectable = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
+            this.AutoScrollMinSize = new System.Drawing.Size(0, 481);
             this.ClientSize = new System.Drawing.Size(971, 596);
             this.Controls.Add(this.OptionsButton);
             this.Controls.Add(this.DownloadPanel);
@@ -544,7 +530,6 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.resizingPanel);
-            this.Controls.Add(this.metroScrollBar1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MinimumSize = new System.Drawing.Size(971, 596);
@@ -617,7 +602,6 @@
         private System.Windows.Forms.ToolStripMenuItem gooseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem futureOfTheLauncherToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem giveUsFeedbackToolStripMenuItem;
-        private MetroFramework.Controls.MetroScrollBar metroScrollBar1;
     }
 }
 

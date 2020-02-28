@@ -119,21 +119,18 @@ namespace ResourceHubLauncher {
                 gooseToolStripMenuItem.Text = "Geese";
             }
         
-            metroScrollBar1.Scroll += scroll;
-            metroPanel2.Scroll += scroll2;
-            metroScrollBar1.Maximum = metroPanel2.VerticalScroll.Maximum;
-            metroScrollBar1.Minimum= metroPanel2.VerticalScroll.Minimum;
-            metroScrollBar1.SmallChange = metroPanel2.VerticalScroll.SmallChange;
-            metroScrollBar1.LargeChange = metroPanel2.VerticalScroll.LargeChange;
+            //metroScrollBar1.Scroll += scroll;
+            //metroPanel2.Scroll += scroll2;
+            //metroScrollBar1.Maximum = metroPanel2.VerticalScroll.Maximum;
+            //metroScrollBar1.Minimum= metroPanel2.VerticalScroll.Minimum;
+            //metroScrollBar1.SmallChange = metroPanel2.VerticalScroll.SmallChange;
+            //metroScrollBar1.LargeChange = metroPanel2.VerticalScroll.LargeChange;
+            //metroScrollBar1.Dock = DockStyle.Right;
+            //metroPanel2.scroll
+            //metroPanel2.VerticalScroll.
         }
 
-        private void scroll(object sender, ScrollEventArgs e) {
-            metroPanel2.VerticalScroll.Value = metroScrollBar1.Value;
-        }
-        private void scroll2(object sender, ScrollEventArgs e) {
-            metroScrollBar1.Value = metroPanel2.VerticalScroll.Value;
-            metroScrollBar1.PerformLayout();
-        }
+        
         private void changeModDescription() {
             try {
                 label3.Text = (string)mod["description"];
