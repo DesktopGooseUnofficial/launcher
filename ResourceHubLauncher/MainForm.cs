@@ -545,5 +545,11 @@ namespace ResourceHubLauncher {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher/issues/new/choose");
             }
         }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e) {
+            if(MsgBox("This will open a GitHub link where you will be taken to a README. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Process.Start("https://github.com/DesktopGooseUnofficial/launcher#readme");
+            }
+        }
     }
 }
