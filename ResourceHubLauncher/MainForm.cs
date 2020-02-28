@@ -76,7 +76,7 @@ namespace ResourceHubLauncher {
                 if (File.Exists(datPath)) {
                     JObject data = JObject.Parse(File.ReadAllText(datPath));
                     if ((string)data["mod-version"] != (string)mod["mod-version"]) {
-                        if (MsgBox($"{data["name"]} is outdated.\r\nWould you like to download the new version?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                        if (MsgBox($"{data["name"]} is outdated.\r\nWould you like to update?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
 
                             installToolStripMenuItem_Click(sender, e);
                         }
@@ -138,7 +138,7 @@ namespace ResourceHubLauncher {
             try {
                 label3.Text = (string)mod["description"];
             } catch (Exception ex) {
-                label3.Text = "Mod description not available";
+                label3.Text = "Mod description cannot be found";
             }
         }
 
@@ -198,9 +198,9 @@ namespace ResourceHubLauncher {
 
                     if (l > 0) {
                         if (!(bool)Config.Options["unsfe"] && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
-                            MsgBox($"This mod is rated as {r2s(l)} and will not be installed.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MsgBox($"This mod is rated as {r2s(l)} and will not be installed for your safety.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
-                        } else if (Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                        } else if (Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it? Installing it may cause problems.", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                             return;
                         }
                     }
@@ -225,7 +225,7 @@ namespace ResourceHubLauncher {
 
                         metroProgressBar1.Value = 0;
 
-                        if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                        if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                             DownloadPanel.Hide();
                             Console.WriteLine("Download cancelled by user.");
                             return;
@@ -274,7 +274,7 @@ namespace ResourceHubLauncher {
                         };
 
                     } else {
-                        MsgBox("You already have a download in progress.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MsgBox("You already have a download in progress. Please wait for it to finish.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         DownloadPanel.Hide();
                         return;
                     }
@@ -438,7 +438,7 @@ namespace ResourceHubLauncher {
         }
 
         private void discordToolStripMenuItem_Click_1(object sender, EventArgs e) {
-            if (MsgBox("This will open a discord.gg link to our Discord server. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox("This will open a link to the ResourceHub Discord server. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://discock.gg/rhl");
             }
         }
