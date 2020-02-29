@@ -449,12 +449,12 @@ namespace ResourceHubLauncher {
         }
 
         private void githubToolStripMenuItem_Click_1(object sender, EventArgs e) {
-            if (MsgBox("This will open a github.com link to our GitHub repo. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox("This will open a link to our GitHub repo. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher");
             }
         }
         private void twitterToolStripMenuItem_Click(object sender, EventArgs e) {
-            if(MsgBox("This will open a twitter.com link to our Twitter account. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if(MsgBox("This will open a link to our Twitter account. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://twitter.com/dg_resource");
             }
         }
@@ -543,19 +543,19 @@ namespace ResourceHubLauncher {
         }
 
         private void futureOfTheLauncherToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (MsgBox("This will open a GitHub link to our Upcoming Features. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox("This will open a link to our Upcoming Features. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher/milestones");
             }
         }
 
         private void giveUsFeedbackToolStripMenuItem_Click(object sender, EventArgs e) {
-            if(MsgBox("This will open a GitHub link where you can send us feedback. A GitHub account is required. Do you want to proceed?", "Before you send feedback...", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if(MsgBox("This will open a link where you can send us feedback. A GitHub account is required. Do you want to proceed?", "Before you send feedback...", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher/issues/new/choose");
             }
         }
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e) {
-            if(MsgBox("This will open a GitHub link where you will be taken to a README. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if(MsgBox("This will open a link where you will be taken to a README. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher#readme");
             }
         }
