@@ -126,6 +126,9 @@
   <metadata name="installedModsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>442, 22</value>
   </metadata>
+  <metadata name="styleExtender.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>128, 17</value>
+  </metadata>
   <metadata name="linksContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>927, 43</value>
   </metadata>
@@ -138,6 +141,22 @@
   <metadata name="OptionsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>1154, 6</value>
   </metadata>
+  <data name="changelogRichTextBox.Text" xml:space="preserve">
+    <value>&lt;b&gt;&lt;m&gt;2.0&lt;/m&gt;&lt;/b&gt;
+-complete layout redesign
+-disabling mods
+-contributors are now in settings
+-G E E S E
+-launcher will now automatically update (can be disabled in settings)
+-Beta Version button in settings (active for prerelease versions, these versions can have some bugs)
+-Mod Installation API (for mods not in one file)
+-Mod Configuration API (for mods with config file)
+-more links
+-warming when trying to install mods
+-button in settings for unlocking possibility of installing not safe mods (for your safety)
+-better descriptions
+</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

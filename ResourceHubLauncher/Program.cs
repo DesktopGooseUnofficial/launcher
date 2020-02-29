@@ -77,7 +77,7 @@ namespace ResourceHubLauncher {
                     loading.Hide();
                     loading.Visible = false;
                     loading.Close();
-
+                    form.md5 = md5;
                     if (latest != md5.ToString() && !_G.dev && _G.update) {
                         try {
                             Process.Start("Updater.exe");
