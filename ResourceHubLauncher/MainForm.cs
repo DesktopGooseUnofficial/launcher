@@ -543,7 +543,7 @@ namespace ResourceHubLauncher {
         }
 
         private void futureOfTheLauncherToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (MsgBox("This will open a GitHub link to our Milestones. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox("This will open a GitHub link to our Upcoming Features. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher/milestones");
             }
         }
