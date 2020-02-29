@@ -7,7 +7,7 @@
 
 ---
 
-welcome to the launcher for resourcehub!
+welcome to resourcehub launcher!
 
 the resourcehub launcher is a easy and simple way to install mods for the desktop goose!
 
