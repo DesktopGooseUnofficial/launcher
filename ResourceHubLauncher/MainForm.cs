@@ -581,3 +581,4 @@ namespace ResourceHubLauncher
             changelogPanel.Hide();
         }
     }
+}
