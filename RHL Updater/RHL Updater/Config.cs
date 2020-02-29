@@ -9,7 +9,8 @@ using static System.Windows.Forms.Control;
 
 namespace RHL_Updater
 {
-    class Config {
+    class Config
+    {
         public static JObject Options = new JObject();
         private static string configPath = Path.Combine(Path.GetTempPath(), "..", "ResourceHub Launcher");
         public static string configFile = Path.Combine(configPath, "config.json");
