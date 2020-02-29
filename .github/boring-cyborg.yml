@@ -8,4 +8,7 @@ labelPRBasedOnFilePath:
     - ResourceHubLauncher/**/*
   
   github:
-    - .github/**/*  
+    - .github/**/* 
+  
+  documentation:
+    - README.md

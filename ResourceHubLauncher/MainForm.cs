@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Threading;
+
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
@@ -23,6 +23,7 @@ namespace ResourceHubLauncher {
         ModButtonList modsButtons= new ModButtonList();
         bool closedSpecially = false;
         Action<MainForm> restartForm;
+        RichTextHtml htmlTags= new RichTextHtml();
 
         public MainForm() {
             InitializeComponent();
@@ -118,25 +119,29 @@ namespace ResourceHubLauncher {
             if(Process.GetProcessesByName("GooseDesktop").Count()>0) {
                 gooseToolStripMenuItem.Text = "Geese";
             }
-        
-            metroScrollBar1.Scroll += scroll;
-            metroPanel2.Scroll += scroll2;
-            metroScrollBar1.Maximum = metroPanel2.VerticalScroll.Maximum;
-            metroScrollBar1.Minimum= metroPanel2.VerticalScroll.Minimum;
-            metroScrollBar1.SmallChange = metroPanel2.VerticalScroll.SmallChange;
-            metroScrollBar1.LargeChange = metroPanel2.VerticalScroll.LargeChange;
+
+            htmlTags.Add("b",  "Microsoft Sans Serif", 0, FontStyle.Bold);
+            htmlTags.Add("i",  "Microsoft Sans Serif", 0, FontStyle.Italic);
+            htmlTags.Add("u",  "Microsoft Sans Serif", 0, FontStyle.Underline);
+            htmlTags.Add("s",  "Microsoft Sans Serif", 0, FontStyle.Strikeout);
+            htmlTags.Add("m",  "Microsoft Sans Serif", 12f);
+            htmlTags.Add("big", "Microsoft Sans Serif", 15f);
+
+
         }
 
-        private void scroll(object sender, ScrollEventArgs e) {
-            metroPanel2.VerticalScroll.Value = metroScrollBar1.Value;
-        }
-        private void scroll2(object sender, ScrollEventArgs e) {
-            metroScrollBar1.Value = metroPanel2.VerticalScroll.Value;
-            metroScrollBar1.PerformLayout();
-        }
+        
+
+        
+
+
         private void changeModDescription() {
             try {
+                
                 label3.Text = (string)mod["description"];
+                htmlTags.Apply(ref label3);
+                //label3.Select()
+
             } catch (Exception ex) {
                 label3.Text = "Mod description cannot be found";
             }
@@ -546,6 +551,12 @@ namespace ResourceHubLauncher {
         private void giveUsFeedbackToolStripMenuItem_Click(object sender, EventArgs e) {
             if(MsgBox("This will open a GitHub link where you can send us feedback. A GitHub account is required. Do you want to proceed?", "Before you send feedback...", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher/issues/new/choose");
+            }
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e) {
+            if(MsgBox("This will open a GitHub link where you will be taken to a README. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Process.Start("https://github.com/DesktopGooseUnofficial/launcher#readme");
             }
         }
     }
