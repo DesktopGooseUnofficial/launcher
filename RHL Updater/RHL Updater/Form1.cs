@@ -12,8 +12,10 @@ using System.Windows.Forms;
 using System.Net;
 using System.Diagnostics;
 
-namespace RHL_Updater {
-    public partial class Form1 : MetroForm {
+namespace RHL_Updater
+{
+    public partial class Form1 : MetroForm
+    {
 
 
         bool download = false;
@@ -23,11 +25,17 @@ namespace RHL_Updater {
             Config.Load();
             Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             Style = (MetroColorStyle)(int)Config.Options["color"];
+
         }
 
         private void Form1_Load(object sender, EventArgs e) {
             Config.Theme(this);
-            Download();
+            if ((bool)Config.Options["Beta"]) {
+                Download(@"https://github.com/desktopgooseunofficial/launcher-nightly/releases/latest/download/ResourceHubLauncher.exe");
+            } else {
+                Download(@"https://github.com/desktopgooseunofficial/launcher/releases/latest/download/ResourceHubLauncher.exe");
+            }
+
         }
 
         private string ReadableBytes(double len) {
@@ -40,8 +48,8 @@ namespace RHL_Updater {
 
             return string.Format("{0:0.##} {1}", len, sizes[order]);
         }
-        public void Download() {
-            string url = @"https://github.com/desktopgooseunofficial/launcher/releases/latest/download/ResourceHubLauncher.exe";
+        public void Download(string url) {
+
 
 
             using (WebClient wc = new WebClient()) {

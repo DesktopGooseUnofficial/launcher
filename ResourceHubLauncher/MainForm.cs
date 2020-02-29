@@ -10,20 +10,24 @@ using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Text;
+using System.Threading;
 
-
-namespace ResourceHubLauncher {
-    public partial class MainForm : MetroForm {
+namespace ResourceHubLauncher
+{
+    public partial class MainForm : MetroForm
+    {
         public IList<JToken> results = new List<JToken>();
         IList<JToken> mods = new List<JToken>();
         bool download = false;
         string modPath = "";
         JToken mod;
         ModButton actualModButton;
-        ModButtonList modsButtons= new ModButtonList();
+        ModButtonList modsButtons = new ModButtonList();
         bool closedSpecially = false;
         Action<MainForm> restartForm;
-        RichTextHtml htmlTags= new RichTextHtml();
+        RichTextHtml htmlTags = new RichTextHtml();
+        public StringBuilder md5;
 
         public MainForm() {
             InitializeComponent();
@@ -37,14 +41,31 @@ namespace ResourceHubLauncher {
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
             restartForm = restartForm_;
+
         }
 
         private DialogResult MsgBox(object text, string title = "ResourceHub Launcher", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) {
             return MetroMessageBox.Show(this, text.ToString(), title, buttons, icon, defaultButton);
         }
 
-        
+
         private void MainForm_Load(object sender, EventArgs e) {
+
+            loadingPanel.Location = new Point(0, 0);
+            htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
+            htmlTags.Add("i", "Segoe UI Light", 0, FontStyle.Italic);
+            htmlTags.Add("u", "Segoe UI Light", 0, FontStyle.Underline);
+            htmlTags.Add("s", "Segoe UI Light", 0, FontStyle.Strikeout);
+            htmlTags.Add("m", "Segoe UI Light", 13f);
+            htmlTags.Add("big", "Segoe UI Light", 16f);
+
+            if ((string)Config.Options["latestU"] != md5.ToString()) {
+                htmlTags.Apply(ref changelogRichTextBox);
+                changelogPanel.Location = new Point(0, 5);
+                changelogPanel.Show();
+                Config.Options["latestU"] = md5.ToString();
+                Config.Save();
+            }
 
             resizingPanel.BringToFront();
             resizingPanel.Hide();
@@ -56,15 +77,15 @@ namespace ResourceHubLauncher {
             foreach (JToken ok in results) {
                 foreach (JToken mod in ok) {
                     mods.Add(mod);
-                    ModButton modB = new ModButton((string)mod["name"], (int)mod["level"], ModButtonStates.Available, ModClick,ModHover);
-                    
+                    ModButton modB = new ModButton((string)mod["name"], (int)mod["level"], ModButtonStates.Available, ModClick, ModHover);
+
                     Controls.Add(modB);
                     modB.Visible = false;
                     modsButtons.Add(modB);
-                    
+
                     modB.Parent = metroPanel2;
                     modB.changeContextMenu(modListContextMenu);
-                    
+
 
                     modB.Visible = true;
                 }
@@ -85,76 +106,73 @@ namespace ResourceHubLauncher {
                     }
                 }
                 ModButton foundObj = modsButtons.Find(modName);
-                if(foundObj != null) {
+                if (foundObj != null) {
                     Console.WriteLine($"The mod \"{modName}\" was successfully found in the list!");
-                    if(File.Exists(Path.Combine( pMod, modName+".dll.RHLdisabled"))) {
+                    if (File.Exists(Path.Combine(pMod, modName + ".dll.RHLdisabled"))) {
                         foundObj.EnabledMod = false;
                         foundObj.changeContextMenu(disabledModsContextMenu);
                     } else {
                         foundObj.InstalledMod = true;
                         foundObj.changeContextMenu(installedModsContextMenu);
                     }
-                    
-                    
+
+
                 } else {
                     ModButtonStates statee = File.Exists(Path.Combine(pMod, modName + ".dll.RHLdisabled")) ? ModButtonStates.Disabled : ModButtonStates.Installed;
                     ModButton newMod = new ModButton(modName, 0, statee, ModClick, ModHover);
                     metroPanel2.Controls.Add(newMod);
                     modsButtons.Add(newMod);
                     newMod.Parent = metroPanel2;
-                    if(statee== ModButtonStates.Installed) {
+                    if (statee == ModButtonStates.Installed) {
                         newMod.changeContextMenu(installedModsContextMenu);
                     } else {
                         foundObj.changeContextMenu(disabledModsContextMenu);
                     }
                 }
-                
-                
+
+
             }
             Config.Theme(this);
             modsButtons.ThemeChanged((int)Config.Options["theme"] == 1);
 
             pictureBox2.Image = Properties.Resources.RHLTSmall;
 
-            if(Process.GetProcessesByName("GooseDesktop").Count()>0) {
+            if (Process.GetProcessesByName("GooseDesktop").Count() > 0) {
                 gooseToolStripMenuItem.Text = "Geese";
             }
 
-            htmlTags.Add("b",  "Microsoft Sans Serif", 0, FontStyle.Bold);
-            htmlTags.Add("i",  "Microsoft Sans Serif", 0, FontStyle.Italic);
-            htmlTags.Add("u",  "Microsoft Sans Serif", 0, FontStyle.Underline);
-            htmlTags.Add("s",  "Microsoft Sans Serif", 0, FontStyle.Strikeout);
-            htmlTags.Add("m",  "Microsoft Sans Serif", 12f);
-            htmlTags.Add("big", "Microsoft Sans Serif", 15f);
 
 
+
+            htmlTags.Apply(ref label3);
+
+            loadingPanel.Hide();
         }
 
-        
 
-        
+
+
 
 
         private void changeModDescription() {
             try {
-                
+
                 label3.Text = (string)mod["description"];
                 htmlTags.Apply(ref label3);
-                //label3.Select()
 
             } catch (Exception ex) {
                 label3.Text = "Mod description cannot be found";
             }
         }
 
-        
+
         private void ModClick(string actualMod) {
             mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
-            
+
             actualModButton = modsButtons.Find(actualMod);
             changeModDescription();
-            
-            
+
+
         }
 
         private void ModHover(string actualMod) {
@@ -186,11 +204,11 @@ namespace ResourceHubLauncher {
         }
 
         private void CenterDownloadText() {
-            metroLabel1.Location= new Point(((DownloadPanel.Size.Width - metroLabel1.Size.Width) / 2), metroLabel1.Location.Y);
+            metroLabel1.Location = new Point(((DownloadPanel.Size.Width - metroLabel1.Size.Width) / 2), metroLabel1.Location.Y);
         }
 
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
-             
+
             string url = (string)mod["url"];
 
             Console.WriteLine($"Downloading {(string)mod["name"]} from {url}");
@@ -239,7 +257,7 @@ namespace ResourceHubLauncher {
                         wc.DownloadFileAsync(uri, f);
 
                         wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
-                            
+
                             metroProgressBar1.Value = args.ProgressPercentage;
                             metroLabel1.Text = string.Format(format, m, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
                             int v = metroLabel1.Text.Length;
@@ -249,10 +267,10 @@ namespace ResourceHubLauncher {
 
                         wc.DownloadFileCompleted += (object _sender, AsyncCompletedEventArgs args) => {
                             DownloadPanel.Hide();
-                            if (!actualModButton.InstalledMod && Directory.Exists(filePath)) actualModButton.InstalledMod=true;
+                            if (!actualModButton.InstalledMod && Directory.Exists(filePath)) actualModButton.InstalledMod = true;
 
                             string dataPath = filePath;
-                            actualModButton.InstalledMod=true;
+                            actualModButton.InstalledMod = true;
                             actualModButton.changeContextMenu(installedModsContextMenu);
                             actualModButton.Refresh();
                             if (!d) {
@@ -270,11 +288,10 @@ namespace ResourceHubLauncher {
                                 if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
                                 if (!File.Exists(dataPath)) File.Create(dataPath).Close();
                                 File.WriteAllText(dataPath, mod.ToString());
-                            }
-                            catch(IOException ex) {
+                            } catch (IOException ex) {
                                 MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
-                            
+
                             download = false;
                         };
 
@@ -294,7 +311,7 @@ namespace ResourceHubLauncher {
         }
 
         private void resourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
-            
+
             try {
                 Process.Start(mod["resourcehub"].ToString());
             } catch (Exception) {
@@ -303,10 +320,10 @@ namespace ResourceHubLauncher {
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
-            if(!closedSpecially) {
+            if (!closedSpecially) {
                 e.Cancel = MsgBox("Are you sure you want to close ResourceHub Launcher?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes;
             }
-            
+
         }
 
         private void ResourceHubPage_Click(object sender, EventArgs e) {
@@ -339,11 +356,11 @@ namespace ResourceHubLauncher {
         private void otherMods_SelectedIndexChanged(object sender, EventArgs e) {
 
 
-            
+
 
             label3.Text = (string)mod["description"];
 
-            
+
         }
 
         private void modListContextMenu_Opening(object sender, CancelEventArgs e) {
@@ -362,7 +379,7 @@ namespace ResourceHubLauncher {
                 toolStripMenuItem3_Click(sender, e);
                 try {
                     if (Directory.Exists(path)) Directory.Delete(path, true);
-                    actualModButton.InstalledMod=false;
+                    actualModButton.InstalledMod = false;
                     actualModButton.changeContextMenu(modListContextMenu);
                     actualModButton.Refresh();
                 } catch (Exception ex) {
@@ -380,7 +397,7 @@ namespace ResourceHubLauncher {
             path = Path.Combine(path, modd + ".dll.RHLdisabled");
             string newPath = path.Substring(0, path.Length - 12);
             Console.WriteLine($"Now enabling {modd}, new path will be {newPath}");
-            if(MsgBox($"Are you sure you want to enable {modd}? This will restart goose if disabled!", "Enabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox($"Are you sure you want to enable {modd}? This will restart goose if disabled!", "Enabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
                 toolStripMenuItem3_Click(sender, e);
                 try {
@@ -388,10 +405,10 @@ namespace ResourceHubLauncher {
                     actualModButton.EnabledMod = true;
                     actualModButton.changeContextMenu(installedModsContextMenu);
                     actualModButton.Refresh();
-                } catch(Exception ex) {
+                } catch (Exception ex) {
                     MsgBox($"Error while enabling {modd}.\r\nError: {ex.Message}", "Enable error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                for(int i = 0; i < geese; i++) {
+                for (int i = 0; i < geese; i++) {
                     RunGoose_Click(sender, e);
                 }
             }
@@ -401,7 +418,7 @@ namespace ResourceHubLauncher {
             string modd = actualModButton.modName;
             string path = Path.Combine(modPath, modd);
 
-            path = Path.Combine(path, modd+".dll");
+            path = Path.Combine(path, modd + ".dll");
             string newPath = path + ".RHLdisabled";
             Console.WriteLine($"Now disabling {modd}, new path will be {newPath}");
             if (MsgBox($"Are you sure you want to disable {modd}? This will restart goose if enabled!", "Disabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
@@ -432,12 +449,12 @@ namespace ResourceHubLauncher {
         }
 
         private void metroButton1_Click_1(object sender, EventArgs e) {
-            
+
         }
 
         private void metroButton2_Click_1(object sender, EventArgs e) {
             linksContextMenu.Show(Cursor.Position);
-            
+
         }
 
         private void discordToolStripMenuItem_Click_1(object sender, EventArgs e) {
@@ -452,14 +469,14 @@ namespace ResourceHubLauncher {
             }
         }
         private void twitterToolStripMenuItem_Click(object sender, EventArgs e) {
-            if(MsgBox("This will open a link to our Twitter account. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox("This will open a link to our Twitter account. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://twitter.com/dg_resource");
             }
         }
 
         //to remove
         private void MainForm_Resize(object sender, EventArgs e) {
-            
+
 
         }
         //to remove
@@ -468,7 +485,7 @@ namespace ResourceHubLauncher {
         }
         //to remove
         private void MainForm_SizeChanged(object sender, EventArgs e) {
-            
+
         }
         //to remove
         private void listBox1_MouseUp(object sender, MouseEventArgs e) {
@@ -477,11 +494,11 @@ namespace ResourceHubLauncher {
         //to remove
         private void MainForm_MouseUp(object sender, MouseEventArgs e) {
 
-            
+
         }
         //to remove
         private void MainForm_DragDrop(object sender, DragEventArgs e) {
-            
+
         }
 
         private void MainForm_ResizeBegin(object sender, EventArgs e) {
@@ -499,7 +516,7 @@ namespace ResourceHubLauncher {
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e) {
-                gooseToolStripMenuItem.Text = "Geese";
+            gooseToolStripMenuItem.Text = "Geese";
             Process.Start(Path.Combine(Config.getModPath(), Path.GetFileName((string)Config.Options["gpath"])));
         }
 
@@ -508,8 +525,8 @@ namespace ResourceHubLauncher {
                 p.Kill();
                 p.WaitForExit();
             }
-            
-                gooseToolStripMenuItem.Text = "Goose";
+
+            gooseToolStripMenuItem.Text = "Goose";
         }
 
         private void disableToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -549,15 +566,18 @@ namespace ResourceHubLauncher {
         }
 
         private void giveUsFeedbackToolStripMenuItem_Click(object sender, EventArgs e) {
-            if(MsgBox("This will open a link where you can send us feedback. A GitHub account is required. Do you want to proceed?", "Before you send feedback...", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox("This will open a link where you can send us feedback. A GitHub account is required. Do you want to proceed?", "Before you send feedback...", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher/issues/new/choose");
             }
         }
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e) {
-            if(MsgBox("This will open a link where you will be taken to a README. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox("This will open a link where you will be taken to a README. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher#readme");
             }
         }
+
+        private void changelogPanel_MouseDown(object sender, MouseEventArgs e) {
+            changelogPanel.Hide();
+        }
     }
-}
