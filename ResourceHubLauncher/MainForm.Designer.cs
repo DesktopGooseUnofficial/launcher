@@ -243,8 +243,8 @@
             this.label3.ReadOnly = true;
             this.label3.Size = new System.Drawing.Size(512, 389);
             this.label3.TabIndex = 28;
-            this.label3.Text = "Hover or click on the mod buttons (in list on the left) to see mod descriptions a" +
-    "nd options!";
+            this.label3.Text = "Hover or click on the mod buttons (in list on the left) to see mod descriptions. " +
+    "Click to see optons!";
             // 
             // listBox1
             // 
@@ -427,8 +427,7 @@
             this.metroPanel2.AutoScroll = true;
             this.metroPanel2.AutoScrollMinSize = new System.Drawing.Size(0, 481);
             this.metroPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.metroPanel2.HorizontalScrollbar = true;
-            this.metroPanel2.HorizontalScrollbarBarColor = true;
+            this.metroPanel2.HorizontalScrollbarBarColor = false;
             this.metroPanel2.HorizontalScrollbarHighlightOnWheel = false;
             this.metroPanel2.HorizontalScrollbarSize = 6;
             this.metroPanel2.Location = new System.Drawing.Point(15, 76);
@@ -438,7 +437,7 @@
             this.metroPanel2.TabIndex = 33;
             this.metroPanel2.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroPanel2.VerticalScrollbar = true;
-            this.metroPanel2.VerticalScrollbarBarColor = true;
+            this.metroPanel2.VerticalScrollbarBarColor = false;
             this.metroPanel2.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel2.VerticalScrollbarSize = 5;
             this.metroPanel2.SizeChanged += new System.EventHandler(this.metroPanel2_SizeChanged);
@@ -455,7 +454,7 @@
             this.resizingPanel.Location = new System.Drawing.Point(15, 76);
             this.resizingPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.resizingPanel.Name = "resizingPanel";
-            this.resizingPanel.Size = new System.Drawing.Size(179, 391);
+            this.resizingPanel.Size = new System.Drawing.Size(245, 481);
             this.resizingPanel.TabIndex = 35;
             this.resizingPanel.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.resizingPanel.VerticalScrollbarBarColor = true;
@@ -467,8 +466,8 @@
             // 
             this.pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pictureBox2.InitialImage = global::ResourceHubLauncher.Properties.Resources.RHLTSmall;
-            this.pictureBox2.Location = new System.Drawing.Point(52, 154);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox2.Location = new System.Drawing.Point(72, 190);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(75, 81);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Threading;
+
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
@@ -23,6 +23,7 @@ namespace ResourceHubLauncher {
         ModButtonList modsButtons= new ModButtonList();
         bool closedSpecially = false;
         Action<MainForm> restartForm;
+        RichTextHtml htmlTags= new RichTextHtml();
 
         public MainForm() {
             InitializeComponent();
@@ -118,22 +119,29 @@ namespace ResourceHubLauncher {
             if(Process.GetProcessesByName("GooseDesktop").Count()>0) {
                 gooseToolStripMenuItem.Text = "Geese";
             }
-        
-            //metroScrollBar1.Scroll += scroll;
-            //metroPanel2.Scroll += scroll2;
-            //metroScrollBar1.Maximum = metroPanel2.VerticalScroll.Maximum;
-            //metroScrollBar1.Minimum= metroPanel2.VerticalScroll.Minimum;
-            //metroScrollBar1.SmallChange = metroPanel2.VerticalScroll.SmallChange;
-            //metroScrollBar1.LargeChange = metroPanel2.VerticalScroll.LargeChange;
-            //metroScrollBar1.Dock = DockStyle.Right;
-            //metroPanel2.scroll
-            //metroPanel2.VerticalScroll.
+
+            htmlTags.Add("b",  "Microsoft Sans Serif", 0, FontStyle.Bold);
+            htmlTags.Add("i",  "Microsoft Sans Serif", 0, FontStyle.Italic);
+            htmlTags.Add("u",  "Microsoft Sans Serif", 0, FontStyle.Underline);
+            htmlTags.Add("s",  "Microsoft Sans Serif", 0, FontStyle.Strikeout);
+            htmlTags.Add("m",  "Microsoft Sans Serif", 12f);
+            htmlTags.Add("big", "Microsoft Sans Serif", 15f);
+
+
         }
 
         
+
+        
+
+
         private void changeModDescription() {
             try {
+                
                 label3.Text = (string)mod["description"];
+                htmlTags.Apply(ref label3);
+                //label3.Select()
+
             } catch (Exception ex) {
                 label3.Text = "Mod description cannot be found";
             }
