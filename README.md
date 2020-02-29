@@ -28,4 +28,3 @@ Checklist:
 - [] Unzip the mods, put them in a seperate folder for each of them and put the folders in the Mods folder
 - [] Restart the goose
 - [] Accept the warning
-- [] Delete the goose
