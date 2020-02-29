@@ -404,7 +404,7 @@
             this.changelogRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
             this.changelogRichTextBox.Size = new System.Drawing.Size(801, 400);
             this.changelogRichTextBox.TabIndex = 2;
-            this.changelogRichTextBox.Text = "";
+            this.changelogRichTextBox.Text = resources.GetString("changelogRichTextBox.Text");
             // 
             // metroProgressBar1
             // 
@@ -555,7 +555,7 @@
             this.changelogPanel.HorizontalScrollbarBarColor = true;
             this.changelogPanel.HorizontalScrollbarHighlightOnWheel = false;
             this.changelogPanel.HorizontalScrollbarSize = 10;
-            this.changelogPanel.Location = new System.Drawing.Point(954, 563);
+            this.changelogPanel.Location = new System.Drawing.Point(921, 548);
             this.changelogPanel.Name = "changelogPanel";
             this.changelogPanel.Size = new System.Drawing.Size(971, 596);
             this.changelogPanel.TabIndex = 39;
@@ -575,6 +575,7 @@
             this.metroLabel4.TabIndex = 5;
             this.metroLabel4.Text = "Click outside of changelog window to close changelog";
             this.metroLabel4.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroLabel4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.changelogPanel_MouseDown);
             // 
             // metroPanel4
             // 
@@ -631,7 +632,7 @@
             this.loadingPanel.HorizontalScrollbarBarColor = true;
             this.loadingPanel.HorizontalScrollbarHighlightOnWheel = false;
             this.loadingPanel.HorizontalScrollbarSize = 10;
-            this.loadingPanel.Location = new System.Drawing.Point(930, 572);
+            this.loadingPanel.Location = new System.Drawing.Point(905, 579);
             this.loadingPanel.Name = "loadingPanel";
             this.loadingPanel.Size = new System.Drawing.Size(971, 596);
             this.loadingPanel.TabIndex = 40;
