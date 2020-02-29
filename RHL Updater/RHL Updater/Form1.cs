@@ -30,7 +30,7 @@ namespace RHL_Updater
 
         private void Form1_Load(object sender, EventArgs e) {
             Config.Theme(this);
-            if ((bool)Config.Options["Beta"]) {
+            if ((bool)Config.Options["beta"]) {
                 Download(@"https://github.com/desktopgooseunofficial/launcher-nightly/releases/latest/download/ResourceHubLauncher.exe");
             } else {
                 Download(@"https://github.com/desktopgooseunofficial/launcher/releases/latest/download/ResourceHubLauncher.exe");
