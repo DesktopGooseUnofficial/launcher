@@ -35,7 +35,6 @@ namespace RHL_Updater
             } else {
                 Download(@"https://github.com/desktopgooseunofficial/launcher/releases/latest/download/ResourceHubLauncher.exe");
             }
-
         }
 
         private string ReadableBytes(double len) {
@@ -49,7 +48,6 @@ namespace RHL_Updater
             return string.Format("{0:0.##} {1}", len, sizes[order]);
         }
         public void Download(string url) {
-
 
 
             using (WebClient wc = new WebClient()) {

@@ -13,10 +13,10 @@ using System.Drawing;
 using System.Text;
 using System.Threading;
 
-namespace ResourceHubLauncher
-{
-    public partial class MainForm : MetroForm
-    {
+
+namespace ResourceHubLauncher {
+    public partial class MainForm : MetroForm {
+    
         public IList<JToken> results = new List<JToken>();
         IList<JToken> mods = new List<JToken>();
         bool download = false;
@@ -26,6 +26,7 @@ namespace ResourceHubLauncher
         ModButtonList modsButtons = new ModButtonList();
         bool closedSpecially = false;
         Action<MainForm> restartForm;
+
         RichTextHtml htmlTags = new RichTextHtml();
         public StringBuilder md5;
 
@@ -33,7 +34,7 @@ namespace ResourceHubLauncher
             InitializeComponent();
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
-
+            
         }
 
         public MainForm(Action<MainForm> restartForm_) {
@@ -41,7 +42,6 @@ namespace ResourceHubLauncher
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
             restartForm = restartForm_;
-
         }
 
         private DialogResult MsgBox(object text, string title = "ResourceHub Launcher", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) {
@@ -50,6 +50,22 @@ namespace ResourceHubLauncher
 
 
         private void MainForm_Load(object sender, EventArgs e) {
+            
+            loadingPanel.Location = new Point(0, 0);
+            htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
+            htmlTags.Add("i", "Segoe UI Light", 0, FontStyle.Italic);
+            htmlTags.Add("u", "Segoe UI Light", 0, FontStyle.Underline);
+            htmlTags.Add("s", "Segoe UI Light", 0, FontStyle.Strikeout);
+            htmlTags.Add("m", "Segoe UI Light", 13f);
+            htmlTags.Add("big", "Segoe UI Light", 16f);
+
+            if ((string)Config.Options["latestU"]!= md5.ToString()) {
+                htmlTags.Apply(ref changelogRichTextBox);
+                changelogPanel.Location = new Point(0, 5);
+                changelogPanel.Show();
+                Config.Options["latestU"] = md5.ToString();
+                Config.Save();
+            }
 
             loadingPanel.Location = new Point(0, 0);
             htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
@@ -137,14 +153,20 @@ namespace ResourceHubLauncher
 
             pictureBox2.Image = Properties.Resources.RHLTSmall;
 
+
             if (Process.GetProcessesByName("GooseDesktop").Count() > 0) {
                 gooseToolStripMenuItem.Text = "Geese";
             }
 
 
 
+            
+            htmlTags.Apply(ref label3);
+
+
 
             htmlTags.Apply(ref label3);
+
 
             loadingPanel.Hide();
         }

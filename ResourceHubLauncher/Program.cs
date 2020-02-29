@@ -63,6 +63,7 @@ namespace ResourceHubLauncher
                     }
 
 
+
                     MainForm form = new MainForm(RestartForm);
 
 
