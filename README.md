@@ -20,3 +20,12 @@ looking for the backend? check [this github repo](https://github.com/desktopgoos
 ### When is 2.0 coming out?
 
 soon™️
+
+### I have downloaded mods, but it doesn't work! Help!
+
+Checklist:
+- [] Set EnableMods in config.ini from False to True
+- [] Unzip the mods, put them in a seperate folder for each of them and put the folders in the Mods folder
+- [] Restart the goose
+- [] Accept the warning
+- [] Delete the goose
