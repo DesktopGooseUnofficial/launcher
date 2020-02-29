@@ -16,8 +16,8 @@ soon™️
 ### I have downloaded mods, but it doesn't work! Help!
 
 Checklist:
-[] Set EnableMods in config.ini from False to True
-[] Unzip the mods, put them in a seperate folder for each of them and put the folders in the Mods folder
-[] Restart the goose
-[] Accept the warning
-[X] delete the goose
+- [] Set EnableMods in config.ini from False to True
+- [] Unzip the mods, put them in a seperate folder for each of them and put the folders in the Mods folder
+- [] Restart the goose
+- [] Accept the warning
+- [X] delete the goose
