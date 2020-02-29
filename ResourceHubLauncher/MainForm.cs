@@ -316,7 +316,7 @@ namespace ResourceHubLauncher {
         }
 
         private void RunGoose_Click(object sender, EventArgs e) {
-            //TODO Change label to Start Geese on click (or if goosedesktop.exe is found running), change back to Start Goose on Stop Goose click
+            toolStripMenuItem2_Click(sender, e);
         }
 
         private string r2s(int level) {
@@ -360,7 +360,6 @@ namespace ResourceHubLauncher {
             if (MsgBox($"Are you sure you want to uninstall {modd}? This will erase all data in the Mods folder for {modd}!", "Uninstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
                 toolStripMenuItem3_Click(sender, e);
-                metroButton4_Click(sender, e);
                 try {
                     if (Directory.Exists(path)) Directory.Delete(path, true);
                     actualModButton.InstalledMod=false;
@@ -384,7 +383,6 @@ namespace ResourceHubLauncher {
             if(MsgBox($"Are you sure you want to enable {modd}? This will restart goose if disabled!", "Enabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
                 toolStripMenuItem3_Click(sender, e);
-                metroButton4_Click(sender, e);
                 try {
                     if (File.Exists(path)) File.Move(path, newPath);
                     actualModButton.EnabledMod = true;
@@ -508,7 +506,9 @@ namespace ResourceHubLauncher {
         private void toolStripMenuItem3_Click(object sender, EventArgs e) {
             foreach (Process p in Process.GetProcessesByName("GooseDesktop")) {
                 p.Kill();
+                p.WaitForExit();
             }
+            
                 gooseToolStripMenuItem.Text = "Goose";
         }
 
