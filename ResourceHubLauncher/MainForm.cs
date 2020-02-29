@@ -10,7 +10,8 @@ using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using System.Drawing;
-
+using System.Text;
+using System.Threading;
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
@@ -24,12 +25,13 @@ namespace ResourceHubLauncher {
         bool closedSpecially = false;
         Action<MainForm> restartForm;
         RichTextHtml htmlTags= new RichTextHtml();
+        public StringBuilder md5;
 
         public MainForm() {
             InitializeComponent();
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
-
+            
         }
 
         public MainForm(Action<MainForm> restartForm_) {
@@ -37,6 +39,7 @@ namespace ResourceHubLauncher {
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
             restartForm = restartForm_;
+            
         }
 
         private DialogResult MsgBox(object text, string title = "ResourceHub Launcher", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) {
@@ -45,6 +48,22 @@ namespace ResourceHubLauncher {
 
         
         private void MainForm_Load(object sender, EventArgs e) {
+            
+            loadingPanel.Location = new Point(0, 0);
+            htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
+            htmlTags.Add("i", "Segoe UI Light", 0, FontStyle.Italic);
+            htmlTags.Add("u", "Segoe UI Light", 0, FontStyle.Underline);
+            htmlTags.Add("s", "Segoe UI Light", 0, FontStyle.Strikeout);
+            htmlTags.Add("m", "Segoe UI Light", 13f);
+            htmlTags.Add("big", "Segoe UI Light", 16f);
+
+            if ((string)Config.Options["latestU"]!= md5.ToString()) {
+                htmlTags.Apply(ref changelogRichTextBox);
+                changelogPanel.Location = new Point(0, 5);
+                changelogPanel.Show();
+                Config.Options["latestU"] = md5.ToString();
+                Config.Save();
+            }
 
             resizingPanel.BringToFront();
             resizingPanel.Hide();
@@ -116,18 +135,16 @@ namespace ResourceHubLauncher {
 
             pictureBox2.Image = Properties.Resources.RHLTSmall;
 
-            if(Process.GetProcessesByName("GooseDesktop").Count()>0) {
+            if (Process.GetProcessesByName("GooseDesktop").Count()>0) {
                 gooseToolStripMenuItem.Text = "Geese";
             }
 
-            htmlTags.Add("b",  "Microsoft Sans Serif", 0, FontStyle.Bold);
-            htmlTags.Add("i",  "Microsoft Sans Serif", 0, FontStyle.Italic);
-            htmlTags.Add("u",  "Microsoft Sans Serif", 0, FontStyle.Underline);
-            htmlTags.Add("s",  "Microsoft Sans Serif", 0, FontStyle.Strikeout);
-            htmlTags.Add("m",  "Microsoft Sans Serif", 12f);
-            htmlTags.Add("big", "Microsoft Sans Serif", 15f);
+            
 
+            
+            htmlTags.Apply(ref label3);
 
+            loadingPanel.Hide();
         }
 
         
@@ -140,7 +157,6 @@ namespace ResourceHubLauncher {
                 
                 label3.Text = (string)mod["description"];
                 htmlTags.Apply(ref label3);
-                //label3.Select()
 
             } catch (Exception ex) {
                 label3.Text = "Mod description cannot be found";
@@ -558,6 +574,10 @@ namespace ResourceHubLauncher {
             if(MsgBox("This will open a link where you will be taken to a README. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher#readme");
             }
+        }
+
+        private void changelogPanel_MouseDown(object sender, MouseEventArgs e) {
+            changelogPanel.Hide();
         }
     }
 }
