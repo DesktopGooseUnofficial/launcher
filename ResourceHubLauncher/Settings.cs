@@ -7,6 +7,10 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Net;
+using Newtonsoft.Json.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ResourceHubLauncher {
     public partial class Settings : MetroForm {
@@ -127,6 +131,75 @@ namespace ResourceHubLauncher {
         private void metroCheckBox2_CheckedChanged_1(object sender, EventArgs e) {
             Config.Options["beta"] = metroCheckBox2.Checked;
             Config.Save();
+        }
+
+        public static bool CheckForInternetConnection() {
+            try {
+                new WebClient().OpenRead("http://rhl.my.to/");
+                return true;
+            } catch {
+                return false;
+            }
+        }
+        private void UpdateButton_Click(object sender, EventArgs e) {
+            /*if(!restarted) {
+                restarted = true;
+            }
+            UpdateButton.Enabled = false;
+            UpdateLabel.Text = "Checking internet connection...";
+            if (CheckForInternetConnection()) {
+                
+                UpdateLabel.Text = "Checking for Updates...";
+                Uri dat = new Uri("http://rhl.my.to/data");
+                using (WebClient wc = new WebClient()) {
+
+                    wc.DownloadStringAsync(dat);
+                    wc.DownloadStringCompleted += (object s, DownloadStringCompletedEventArgs r) => {
+                        JObject data = JObject.Parse(r.Result);
+
+                        string latest;
+                        if (_G.beta) {
+                            latest = data["app"]["md5Beta"].ToString();
+                        } else {
+                            latest = data["app"]["md5"].ToString();
+                        }
+
+                        byte[] hash = MD5.Create().ComputeHash(File.ReadAllBytes(Application.ExecutablePath));
+
+                        StringBuilder md5 = new StringBuilder();
+                        for (int i = 0; i < hash.Length; i++) {
+                            md5.Append(hash[i].ToString("X2"));
+                        }
+
+                        Console.WriteLine("Checking launcher version...");
+
+                        if (latest != md5.ToString()) {
+                            try {
+                                Process.Start("Updater.exe");
+                                Environment.Exit(0);
+                            } catch (Exception ex) {
+                                UpdateLabel.Text = "Updater not found!";
+                                UpdateButton.Enabled = true;
+                            }
+
+
+                        } else {
+                            Console.WriteLine("Launcher is up to date!");
+                            UpdateLabel.Text = "Launcher is up to date!";
+                            UpdateButton.Enabled = true;
+                        }
+
+
+
+
+                    };
+                
+                }
+            } else {
+                UpdateLabel.Text = "No Internet Connection";
+                UpdateButton.Enabled = true;
+            }*/
+            
         }
     }
 }

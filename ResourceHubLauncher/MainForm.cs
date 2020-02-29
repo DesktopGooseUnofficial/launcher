@@ -229,99 +229,36 @@ namespace ResourceHubLauncher {
             metroLabel1.Location = new Point(((DownloadPanel.Size.Width - metroLabel1.Size.Width) / 2), metroLabel1.Location.Y);
         }
 
-        private void installToolStripMenuItem_Click(object sender, EventArgs e) {
-
-            string url = (string)mod["url"];
-
-            Console.WriteLine($"Downloading {(string)mod["name"]} from {url}");
-
+        void downloadFile(string url, string folderPath, string filePath, string modName, AsyncCompletedEventHandler afterDownload) {
             using (WebClient wc = new WebClient()) {
                 try {
                     Uri uri = new Uri(url);
+                    string format = "Installing {0} ({1}/{2})";
 
-                    int l = (int)mod["level"];
+                metroLabel1.Text = $"Preparing to install {(string)mod["name"]}";
+                CenterDownloadText();
+                DownloadPanel.Show();
 
-                    if (l > 0) {
-                        if (!(bool)Config.Options["unsfe"] && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
-                            MsgBox($"This mod is rated as {r2s(l)} and will not be installed for your safety.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        } else if (Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it? Installing it may cause problems.", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
-                            return;
-                        }
-                    }
-                    string n = Path.GetFileName(url);
-                    string t = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1);
-                    string m = (string)mod["name"];
+                metroProgressBar1.Value = 0;
 
-                    bool d = t == "dll";
+                if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                    DownloadPanel.Hide();
+                    Console.WriteLine("Download cancelled by user.");
+                    return;
+                }
+                download = true;
+                wc.DownloadFileAsync(uri, filePath);
 
-                    string filePath = modPath;
-                    if (d) filePath = Path.Combine(filePath, (string)mod["name"]);
+                wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
 
-                    string f = Path.Combine(filePath, Path.GetFileName(url));
-                    if (!Directory.Exists(Path.GetDirectoryName(f))) Directory.CreateDirectory(Path.GetDirectoryName(f));
-
-                    if (!download) {
-                        string format = "Installing {0} ({1}/{2})";
-
-                        metroLabel1.Text = $"Preparing to install {(string)mod["name"]}";
-                        CenterDownloadText();
-                        DownloadPanel.Show();
-
-                        metroProgressBar1.Value = 0;
-
-                        if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
-                            DownloadPanel.Hide();
-                            Console.WriteLine("Download cancelled by user.");
-                            return;
-                        }
-                        download = true;
-                        wc.DownloadFileAsync(uri, f);
-
-                        wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
-
-                            metroProgressBar1.Value = args.ProgressPercentage;
-                            metroLabel1.Text = string.Format(format, m, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
-                            int v = metroLabel1.Text.Length;
-                            Console.WriteLine(metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
-                            CenterDownloadText();
-                        };
-
-                        wc.DownloadFileCompleted += (object _sender, AsyncCompletedEventArgs args) => {
-                            DownloadPanel.Hide();
-                            if (!actualModButton.InstalledMod && Directory.Exists(filePath)) actualModButton.InstalledMod = true;
-
-                            string dataPath = filePath;
-                            actualModButton.InstalledMod = true;
-                            actualModButton.changeContextMenu(installedModsContextMenu);
-                            actualModButton.Refresh();
-                            if (!d) {
-                                dataPath = Path.Combine(filePath, (string)mod["name"]);
-                                // TODO Add support for extracting ZIP files
-                                MsgBox($"This mod is not a DLL and therefore cannot be automatically installed.\r\nPlease manually install {m}.", "Unable to automatically install.", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                                if (MsgBox("Should we open Explorer for you? (where we put the file, of course)", "One thing...", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
-                                    Process.Start("explorer.exe", "/select, " + f);
-                                }
-                            }
-                            dataPath = Path.Combine(dataPath, "RHLInfo.json");
-
-                            try {
-                                if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
-                                if (!File.Exists(dataPath)) File.Create(dataPath).Close();
-                                File.WriteAllText(dataPath, mod.ToString());
-                            } catch (IOException ex) {
-                                MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-
-                            download = false;
-                        };
-
-                    } else {
-                        MsgBox("You already have a download in progress. Please wait for it to finish.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        DownloadPanel.Hide();
-                        return;
-                    }
+                    metroProgressBar1.Value = args.ProgressPercentage;
+                    metroLabel1.Text = string.Format(format, modName, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
+                    int v = metroLabel1.Text.Length;
+                    Console.WriteLine(metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
+                    CenterDownloadText();
+                };
+                    wc.DownloadFileCompleted += afterDownload;
+               
                 } catch (Exception ex) {
                     Console.WriteLine($"Could not download {(string)mod["name"]}: {ex.Message}");
                     download = false;
@@ -330,6 +267,80 @@ namespace ResourceHubLauncher {
                     return;
                 }
             }
+        }
+        private void installToolStripMenuItem_Click(object sender, EventArgs e) {
+            
+            string url = (string)mod["url"];
+            string urlI = (string)mod["install-url"];
+            string urlC = (string)mod["config-url"];
+
+            Console.WriteLine($"Downloading {(string)mod["name"]} from {url}");
+
+            int l = (int)mod["level"];
+
+            if (l > 0) {
+                if (!(bool)Config.Options["unsfe"] && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
+                    MsgBox($"This mod is rated as {r2s(l)} and will not be installed for your safety.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                } else if (Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it? Installing it may cause problems.", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                    return;
+                }
+            }
+
+            string n = Path.GetFileName(url);
+            string t = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1);
+            string m = (string)mod["name"];
+
+            bool d = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1) == "dll";
+
+            string filePath = modPath;
+            if (d) filePath = Path.Combine(filePath, (string)mod["name"]);
+
+            string f = Path.Combine(filePath, Path.GetFileName(url));
+            if (!Directory.Exists(Path.GetDirectoryName(f))) Directory.CreateDirectory(Path.GetDirectoryName(f));
+                    
+
+                    if (!download) {
+                downloadFile(url, modPath, f, m, (object _sender, AsyncCompletedEventArgs args) => {
+
+                if (!d) {
+                    filePath = Path.Combine(modPath, (string)mod["name"]);
+                    f = Path.Combine(filePath, Path.GetFileName(urlI));
+                    downloadFile(urlI, modPath, f, m, (object _sender2, AsyncCompletedEventArgs args2)=>{
+                    
+                    });
+                    } else {
+                        DownloadPanel.Hide();
+                        if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+
+                        string dataPath = modPath;
+                        actualModButton.InstalledMod = true;
+                        actualModButton.changeContextMenu(installedModsContextMenu);
+                        actualModButton.Refresh();
+
+                        dataPath = Path.Combine(dataPath, "RHLInfo.json");
+
+                        try {
+                            if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                            if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                            File.WriteAllText(dataPath, mod.ToString());
+                        } catch (IOException ex) {
+                            MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+
+                    
+
+                    
+                });
+                download = false;
+            } else {
+                        MsgBox("You already have a download in progress. Please wait for it to finish.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        DownloadPanel.Hide();
+                        return;
+                    }
+                
+            
         }
 
         private void resourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -465,11 +476,11 @@ namespace ResourceHubLauncher {
         private void installedModsContextMenu_Opening(object sender, CancelEventArgs e) {
             //if (enabledMods.SelectedIndex == -1) e.Cancel = true;
         }
-
+        //to remove
         private void metroLabel3_Click(object sender, EventArgs e) {
 
         }
-
+        //to remove
         private void metroButton1_Click_1(object sender, EventArgs e) {
 
         }
@@ -571,7 +582,9 @@ namespace ResourceHubLauncher {
 
         private void toolStripMenuItem7_Click(object sender, EventArgs e) {
             Hide();
-            new Settings().ShowDialog();
+
+                new Settings().ShowDialog();
+            
             Config.Theme(this);
 
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];

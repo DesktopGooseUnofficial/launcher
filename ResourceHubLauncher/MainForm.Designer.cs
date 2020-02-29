@@ -404,7 +404,7 @@
             this.changelogRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
             this.changelogRichTextBox.Size = new System.Drawing.Size(801, 400);
             this.changelogRichTextBox.TabIndex = 2;
-            this.changelogRichTextBox.Text = "";
+            this.changelogRichTextBox.Text = resources.GetString("changelogRichTextBox.Text");
             // 
             // metroProgressBar1
             // 
@@ -555,7 +555,7 @@
             this.changelogPanel.HorizontalScrollbarBarColor = true;
             this.changelogPanel.HorizontalScrollbarHighlightOnWheel = false;
             this.changelogPanel.HorizontalScrollbarSize = 10;
-            this.changelogPanel.Location = new System.Drawing.Point(954, 563);
+            this.changelogPanel.Location = new System.Drawing.Point(954, 548);
             this.changelogPanel.Name = "changelogPanel";
             this.changelogPanel.Size = new System.Drawing.Size(971, 596);
             this.changelogPanel.TabIndex = 39;
@@ -569,12 +569,13 @@
             // metroLabel4
             // 
             this.metroLabel4.AutoSize = true;
-            this.metroLabel4.Location = new System.Drawing.Point(307, 20);
+            this.metroLabel4.Location = new System.Drawing.Point(429, 20);
             this.metroLabel4.Name = "metroLabel4";
-            this.metroLabel4.Size = new System.Drawing.Size(344, 20);
+            this.metroLabel4.Size = new System.Drawing.Size(112, 20);
             this.metroLabel4.TabIndex = 5;
-            this.metroLabel4.Text = "Click outside of changelog window to close changelog";
+            this.metroLabel4.Text = "Click to continue";
             this.metroLabel4.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroLabel4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.changelogPanel_MouseDown);
             // 
             // metroPanel4
             // 
@@ -646,8 +647,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScrollMinSize = new System.Drawing.Size(0, 481);
             this.ClientSize = new System.Drawing.Size(971, 596);
-            this.Controls.Add(this.loadingPanel);
             this.Controls.Add(this.changelogPanel);
+            this.Controls.Add(this.loadingPanel);
             this.Controls.Add(this.OptionsButton);
             this.Controls.Add(this.DownloadPanel);
             this.Controls.Add(this.metroButton6);
