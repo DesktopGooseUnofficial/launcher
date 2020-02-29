@@ -53,7 +53,13 @@ namespace ResourceHubLauncher {
                 wc.DownloadStringCompleted += (object s, DownloadStringCompletedEventArgs r) => {
                     JObject data = JObject.Parse(r.Result);
 
-                    string latest = data["app"]["md5"].ToString();
+                    string latest;
+                    if(_G.beta) {
+                        latest = data["app"]["md5Beta"].ToString();
+                    } else {
+                        latest = data["app"]["md5"].ToString();
+                    }
+                    
 
                     MainForm form = new MainForm(RestartForm);
 

@@ -22,6 +22,8 @@ namespace RHL_Updater
             Options["unsfe"] = false;
             Options["devmd"] = false;
             Options["autoUpdate"] = true;
+            Options["beta"] = false;
+            Options["latestU"] = "";
         }
 
 
