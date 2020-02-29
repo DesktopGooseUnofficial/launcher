@@ -11,10 +11,8 @@
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -26,8 +24,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.modListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -60,6 +57,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.giveUsFeedbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
+            this.changelogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.metroProgressBar1 = new MetroFramework.Controls.MetroProgressBar();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroButton6 = new MetroFramework.Controls.MetroButton();
@@ -70,11 +68,10 @@
             this.DownloadPanel = new MetroFramework.Controls.MetroPanel();
             this.OptionsButton = new MetroFramework.Controls.MetroButton();
             this.changelogPanel = new MetroFramework.Controls.MetroPanel();
+            this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.metroPanel4 = new MetroFramework.Controls.MetroPanel();
-            this.changelogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.metroPanel5 = new MetroFramework.Controls.MetroPanel();
-            this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.loadingPanel = new MetroFramework.Controls.MetroPanel();
             this.modListContextMenu.SuspendLayout();
             this.installedModsContextMenu.SuspendLayout();
@@ -249,7 +246,7 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI Light", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.label3.Location = new System.Drawing.Point(265, 95);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.label3.Margin = new System.Windows.Forms.Padding(4);
             this.label3.Name = "label3";
             this.label3.ReadOnly = true;
             this.label3.Size = new System.Drawing.Size(682, 478);
@@ -394,12 +391,27 @@
             this.toolStripMenuItem7.Text = "Settings";
             this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
             // 
+            // changelogRichTextBox
+            // 
+            this.styleExtender.SetApplyMetroTheme(this.changelogRichTextBox, true);
+            this.changelogRichTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.changelogRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.changelogRichTextBox.Font = new System.Drawing.Font("Segoe UI Light", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.changelogRichTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.changelogRichTextBox.Location = new System.Drawing.Point(0, 0);
+            this.changelogRichTextBox.Name = "changelogRichTextBox";
+            this.changelogRichTextBox.ReadOnly = true;
+            this.changelogRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.changelogRichTextBox.Size = new System.Drawing.Size(801, 400);
+            this.changelogRichTextBox.TabIndex = 2;
+            this.changelogRichTextBox.Text = "";
+            // 
             // metroProgressBar1
             // 
             this.metroProgressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.metroProgressBar1.Location = new System.Drawing.Point(4, 34);
-            this.metroProgressBar1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.metroProgressBar1.Margin = new System.Windows.Forms.Padding(4);
             this.metroProgressBar1.Name = "metroProgressBar1";
             this.metroProgressBar1.Size = new System.Drawing.Size(489, 14);
             this.metroProgressBar1.TabIndex = 20;
@@ -421,7 +433,7 @@
             // 
             this.metroButton6.FontWeight = MetroFramework.MetroButtonWeight.Light;
             this.metroButton6.Location = new System.Drawing.Point(236, 95);
-            this.metroButton6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.metroButton6.Margin = new System.Windows.Forms.Padding(4);
             this.metroButton6.Name = "metroButton6";
             this.metroButton6.Size = new System.Drawing.Size(21, 20);
             this.metroButton6.TabIndex = 25;
@@ -554,6 +566,16 @@
             this.changelogPanel.Visible = false;
             this.changelogPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.changelogPanel_MouseDown);
             // 
+            // metroLabel4
+            // 
+            this.metroLabel4.AutoSize = true;
+            this.metroLabel4.Location = new System.Drawing.Point(307, 20);
+            this.metroLabel4.Name = "metroLabel4";
+            this.metroLabel4.Size = new System.Drawing.Size(344, 20);
+            this.metroLabel4.TabIndex = 5;
+            this.metroLabel4.Text = "Click outside of changelog window to close changelog";
+            this.metroLabel4.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
             // metroPanel4
             // 
             this.metroPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -573,21 +595,6 @@
             this.metroPanel4.VerticalScrollbarBarColor = true;
             this.metroPanel4.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel4.VerticalScrollbarSize = 10;
-            // 
-            // changelogRichTextBox
-            // 
-            this.styleExtender.SetApplyMetroTheme(this.changelogRichTextBox, true);
-            this.changelogRichTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.changelogRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.changelogRichTextBox.Font = new System.Drawing.Font("Segoe UI Light", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.changelogRichTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
-            this.changelogRichTextBox.Location = new System.Drawing.Point(0, 0);
-            this.changelogRichTextBox.Name = "changelogRichTextBox";
-            this.changelogRichTextBox.ReadOnly = true;
-            this.changelogRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.changelogRichTextBox.Size = new System.Drawing.Size(801, 400);
-            this.changelogRichTextBox.TabIndex = 2;
-            this.changelogRichTextBox.Text = resources.GetString("changelogRichTextBox.Text");
             // 
             // metroLabel2
             // 
@@ -618,16 +625,6 @@
             this.metroPanel5.VerticalScrollbarBarColor = true;
             this.metroPanel5.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel5.VerticalScrollbarSize = 10;
-            // 
-            // metroLabel4
-            // 
-            this.metroLabel4.AutoSize = true;
-            this.metroLabel4.Location = new System.Drawing.Point(307, 20);
-            this.metroLabel4.Name = "metroLabel4";
-            this.metroLabel4.Size = new System.Drawing.Size(344, 20);
-            this.metroLabel4.TabIndex = 5;
-            this.metroLabel4.Text = "Click outside of changelog window to close changelog";
-            this.metroLabel4.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // loadingPanel
             // 
@@ -748,4 +745,3 @@
         private MetroFramework.Controls.MetroPanel loadingPanel;
     }
 }
-

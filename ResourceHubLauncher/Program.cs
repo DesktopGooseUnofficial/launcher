@@ -13,8 +13,10 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ResourceHubLauncher {
-    static class Program {
+namespace ResourceHubLauncher
+{
+    static class Program
+    {
         [DllImport("kernel32.dll")]
         static extern IntPtr GetConsoleWindow();
 
@@ -39,7 +41,7 @@ namespace ResourceHubLauncher {
             Application.Restart();
 
         }
-            
+
         public static void Start(Loading loading, string[] args) {
             Uri dat = new Uri("http://rhl.my.to/data");
             using (WebClient wc = new WebClient()) {
@@ -54,16 +56,17 @@ namespace ResourceHubLauncher {
                     JObject data = JObject.Parse(r.Result);
 
                     string latest;
-                    if(_G.beta) {
+                    if (_G.beta) {
                         latest = data["app"]["md5Beta"].ToString();
                     } else {
                         latest = data["app"]["md5"].ToString();
                     }
-                    
+
+
 
                     MainForm form = new MainForm(RestartForm);
 
-                    
+
 
 
 
@@ -88,10 +91,10 @@ namespace ResourceHubLauncher {
                         try {
                             Process.Start("Updater.exe");
                             Environment.Exit(0);
-                        } catch(Exception ex) {
+                        } catch (Exception ex) {
 
                         }
-                        
+
 
                     } else {
                         Console.WriteLine("Launcher is up to date!");
@@ -120,20 +123,20 @@ namespace ResourceHubLauncher {
                     bool newConfigIni = false;
                     string configPath = Path.Combine(Path.GetDirectoryName((string)Config.Options["gpath"]), "config.ini");
                     using (StreamReader rrrr = new StreamReader(configPath)) {
-                            parts = rrrr.ReadToEnd().Split('\n');
-                        if (parts[1].Substring(11).ToLower()=="false") {
+                        parts = rrrr.ReadToEnd().Split('\n');
+                        if (parts[1].Substring(11).ToLower() == "false") {
                             if (MetroMessageBox.Show(form, "Do you want to enable them?", "Mods in goose are disabled.", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
-                                parts[1]=parts[1].Replace("False", "True");
+                                parts[1] = parts[1].Replace("False", "True");
                                 newConfigIni = true;
                                 form.Focus();
                             }
                         }
                     }
-                    if(newConfigIni) {
+                    if (newConfigIni) {
                         using (StreamWriter wwww = new StreamWriter(configPath)) {
                             wwww.Flush();
-                            string all="";
-                            foreach(string sss in parts) {
+                            string all = "";
+                            foreach (string sss in parts) {
                                 all += sss + '\n';
                             }
                             wwww.Write(all);
@@ -171,7 +174,7 @@ namespace ResourceHubLauncher {
             }
 
             Console.WriteLine("Getting latest data...");
-            Start(loading,args);
+            Start(loading, args);
         }
     }
 }
