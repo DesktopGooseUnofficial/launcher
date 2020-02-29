@@ -632,7 +632,7 @@
             this.loadingPanel.HorizontalScrollbarBarColor = true;
             this.loadingPanel.HorizontalScrollbarHighlightOnWheel = false;
             this.loadingPanel.HorizontalScrollbarSize = 10;
-            this.loadingPanel.Location = new System.Drawing.Point(930, 572);
+            this.loadingPanel.Location = new System.Drawing.Point(905, 579);
             this.loadingPanel.Name = "loadingPanel";
             this.loadingPanel.Size = new System.Drawing.Size(971, 596);
             this.loadingPanel.TabIndex = 40;
