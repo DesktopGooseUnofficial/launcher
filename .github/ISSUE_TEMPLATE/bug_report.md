@@ -18,10 +18,10 @@ Steps to reproduce the behavior:
 4. See error
 
 **Expected behavior**
-A clear and concise description of what you expected to happen.
+A clear and concise description of what you expected to happen. [e.g. When I clicked on ..., I expected the ... to open, but instead it crashed.]
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+If applicable, add screenshots to help explain your problem. [e.g. a video or GIF of you reproducing the error]
 
 **Desktop (please complete the following information):**
  - OS: [e.g. Windows 10]
