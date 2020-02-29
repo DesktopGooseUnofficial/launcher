@@ -125,7 +125,8 @@ namespace ResourceHubLauncher
                     using (StreamReader rrrr = new StreamReader(configPath)) {
                         parts = rrrr.ReadToEnd().Split('\n');
                         if (parts[1].Substring(11).ToLower() == "false") {
-                            if (MetroMessageBox.Show(form, "Do you want to enable them?", "Mods in goose are disabled.", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                            Console.WriteLine($"User has mods disabled. Asking if they want to enable...");
+                            if (MetroMessageBox.Show(form, "Do you want to enable them?", "Your config.ini file says that mods should be disabled.", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                                 parts[1] = parts[1].Replace("False", "True");
                                 newConfigIni = true;
                                 form.Focus();

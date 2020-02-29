@@ -60,6 +60,7 @@ namespace ResourceHubLauncher {
             htmlTags.Add("big", "Segoe UI Light", 16f);
 
             if ((string)Config.Options["latestU"]!= md5.ToString()) {
+                Console.WriteLine($"User appears to have updated.\nDisplaying changelog...");
                 htmlTags.Apply(ref changelogRichTextBox);
                 changelogPanel.Location = new Point(0, 5);
                 changelogPanel.Show();
@@ -106,6 +107,8 @@ namespace ResourceHubLauncher {
                     modB.Visible = true;
                 }
             }
+
+            Console.WriteLine($"Now checking mods...");
 
             foreach (string pMod in Directory.GetDirectories(modPath)) {
                 string modName = pMod.Substring(modPath.Length + 1);
