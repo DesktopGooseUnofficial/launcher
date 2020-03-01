@@ -28,3 +28,7 @@ Checklist:
 - [] Unzip the mods, put them in a seperate folder for each of them and put the folders in the Mods folder
 - [] Restart the goose
 - [] Accept the warning
+
+### Can I give the developers... money?
+
+We would rather you giving the money to [Sam](https://patreon.com/sammakesvr) instead of us ❤
