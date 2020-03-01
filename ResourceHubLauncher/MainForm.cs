@@ -187,7 +187,7 @@ namespace ResourceHubLauncher {
                 label3.Text = (string)mod["description"];
                 htmlTags.Apply(ref label3);
 
-            } catch (Exception ex) {
+            } catch (Exception) {
                 label3.Text = "Mod description cannot be found";
             }
         }
