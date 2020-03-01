@@ -274,15 +274,15 @@ namespace ResourceHubLauncher {
             
             
 
-            Console.WriteLine($"(•‿‿•) Downloading {(string)mod["name"]} from {url}");
+            Console.WriteLine($"Downloading {(string)mod["name"]} from {url}");
 
             int l = (int)mod["level"];
 
             if (l > 0) {
-                if (!(bool)Config.Options["unsfe"] && Log($"(o_o) Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
+                if (!(bool)Config.Options["unsfe"] && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
                     MsgBox($"This mod is rated as {r2s(l)} and will not be installed for your safety.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
-                } else if (Log($"(o_o) Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it? Installing it may cause problems.", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                } else if (Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it? Installing it may cause problems.", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                     return;
                 }
             }
