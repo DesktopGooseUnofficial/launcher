@@ -73,7 +73,7 @@ namespace RHL_Updater
                             metroProgressBar1.Value = args.ProgressPercentage;
                             metroLabel1.Text = string.Format(format, "Downloading...", ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
                             int v = metroLabel1.Text.Length;
-                            Console.WriteLine(metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
+                            Console.WriteLine("(ᵔ◡◡ᵔ) " + metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
 
                         };
 

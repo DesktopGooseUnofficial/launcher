@@ -199,7 +199,7 @@ namespace ResourceHubLauncher {
                 UpdateLabel.Text = "No Internet Connection";
                 UpdateButton.Enabled = true;
             }*/
-            
+
         }
     }
 }
