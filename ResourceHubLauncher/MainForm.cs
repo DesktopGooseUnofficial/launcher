@@ -62,7 +62,7 @@ namespace ResourceHubLauncher {
             htmlTags.Add("big", "Segoe UI Light", 16f);
 
             if ((string)Config.Options["latestU"]!= md5.ToString()) {
-                Console.WriteLine($"(^‿‿^) User appears to have updated.\nDisplaying changelog...");
+                Console.WriteLine($"User appears to have updated.\nDisplaying changelog...");
                 htmlTags.Apply(ref changelogRichTextBox);
                 changelogPanel.Location = new Point(0, 5);
                 changelogPanel.Show();
@@ -110,7 +110,7 @@ namespace ResourceHubLauncher {
                 }
             }
 
-            Console.WriteLine($"(≖‿‿≖) Now checking mods...");
+            Console.WriteLine($"Now checking mods...");
 
             foreach (string pMod in Directory.GetDirectories(modPath)) {
                 string modName = pMod.Substring(modPath.Length + 1);
@@ -128,7 +128,7 @@ namespace ResourceHubLauncher {
                 }
                 ModButton foundObj = modsButtons.Find(modName);
                 if (foundObj != null) {
-                    Console.WriteLine($"(#__#) The mod \"{modName}\" was successfully found in the list!");
+                    Console.WriteLine($"The mod \"{modName}\" was successfully found in the list!");
                     if (File.Exists(Path.Combine(pMod, modName + ".dll.RHLdisabled"))) {
                         foundObj.EnabledMod = false;
                         foundObj.changeContextMenu(disabledModsContextMenu);
@@ -209,7 +209,7 @@ namespace ResourceHubLauncher {
         }
 
         private void metroButton6_Click(object sender, EventArgs e) {
-            Console.WriteLine("(⇀‿‿↼) Restarting Form...");
+            Console.WriteLine("Restarting Form...");
             closedSpecially = true;
             restartForm(this);
         }
@@ -254,13 +254,13 @@ namespace ResourceHubLauncher {
                     metroProgressBar1.Value = args.ProgressPercentage;
                     metroLabel1.Text = string.Format(format, modName, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
                     int v = metroLabel1.Text.Length;
-                    Console.WriteLine("(ᵔ◡◡ᵔ) " + metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
+                    Console.WriteLine(metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
                     CenterDownloadText();
                 };
                     wc.DownloadFileCompleted += afterDownload;
                
                 } catch (Exception ex) {
-                    Console.WriteLine($"(╥☁╥ ) Could not download {(string)mod["name"]}: {ex.Message}");
+                    Console.WriteLine($"Could not download {(string)mod["name"]}: {ex.Message}");
                     download = false;
                     MsgBox("The download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     DownloadPanel.Hide();
@@ -299,9 +299,9 @@ namespace ResourceHubLauncher {
             string f = Path.Combine(filePath, Path.GetFileName(url));
             if (!Directory.Exists(Path.GetDirectoryName(f))) Directory.CreateDirectory(Path.GetDirectoryName(f));
 
-            if (actualModButton.InstalledMod && Log("(#__#) Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+            if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                 DownloadPanel.Hide();
-                Console.WriteLine("(╥☁╥ ) Download cancelled by user.");
+                Console.WriteLine("Download cancelled by user.");
                 return;
             }
             download = true;
@@ -544,7 +544,7 @@ namespace ResourceHubLauncher {
 
             path = Path.Combine(path, modd + ".dll");
             string newPath = path + ".RHLdisabled";
-            Console.WriteLine($"(•‿‿•) Now disabling {modd}, new path will be {newPath}");
+            Console.WriteLine($"Now disabling {modd}, new path will be {newPath}");
             if (MsgBox($"Are you sure you want to disable {modd}? This will restart goose if enabled!", "Disabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
                 toolStripMenuItem3_Click(sender, e);
@@ -705,6 +705,10 @@ namespace ResourceHubLauncher {
 
         private void changelogPanel_MouseDown(object sender, MouseEventArgs e) {
             changelogPanel.Hide();
+        }
+
+        private void label3_TextChanged(object sender, EventArgs e) {
+
         }
     }
 }

@@ -81,7 +81,7 @@ namespace ResourceHubLauncher
                         md5.Append(hash[i].ToString("X2"));
                     }
 
-                    Console.WriteLine("(≖‿‿≖) Checking launcher version...");
+                    Console.WriteLine("Checking launcher version...");
 
                     loading.Hide();
                     loading.Visible = false;
@@ -95,7 +95,7 @@ namespace ResourceHubLauncher
 
 
                     } else {
-                        Console.WriteLine("(≖‿‿≖) Launcher is up to date!");
+                        Console.WriteLine("Launcher is up to date!");
                     }
 
                     if (_G.dev && MetroMessageBox.Show(form, "Copy Version MD5 to clipboard?", "Developer Mode", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -123,7 +123,7 @@ namespace ResourceHubLauncher
                     using (StreamReader rrrr = new StreamReader(configPath)) {
                         parts = rrrr.ReadToEnd().Split('\n');
                         if (parts[1].Substring(11).ToLower() == "false") {
-                            Console.WriteLine($"(≖‿‿≖) User has mods disabled. Asking if they want to enable...");
+                            Console.WriteLine($"User has mods disabled. Asking if they want to enable...");
                             if (MetroMessageBox.Show(form, "Do you want to enable them?", "Your config.ini file says that mods should be disabled.", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                                 parts[1] = parts[1].Replace("False", "True");
                                 newConfigIni = true;
@@ -142,7 +142,7 @@ namespace ResourceHubLauncher
                             form.Focus();
                         }
                     }
-                    Console.WriteLine("(◕‿‿◕) Showing main window.");
+                    Console.WriteLine("Showing main window.");
 
                     form.ShowDialog();
                 };
@@ -159,7 +159,7 @@ namespace ResourceHubLauncher
 
             if (!_G.dev) ShowWindow(handle, SW_HIDE);
 
-            Console.WriteLine("(⇀‿‿↼) ResourceHub Launcher has started!\n\n");
+            Console.WriteLine("ResourceHub Launcher has started!\n\n");
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -167,15 +167,14 @@ namespace ResourceHubLauncher
             Loading loading = new Loading();
 
             Console.Title = "ResourceHub Launcher // Developer Console";
-            Console.WriteLine("(≖‿‿≖) Checking internet connection...");
+            Console.WriteLine("Checking internet connection...");
             if (!CheckForInternetConnection()) {
-                Console.WriteLine("(☓‿‿☓) User does not have any internet connection.");
-                if (MessageBox.Show("Hmm... It doesn't look like you have any internet connection.\nThe ResourceHub Launcher cannot function properly without any internet connection.\nPlease try again when you do get an internet connection though!", "ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK) {
+                if (MessageBox.Show("Hmm... It doesn't look like you have any internet connection.\nThe ResourceHub Launcher cannot function properly without any internet connection.\nPlease try again when you do get an internet connection though!", "(☓‿‿☓)", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK) {
                     return;
                 }
             }
 
-            Console.WriteLine("(≖‿‿≖) Getting latest data...");
+            Console.WriteLine("Getting latest data...");
             Start(loading, args);
         }
     }
