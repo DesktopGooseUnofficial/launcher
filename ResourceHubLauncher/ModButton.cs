@@ -25,6 +25,8 @@ namespace ResourceHubLauncher {
         Action<string> clickR;
         Action<string> hoverR;
 
+        public bool configurable = false;
+
         public ModButton(string _modName, int _modSafety, ModButtonStates _modState, Action<string> clickResult, Action<string> hoverResult) {
 
             modNameColor = Color.FromArgb(170, 170, 170);

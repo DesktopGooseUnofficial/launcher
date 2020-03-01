@@ -12,6 +12,8 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Text;
 using System.Threading;
+using System.Reflection;
+using RHL_Mod_Installer_API;
 
 
 namespace ResourceHubLauncher {
@@ -60,7 +62,7 @@ namespace ResourceHubLauncher {
             htmlTags.Add("big", "Segoe UI Light", 16f);
 
             if ((string)Config.Options["latestU"]!= md5.ToString()) {
-                Console.WriteLine($"User appears to have updated.\nDisplaying changelog...");
+                Console.WriteLine($"(^‿‿^) User appears to have updated.\nDisplaying changelog...");
                 htmlTags.Apply(ref changelogRichTextBox);
                 changelogPanel.Location = new Point(0, 5);
                 changelogPanel.Show();
@@ -108,7 +110,7 @@ namespace ResourceHubLauncher {
                 }
             }
 
-            Console.WriteLine($"Now checking mods...");
+            Console.WriteLine($"(≖‿‿≖) Now checking mods...");
 
             foreach (string pMod in Directory.GetDirectories(modPath)) {
                 string modName = pMod.Substring(modPath.Length + 1);
@@ -126,7 +128,7 @@ namespace ResourceHubLauncher {
                 }
                 ModButton foundObj = modsButtons.Find(modName);
                 if (foundObj != null) {
-                    Console.WriteLine($"The mod \"{modName}\" was successfully found in the list!");
+                    Console.WriteLine($"(#__#) The mod \"{modName}\" was successfully found in the list!");
                     if (File.Exists(Path.Combine(pMod, modName + ".dll.RHLdisabled"))) {
                         foundObj.EnabledMod = false;
                         foundObj.changeContextMenu(disabledModsContextMenu);
@@ -207,7 +209,7 @@ namespace ResourceHubLauncher {
         }
 
         private void metroButton6_Click(object sender, EventArgs e) {
-            Console.WriteLine("Restarting Form...");
+            Console.WriteLine("(⇀‿‿↼) Restarting Form...");
             closedSpecially = true;
             restartForm(this);
         }
@@ -244,12 +246,7 @@ namespace ResourceHubLauncher {
 
                 metroProgressBar1.Value = 0;
 
-                if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
-                    DownloadPanel.Hide();
-                    Console.WriteLine("Download cancelled by user.");
-                    return;
-                }
-                download = true;
+                
                 wc.DownloadFileAsync(uri, filePath);
 
                 wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
@@ -257,13 +254,13 @@ namespace ResourceHubLauncher {
                     metroProgressBar1.Value = args.ProgressPercentage;
                     metroLabel1.Text = string.Format(format, modName, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
                     int v = metroLabel1.Text.Length;
-                    Console.WriteLine(metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
+                    Console.WriteLine("(ᵔ◡◡ᵔ) " + metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
                     CenterDownloadText();
                 };
                     wc.DownloadFileCompleted += afterDownload;
                
                 } catch (Exception ex) {
-                    Console.WriteLine($"Could not download {(string)mod["name"]}: {ex.Message}");
+                    Console.WriteLine($"(╥☁╥ ) Could not download {(string)mod["name"]}: {ex.Message}");
                     download = false;
                     MsgBox("The download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     DownloadPanel.Hide();
@@ -274,18 +271,18 @@ namespace ResourceHubLauncher {
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
             
             string url = (string)mod["url"];
-            string urlI = (string)mod["install-url"];
-            string urlC = (string)mod["config-url"];
+            
+            
 
-            Console.WriteLine($"Downloading {(string)mod["name"]} from {url}");
+            Console.WriteLine($"(•‿‿•) Downloading {(string)mod["name"]} from {url}");
 
             int l = (int)mod["level"];
 
             if (l > 0) {
-                if (!(bool)Config.Options["unsfe"] && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
+                if (!(bool)Config.Options["unsfe"] && Log($"(o_o) Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
                     MsgBox($"This mod is rated as {r2s(l)} and will not be installed for your safety.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
-                } else if (Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it? Installing it may cause problems.", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                } else if (Log($"(o_o) Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it? Installing it may cause problems.", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                     return;
                 }
             }
@@ -301,34 +298,125 @@ namespace ResourceHubLauncher {
 
             string f = Path.Combine(filePath, Path.GetFileName(url));
             if (!Directory.Exists(Path.GetDirectoryName(f))) Directory.CreateDirectory(Path.GetDirectoryName(f));
-                    
 
-                    if (!download) {
+            if (actualModButton.InstalledMod && Log("(#__#) Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                DownloadPanel.Hide();
+                Console.WriteLine("(╥☁╥ ) Download cancelled by user.");
+                return;
+            }
+            download = true;
+            if (!download) {
                 downloadFile(url, modPath, f, m, (object _sender, AsyncCompletedEventArgs args) => {
 
                 if (!d) {
-                    filePath = Path.Combine(modPath, (string)mod["name"]);
+                        string urlI = (string)mod["install-url"];
+                        filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"ModsFiles", (string)mod["name"]);
                     f = Path.Combine(filePath, Path.GetFileName(urlI));
                     downloadFile(urlI, modPath, f, m, (object _sender2, AsyncCompletedEventArgs args2)=>{
-                    
+                    if((string)mod["config-url"]!=null) {
+                            string urlC = (string)mod["config-url"];
+                            filePath = Path.Combine(Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
+                            f = Path.Combine(filePath, Path.GetFileName(urlC));
+                            downloadFile(urlC, modPath, f, m, (object _sender3, AsyncCompletedEventArgs args3) => {
+                                DownloadPanel.Hide();
+                                if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+
+                                string dataPath = modPath;
+                                actualModButton.InstalledMod = true;
+                                actualModButton.changeContextMenu(installedModsContextMenu);
+                                actualModButton.Refresh();
+                                actualModButton.configurable = true;
+                                dataPath = Path.Combine(dataPath, "RHLInfo.json");
+
+                                try {
+                                    if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                                    if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                                    File.WriteAllText(dataPath, mod.ToString());
+                                } catch (IOException ex) {
+                                    MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                                download = false;
+                            });
+                        } 
+                    else {
+                            DownloadPanel.Hide();
+                            if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+
+                            string dataPath = modPath;
+                            actualModButton.InstalledMod = true;
+                            actualModButton.changeContextMenu(installedModsContextMenu);
+                            actualModButton.Refresh();
+
+                            dataPath = Path.Combine(dataPath, "RHLInfo.json");
+
+                            try {
+                                if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                                if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                                File.WriteAllText(dataPath, mod.ToString());
+                            } catch (IOException ex) {
+                                MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+
+                            Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"],"Installer.dll"));
+                            foreach(Type type in installer.GetTypes()) {
+                                if(type.GetInterface("InstallerBasic")!= null) {
+                                    InstallerBasic installerIns =(InstallerBasic) Activator.CreateInstance(type);
+                                    installerIns.Install();
+
+
+                                }
+                                //type.GetInterface("InstallerBasic").GetMethod("Install").Invoke()
+                            }
+
+                            download = false;
+                        }
                     });
-                    } else {
-                        DownloadPanel.Hide();
-                        if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+                        
+                    } 
+                else {
+                        if ((string)mod["config-url"] != null) {
+                            string urlC = (string)mod["config-url"];
+                            filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
+                            f = Path.Combine(filePath, Path.GetFileName(urlC));
+                            downloadFile(urlC, modPath, f, m, (object _sender3, AsyncCompletedEventArgs args3) => {
+                                DownloadPanel.Hide();
+                                if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
-                        string dataPath = modPath;
-                        actualModButton.InstalledMod = true;
-                        actualModButton.changeContextMenu(installedModsContextMenu);
-                        actualModButton.Refresh();
+                                string dataPath = modPath;
+                                actualModButton.InstalledMod = true;
+                                actualModButton.changeContextMenu(installedModsContextMenu);
+                                actualModButton.Refresh();
+                                actualModButton.configurable = true;
+                                dataPath = Path.Combine(dataPath, "RHLInfo.json");
 
-                        dataPath = Path.Combine(dataPath, "RHLInfo.json");
+                                try {
+                                    if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                                    if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                                    File.WriteAllText(dataPath, mod.ToString());
+                                } catch (IOException ex) {
+                                    MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                                download = false;
+                            });
+                        } else {
+                            DownloadPanel.Hide();
+                            if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
-                        try {
-                            if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
-                            if (!File.Exists(dataPath)) File.Create(dataPath).Close();
-                            File.WriteAllText(dataPath, mod.ToString());
-                        } catch (IOException ex) {
-                            MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            string dataPath = modPath;
+                            actualModButton.InstalledMod = true;
+                            actualModButton.changeContextMenu(installedModsContextMenu);
+                            actualModButton.Refresh();
+
+                            dataPath = Path.Combine(dataPath, "RHLInfo.json");
+
+                            try {
+                                if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                                if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                                File.WriteAllText(dataPath, mod.ToString());
+                            } catch (IOException ex) {
+                                MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            download = false;
                         }
                     }
 
@@ -336,12 +424,12 @@ namespace ResourceHubLauncher {
 
                     
                 });
-                download = false;
+                
             } else {
-                        MsgBox("You already have a download in progress. Please wait for it to finish.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        DownloadPanel.Hide();
-                        return;
-                    }
+                MsgBox("You already have a download in progress. Please wait for it to finish.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DownloadPanel.Hide();
+                return;
+            }
                 
             
         }
@@ -456,7 +544,7 @@ namespace ResourceHubLauncher {
 
             path = Path.Combine(path, modd + ".dll");
             string newPath = path + ".RHLdisabled";
-            Console.WriteLine($"Now disabling {modd}, new path will be {newPath}");
+            Console.WriteLine($"(•‿‿•) Now disabling {modd}, new path will be {newPath}");
             if (MsgBox($"Are you sure you want to disable {modd}? This will restart goose if enabled!", "Disabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
                 toolStripMenuItem3_Click(sender, e);
