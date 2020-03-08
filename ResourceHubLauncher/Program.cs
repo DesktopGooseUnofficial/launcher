@@ -91,9 +91,7 @@ namespace ResourceHubLauncher
                         try {
                             Process.Start("Updater.exe");
                             Environment.Exit(0);
-                        } catch (Exception ex) {
-
-                        }
+                        } catch (Exception) {}
 
 
                     } else {

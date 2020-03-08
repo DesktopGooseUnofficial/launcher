@@ -18,7 +18,7 @@ using RHL_Mod_Installer_API;
 
 namespace ResourceHubLauncher {
     public partial class MainForm : MetroForm {
-    
+
         public IList<JToken> results = new List<JToken>();
         IList<JToken> mods = new List<JToken>();
         bool download = false;
@@ -36,7 +36,7 @@ namespace ResourceHubLauncher {
             InitializeComponent();
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
-            
+
         }
 
         public MainForm(Action<MainForm> restartForm_) {
@@ -52,7 +52,7 @@ namespace ResourceHubLauncher {
 
 
         private void MainForm_Load(object sender, EventArgs e) {
-            
+
             loadingPanel.Location = new Point(0, 0);
             htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
             htmlTags.Add("i", "Segoe UI Light", 0, FontStyle.Italic);
@@ -165,7 +165,7 @@ namespace ResourceHubLauncher {
 
 
 
-            
+
             htmlTags.Apply(ref label3);
 
 
@@ -187,7 +187,7 @@ namespace ResourceHubLauncher {
                 label3.Text = (string)mod["description"];
                 htmlTags.Apply(ref label3);
 
-            } catch (Exception ex) {
+            } catch (Exception) {
                 label3.Text = "Mod description cannot be found";
             }
         }
@@ -246,7 +246,7 @@ namespace ResourceHubLauncher {
 
                 metroProgressBar1.Value = 0;
 
-                
+
                 wc.DownloadFileAsync(uri, filePath);
 
                 wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
@@ -258,7 +258,7 @@ namespace ResourceHubLauncher {
                     CenterDownloadText();
                 };
                     wc.DownloadFileCompleted += afterDownload;
-               
+
                 } catch (Exception ex) {
                     Console.WriteLine($"(╥☁╥ ) Could not download {(string)mod["name"]}: {ex.Message}");
                     download = false;
@@ -269,10 +269,10 @@ namespace ResourceHubLauncher {
             }
         }
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
-            
+
             string url = (string)mod["url"];
-            
-            
+
+
 
             Console.WriteLine($"(•‿‿•) Downloading {(string)mod["name"]} from {url}");
 
@@ -337,7 +337,7 @@ namespace ResourceHubLauncher {
                                 }
                                 download = false;
                             });
-                        } 
+                        }
                     else {
                             DownloadPanel.Hide();
                             if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
@@ -371,8 +371,8 @@ namespace ResourceHubLauncher {
                             download = false;
                         }
                     });
-                        
-                    } 
+
+                    }
                 else {
                         if ((string)mod["config-url"] != null) {
                             string urlC = (string)mod["config-url"];
@@ -420,18 +420,18 @@ namespace ResourceHubLauncher {
                         }
                     }
 
-                    
 
-                    
+
+
                 });
-                
+
             } else {
                 MsgBox("You already have a download in progress. Please wait for it to finish.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 DownloadPanel.Hide();
                 return;
             }
-                
-            
+
+
         }
 
         private void resourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -675,7 +675,7 @@ namespace ResourceHubLauncher {
             Hide();
 
                 new Settings().ShowDialog();
-            
+
             Config.Theme(this);
 
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
@@ -705,6 +705,10 @@ namespace ResourceHubLauncher {
 
         private void changelogPanel_MouseDown(object sender, MouseEventArgs e) {
             changelogPanel.Hide();
+        }
+
+        private void label3_TextChanged(object sender, EventArgs e) {
+
         }
     }
 }
