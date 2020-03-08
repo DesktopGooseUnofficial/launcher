@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading;
 using System.Reflection;
 using RHL_Mod_Installer_API;
+using RHL_Mod_Configurator_API;
+using System.IO.Compression;
 
 
 namespace ResourceHubLauncher {
@@ -234,6 +236,42 @@ namespace ResourceHubLauncher {
             metroLabel1.Location = new Point(((DownloadPanel.Size.Width - metroLabel1.Size.Width) / 2), metroLabel1.Location.Y);
         }
 
+
+        public static string actualModPath = "";
+        public static string actualZipFilePath = "";
+        public static string launcherModPath = "";
+
+        public static string GetGooseFolder() {
+            return (string)Config.Options["gpath"];
+        }
+
+
+
+        public static string GetModFolder() {
+            return actualModPath;
+        }
+
+        public static void UnpackZip(List<string> locationsForFiles) {
+            ZipFile.ExtractToDirectory(actualZipFilePath, Path.Combine(launcherModPath, "Zip"));
+            foreach (string path in locationsForFiles) {
+                bool file = File.Exists(Path.Combine(launcherModPath, "Zip", Path.GetFileName(path)));
+
+                if (file) {
+                    if (File.Exists(path)) {
+                        File.Delete(path);
+                    }
+                    File.Move(Path.Combine(launcherModPath, "Zip", Path.GetFileName(path)), path);
+                } else {
+                    if (Directory.Exists(path)) {
+                        Directory.Delete(path, true);
+                    }
+                    Directory.Move(Path.Combine(launcherModPath, "Zip", Path.GetDirectoryName(path)), path);
+                }
+
+            }
+
+        }
+
         void downloadFile(string url, string folderPath, string filePath, string modName, AsyncCompletedEventHandler afterDownload) {
             using (WebClient wc = new WebClient()) {
                 try {
@@ -297,6 +335,7 @@ namespace ResourceHubLauncher {
             if (d) filePath = Path.Combine(filePath, (string)mod["name"]);
 
             string f = Path.Combine(filePath, Path.GetFileName(url));
+            string zipPath = f;
             if (!Directory.Exists(Path.GetDirectoryName(f))) Directory.CreateDirectory(Path.GetDirectoryName(f));
 
             if (actualModButton.InstalledMod && Log("(#__#) Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
@@ -315,7 +354,7 @@ namespace ResourceHubLauncher {
                     downloadFile(urlI, modPath, f, m, (object _sender2, AsyncCompletedEventArgs args2)=>{
                     if((string)mod["config-url"]!=null) {
                             string urlC = (string)mod["config-url"];
-                            filePath = Path.Combine(Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
+                            
                             f = Path.Combine(filePath, Path.GetFileName(urlC));
                             downloadFile(urlC, modPath, f, m, (object _sender3, AsyncCompletedEventArgs args3) => {
                                 DownloadPanel.Hide();
@@ -358,7 +397,17 @@ namespace ResourceHubLauncher {
                             }
 
                             Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"],"Installer.dll"));
-                            foreach(Type type in installer.GetTypes()) {
+
+                            actualModPath = Path.Combine(modPath, actualModButton.modName);
+                            launcherModPath = filePath;
+                            actualZipFilePath = zipPath;
+                            InstallerAPI.Functions functions = new InstallerAPI.Functions();
+                            functions.getGooseFolder = new InstallerAPI.Functions.GetGooseFolderFunction( GetGooseFolder);
+                            functions.getModFolder = new InstallerAPI.Functions.GetModFolderFunction(GetModFolder);
+                            functions.unpackZip = new InstallerAPI.Functions.UnpackZipFunction(UnpackZip);
+                            InstallerAPI.functions = functions;
+
+                            foreach (Type type in installer.GetTypes()) {
                                 if(type.GetInterface("InstallerBasic")!= null) {
                                     InstallerBasic installerIns =(InstallerBasic) Activator.CreateInstance(type);
                                     installerIns.Install();

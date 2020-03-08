@@ -10,7 +10,7 @@ namespace RHL_Mod_Installer
     public class Installer : InstallerBasic 
     {
         void InstallerBasic.Install() {
-            API.functions.unpackZip(new List<string>() {API.functions.getModFolder() });
+            InstallerAPI.functions.unpackZip(new List<string>() {InstallerAPI.functions.getModFolder() });
         }
     }
 }

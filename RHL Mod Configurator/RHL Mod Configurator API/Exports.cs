@@ -15,14 +15,14 @@ namespace RHL_Mod_Configurator_API
     public class GUIStorage
     {
         static public string modConfigComment;
-        static public List<API.ConfStringBox> confStringBoxes;
-        static public List<API.ConfIntBox> confIntBoxes;
-        static public List<API.ConfFloatBox> confFloatBoxes;
-        static public List<API.ConfBoolBox> confBoolBoxes;
-        static public List<API.ConfFileBox> confFileBoxes;
-        static public List<API.ConfColorBox> confColorBoxes;
+        static public List<ConfiguratorAPI.ConfStringBox> confStringBoxes;
+        static public List<ConfiguratorAPI.ConfIntBox> confIntBoxes;
+        static public List<ConfiguratorAPI.ConfFloatBox> confFloatBoxes;
+        static public List<ConfiguratorAPI.ConfBoolBox> confBoolBoxes;
+        static public List<ConfiguratorAPI.ConfFileBox> confFileBoxes;
+        static public List<ConfiguratorAPI.ConfColorBox> confColorBoxes;
     }
-    public static class API
+    public static class ConfiguratorAPI
     {
         public class Functions
         {
