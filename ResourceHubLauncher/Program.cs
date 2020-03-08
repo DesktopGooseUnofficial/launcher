@@ -169,7 +169,7 @@ namespace ResourceHubLauncher
             Console.Title = "ResourceHub Launcher // Developer Console";
             Console.WriteLine("(≖‿‿≖) Checking internet connection...");
             if (!CheckForInternetConnection()) {
-                Console.WriteLine("(☓‿‿☓) User does not have any internet connection.")
+                Console.WriteLine("(☓‿‿☓) User does not have any internet connection.");
                 if (MessageBox.Show("Hmm... It doesn't look like you have any internet connection.\nThe ResourceHub Launcher cannot function properly without any internet connection.\nPlease try again when you do get an internet connection though!", "ResourceHub Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK) {
                     return;
                 }
