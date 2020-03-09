@@ -14,10 +14,12 @@ using System.Text;
 using System.Threading;
 using System.Reflection;
 using RHL_Mod_Installer_API;
+using System.IO.Compression;
 
-
-namespace ResourceHubLauncher {
-    public partial class MainForm : MetroForm {
+namespace ResourceHubLauncher
+{
+    public partial class MainForm : MetroForm
+    {
 
         public IList<JToken> results = new List<JToken>();
         IList<JToken> mods = new List<JToken>();
@@ -53,28 +55,9 @@ namespace ResourceHubLauncher {
 
         private void MainForm_Load(object sender, EventArgs e) {
 
-<<<<<<< Updated upstream
-            loadingPanel.Location = new Point(0, 0);
-            htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
-            htmlTags.Add("i", "Segoe UI Light", 0, FontStyle.Italic);
-            htmlTags.Add("u", "Segoe UI Light", 0, FontStyle.Underline);
-            htmlTags.Add("s", "Segoe UI Light", 0, FontStyle.Strikeout);
-            htmlTags.Add("m", "Segoe UI Light", 13f);
-            htmlTags.Add("big", "Segoe UI Light", 16f);
-=======
             InstallerAPI.Functions functions = new InstallerAPI.Functions();
 
             InitializeInstallerAPI();
->>>>>>> Stashed changes
-
-            if ((string)Config.Options["latestU"]!= md5.ToString()) {
-                Console.WriteLine($"(^‿‿^) User appears to have updated.\nDisplaying changelog...");
-                htmlTags.Apply(ref changelogRichTextBox);
-                changelogPanel.Location = new Point(0, 5);
-                changelogPanel.Show();
-                Config.Options["latestU"] = md5.ToString();
-                Config.Save();
-            }
 
             loadingPanel.Location = new Point(0, 0);
             htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
@@ -85,6 +68,7 @@ namespace ResourceHubLauncher {
             htmlTags.Add("big", "Segoe UI Light", 16f);
 
             if ((string)Config.Options["latestU"] != md5.ToString()) {
+                Console.WriteLine($"User appears to have updated.\nDisplaying changelog...");
                 htmlTags.Apply(ref changelogRichTextBox);
                 changelogPanel.Location = new Point(0, 5);
                 changelogPanel.Show();
@@ -240,8 +224,7 @@ namespace ResourceHubLauncher {
             metroLabel1.Location = new Point(((DownloadPanel.Size.Width - metroLabel1.Size.Width) / 2), metroLabel1.Location.Y);
         }
 
-<<<<<<< Updated upstream
-=======
+
         public static string actualModPath = "";
         public static string actualZipFilePath = "";
         public static string launcherModPath = "";
@@ -276,6 +259,7 @@ namespace ResourceHubLauncher {
         }
 
         private void InitializeInstallerAPI() {
+
             InstallerAPI.Functions functions = new InstallerAPI.Functions();
             functions.getGooseFolder = new InstallerAPI.Functions.GetGooseFolderFunction(GetGooseFolder);
             functions.getModFolder = new InstallerAPI.Functions.GetModFolderFunction(GetModFolder);
@@ -283,34 +267,37 @@ namespace ResourceHubLauncher {
             InstallerAPI.functions = functions;
         }
 
->>>>>>> Stashed changes
+
         void downloadFile(string url, string folderPath, string filePath, string modName, AsyncCompletedEventHandler afterDownload) {
             using (WebClient wc = new WebClient()) {
                 try {
                     Uri uri = new Uri(url);
                     string format = "Installing {0} ({1}/{2})";
 
-                metroLabel1.Text = $"Preparing to install {(string)mod["name"]}";
-                CenterDownloadText();
-                DownloadPanel.Show();
-
-                metroProgressBar1.Value = 0;
-
-
-                wc.DownloadFileAsync(uri, filePath);
-
-                wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
-
-                    metroProgressBar1.Value = args.ProgressPercentage;
-                    metroLabel1.Text = string.Format(format, modName, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
-                    int v = metroLabel1.Text.Length;
-                    Console.WriteLine("(ᵔ◡◡ᵔ) " + metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
+                    metroLabel1.Text = $"Preparing to install {(string)mod["name"]}";
                     CenterDownloadText();
-                };
+                    DownloadPanel.Show();
+
+                    metroProgressBar1.Value = 0;
+
+
+
+                    wc.DownloadFileAsync(uri, filePath);
+
+
+                    wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
+
+                        metroProgressBar1.Value = args.ProgressPercentage;
+                        metroLabel1.Text = string.Format(format, modName, ReadableBytes(args.BytesReceived), ReadableBytes(args.TotalBytesToReceive));
+                        int v = metroLabel1.Text.Length;
+                        Console.WriteLine(metroLabel1.Text.Substring(0, v - 1) + $" {args.ProgressPercentage}%)");
+                        CenterDownloadText();
+                    };
+
                     wc.DownloadFileCompleted += afterDownload;
 
                 } catch (Exception ex) {
-                    Console.WriteLine($"(╥☁╥ ) Could not download {(string)mod["name"]}: {ex.Message}");
+                    Console.WriteLine($"Could not download {(string)mod["name"]}: {ex.Message}");
                     download = false;
                     MsgBox("The download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     DownloadPanel.Hide();
@@ -320,7 +307,12 @@ namespace ResourceHubLauncher {
         }
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
 
+
+            
+
             string url = (string)mod["url"];
+
+
 
 
 
@@ -347,6 +339,7 @@ namespace ResourceHubLauncher {
             if (d) filePath = Path.Combine(filePath, (string)mod["name"]);
 
             string f = Path.Combine(filePath, Path.GetFileName(url));
+            string zipPath = f;
             if (!Directory.Exists(Path.GetDirectoryName(f))) Directory.CreateDirectory(Path.GetDirectoryName(f));
 
             if (actualModButton.InstalledMod && Log("(#__#) Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
@@ -358,16 +351,36 @@ namespace ResourceHubLauncher {
             if (!download) {
                 downloadFile(url, modPath, f, m, (object _sender, AsyncCompletedEventArgs args) => {
 
-                if (!d) {
+                    if (!d) {
                         string urlI = (string)mod["install-url"];
-                        filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"ModsFiles", (string)mod["name"]);
-                    f = Path.Combine(filePath, Path.GetFileName(urlI));
-                    downloadFile(urlI, modPath, f, m, (object _sender2, AsyncCompletedEventArgs args2)=>{
-                    if((string)mod["config-url"]!=null) {
-                            string urlC = (string)mod["config-url"];
-                            filePath = Path.Combine(Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
-                            f = Path.Combine(filePath, Path.GetFileName(urlC));
-                            downloadFile(urlC, modPath, f, m, (object _sender3, AsyncCompletedEventArgs args3) => {
+                        filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
+                        f = Path.Combine(filePath, Path.GetFileName(urlI));
+                        downloadFile(urlI, modPath, f, m, (object _sender2, AsyncCompletedEventArgs args2) => {
+                            if ((string)mod["config-url"] != null) {
+                                string urlC = (string)mod["config-url"];
+
+                                f = Path.Combine(filePath, Path.GetFileName(urlC));
+                                downloadFile(urlC, modPath, f, m, (object _sender3, AsyncCompletedEventArgs args3) => {
+                                    DownloadPanel.Hide();
+                                    if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+
+                                    string dataPath = modPath;
+                                    actualModButton.InstalledMod = true;
+                                    actualModButton.changeContextMenu(installedModsContextMenu);
+                                    actualModButton.Refresh();
+                                    actualModButton.configurable = true;
+                                    dataPath = Path.Combine(dataPath, "RHLInfo.json");
+
+                                    try {
+                                        if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                                        if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                                        File.WriteAllText(dataPath, mod.ToString());
+                                    } catch (IOException ex) {
+                                        MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                    download = false;
+                                });
+                            } else {
                                 DownloadPanel.Hide();
                                 if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
@@ -375,7 +388,7 @@ namespace ResourceHubLauncher {
                                 actualModButton.InstalledMod = true;
                                 actualModButton.changeContextMenu(installedModsContextMenu);
                                 actualModButton.Refresh();
-                                actualModButton.configurable = true;
+
                                 dataPath = Path.Combine(dataPath, "RHLInfo.json");
 
                                 try {
@@ -385,6 +398,7 @@ namespace ResourceHubLauncher {
                                 } catch (IOException ex) {
                                     MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
+
                                 download = false;
                             });
                         }
@@ -392,31 +406,28 @@ namespace ResourceHubLauncher {
                             DownloadPanel.Hide();
                             if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
-                            string dataPath = modPath;
-                            actualModButton.InstalledMod = true;
-                            actualModButton.changeContextMenu(installedModsContextMenu);
-                            actualModButton.Refresh();
 
-                            dataPath = Path.Combine(dataPath, "RHLInfo.json");
+                                Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Installer.dll"));
 
-                            try {
-                                if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
-                                if (!File.Exists(dataPath)) File.Create(dataPath).Close();
-                                File.WriteAllText(dataPath, mod.ToString());
-                            } catch (IOException ex) {
-                                MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
+                                actualModPath = Path.Combine(modPath, actualModButton.modName);
+                                launcherModPath = filePath;
+                                actualZipFilePath = zipPath;
+                                
 
-                            Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"],"Installer.dll"));
-                            foreach(Type type in installer.GetTypes()) {
-                                if(type.GetInterface("InstallerBasic")!= null) {
-                                    InstallerBasic installerIns =(InstallerBasic) Activator.CreateInstance(type);
-                                    installerIns.Install();
+                                foreach (Type type in installer.GetTypes()) {
+                                    if (type.GetInterface("InstallerBasic") != null) {
+                                        InstallerBasic installerIns = (InstallerBasic)Activator.CreateInstance(type);
+                                        installerIns.Install();
 
 
+                                    }
+                                    //type.GetInterface("InstallerBasic").GetMethod("Install").Invoke()
                                 }
-                                //type.GetInterface("InstallerBasic").GetMethod("Install").Invoke()
+
+                                download = false;
                             }
+                        });
+
 
                             download = false;
                         }
@@ -424,6 +435,7 @@ namespace ResourceHubLauncher {
 
                     }
                 else {
+
                         if ((string)mod["config-url"] != null) {
                             string urlC = (string)mod["config-url"];
                             filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
@@ -724,7 +736,9 @@ namespace ResourceHubLauncher {
         private void toolStripMenuItem7_Click(object sender, EventArgs e) {
             Hide();
 
+
                 new Settings().ShowDialog();
+
 
             Config.Theme(this);
 
