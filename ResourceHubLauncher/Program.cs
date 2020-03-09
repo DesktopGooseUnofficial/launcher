@@ -91,9 +91,12 @@ namespace ResourceHubLauncher
                         try {
                             Process.Start("Updater.exe");
                             Environment.Exit(0);
-                        } catch (Exception) {}
-
-
+                        } catch (Exception) { 
+                           if (MetroMessageBox.Show(form, "Uh oh. ResourceHub Launcher couldn't find Updater.exe...\nTry reinstalling launcher\nLink for the installer: *Insert link there*", "Auto-Updater", MessageBoxButtons.OK, MessageBoxIcon.Error)==DialogResult.OK) {
+                                Environment.Exit(0);
+                           }
+                        }
+                            
                     } else {
                         Console.WriteLine("Launcher is up to date!");
                     }

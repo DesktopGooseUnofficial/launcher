@@ -11,7 +11,7 @@ namespace RHL_Mod_Installer_API
     {
         void Install();
     }
-    public static class API
+    public static class InstallerAPI
     {
         public class Functions
         {

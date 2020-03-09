@@ -74,7 +74,6 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="ConfiguratorAPI.cs" />
-    <Compile Include="InstallerAPI.cs" />
     <Compile Include="Loading.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +147,16 @@
   <ItemGroup>
     <Content Include="Resources\RHLTSmall.ico" />
     <Content Include="RHLTSmall.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RHL Mod Configurator\RHL Mod Configurator API\RHL Mod Configurator API.csproj">
+      <Project>{e29d5eed-bb35-4672-bbbc-f10a100c29aa}</Project>
+      <Name>RHL Mod Configurator API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RHL Mod Installer\RHL Mod Installer API\RHL Mod Installer API.csproj">
+      <Project>{cf94a18a-2139-4c76-9116-c77b0f98d75c}</Project>
+      <Name>RHL Mod Installer API</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
