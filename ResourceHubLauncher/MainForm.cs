@@ -53,6 +53,7 @@ namespace ResourceHubLauncher {
 
         private void MainForm_Load(object sender, EventArgs e) {
 
+<<<<<<< Updated upstream
             loadingPanel.Location = new Point(0, 0);
             htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
             htmlTags.Add("i", "Segoe UI Light", 0, FontStyle.Italic);
@@ -60,6 +61,11 @@ namespace ResourceHubLauncher {
             htmlTags.Add("s", "Segoe UI Light", 0, FontStyle.Strikeout);
             htmlTags.Add("m", "Segoe UI Light", 13f);
             htmlTags.Add("big", "Segoe UI Light", 16f);
+=======
+            InstallerAPI.Functions functions = new InstallerAPI.Functions();
+
+            InitializeInstallerAPI();
+>>>>>>> Stashed changes
 
             if ((string)Config.Options["latestU"]!= md5.ToString()) {
                 Console.WriteLine($"(^‿‿^) User appears to have updated.\nDisplaying changelog...");
@@ -234,6 +240,50 @@ namespace ResourceHubLauncher {
             metroLabel1.Location = new Point(((DownloadPanel.Size.Width - metroLabel1.Size.Width) / 2), metroLabel1.Location.Y);
         }
 
+<<<<<<< Updated upstream
+=======
+        public static string actualModPath = "";
+        public static string actualZipFilePath = "";
+        public static string launcherModPath = "";
+
+        public static string GetGooseFolder() {
+            return (string)Config.Options["gpath"];
+        }
+
+        public static string GetModFolder() {
+            return actualModPath;
+        }
+
+        public static void UnpackZip(List<string> locationsForFiles) {
+            ZipFile.ExtractToDirectory(actualZipFilePath, Path.Combine(launcherModPath, "Zip"));
+            foreach (string path in locationsForFiles) {
+                bool file = File.Exists(Path.Combine(launcherModPath, "Zip", Path.GetFileName(path)));
+
+                if (file) {
+                    if (File.Exists(path)) {
+                        File.Delete(path);
+                    }
+                    File.Move(Path.Combine(launcherModPath, "Zip", Path.GetFileName(path)), path);
+                } else {
+                    if (Directory.Exists(path)) {
+                        Directory.Delete(path, true);
+                    }
+                    Directory.Move(Path.Combine(launcherModPath, "Zip", Path.GetDirectoryName(path)), path);
+                }
+
+            }
+
+        }
+
+        private void InitializeInstallerAPI() {
+            InstallerAPI.Functions functions = new InstallerAPI.Functions();
+            functions.getGooseFolder = new InstallerAPI.Functions.GetGooseFolderFunction(GetGooseFolder);
+            functions.getModFolder = new InstallerAPI.Functions.GetModFolderFunction(GetModFolder);
+            functions.unpackZip = new InstallerAPI.Functions.UnpackZipFunction(UnpackZip);
+            InstallerAPI.functions = functions;
+        }
+
+>>>>>>> Stashed changes
         void downloadFile(string url, string folderPath, string filePath, string modName, AsyncCompletedEventHandler afterDownload) {
             using (WebClient wc = new WebClient()) {
                 try {
