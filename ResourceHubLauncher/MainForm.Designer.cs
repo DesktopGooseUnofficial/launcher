@@ -139,27 +139,27 @@
             this.installedModsContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.installedModsContextMenu.Name = "modListContextMenu";
             this.installedModsContextMenu.ShowImageMargin = false;
-            this.installedModsContextMenu.Size = new System.Drawing.Size(186, 104);
+            this.installedModsContextMenu.Size = new System.Drawing.Size(147, 76);
             this.installedModsContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.installedModsContextMenu_Opening);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(185, 24);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(146, 24);
             this.toolStripMenuItem1.Text = "Uninstall";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // openInModsToolStripMenuItem
             // 
             this.openInModsToolStripMenuItem.Name = "openInModsToolStripMenuItem";
-            this.openInModsToolStripMenuItem.Size = new System.Drawing.Size(185, 24);
+            this.openInModsToolStripMenuItem.Size = new System.Drawing.Size(146, 24);
             this.openInModsToolStripMenuItem.Text = "Disable";
             this.openInModsToolStripMenuItem.Click += new System.EventHandler(this.openInModsToolStripMenuItem_Click);
             // 
             // disableToolStripMenuItem
             // 
             this.disableToolStripMenuItem.Name = "disableToolStripMenuItem";
-            this.disableToolStripMenuItem.Size = new System.Drawing.Size(185, 24);
+            this.disableToolStripMenuItem.Size = new System.Drawing.Size(146, 24);
             this.disableToolStripMenuItem.Text = "Open in Mods";
             this.disableToolStripMenuItem.Click += new System.EventHandler(this.disableToolStripMenuItem_Click);
             // 
