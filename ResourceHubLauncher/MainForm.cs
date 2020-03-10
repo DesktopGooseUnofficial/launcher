@@ -55,7 +55,6 @@ namespace ResourceHubLauncher
 
         private void MainForm_Load(object sender, EventArgs e) {
 
-            InstallerAPI.Functions functions = new InstallerAPI.Functions();
             InitializeInstallerAPI();
 
 
@@ -104,8 +103,9 @@ namespace ResourceHubLauncher
 
             foreach (string pMod in Directory.GetDirectories(modPath)) {
                 string modName = pMod.Substring(modPath.Length + 1);
-                string datPath = Path.Combine(modPath, "RHLInfo.json");
-                JToken mod = mods.ToList().Find(m => (string)m["name"] == modName);
+                string datPath = Path.Combine(modPath, modName, "RHLInfo.json");
+                mod = mods.ToList().Find(m => (string)m["name"] == modName);
+                actualModButton = modsButtons.Find((string)mod["name"]);
                 if (File.Exists(datPath)) {
                     JObject data = JObject.Parse(File.ReadAllText(datPath));
                     if ((string)data["mod-version"] != (string)mod["mod-version"]) {
@@ -160,7 +160,6 @@ namespace ResourceHubLauncher
 
 
 
-            htmlTags.Apply(ref label3);
 
 
             loadingPanel.Hide();
@@ -226,7 +225,6 @@ namespace ResourceHubLauncher
 
         public static string actualModPath = "";
         public static string actualZipFilePath = "";
-        public static string launcherModPath = "";
 
         public static string GetGooseFolder() {
             return (string)Config.Options["gpath"];
@@ -236,24 +234,17 @@ namespace ResourceHubLauncher
             return actualModPath;
         }
 
-        public static void UnpackZip(List<string> locationsForFiles) {
-            ZipFile.ExtractToDirectory(actualZipFilePath, Path.Combine(launcherModPath, "Zip"));
-            foreach (string path in locationsForFiles) {
-                bool file = File.Exists(Path.Combine(launcherModPath, "Zip", Path.GetFileName(path)));
-
-                if (file) {
-                    if (File.Exists(path)) {
-                        File.Delete(path);
-                    }
-                    File.Move(Path.Combine(launcherModPath, "Zip", Path.GetFileName(path)), path);
-                } else {
-                    if (Directory.Exists(path)) {
-                        Directory.Delete(path, true);
-                    }
-                    Directory.Move(Path.Combine(launcherModPath, "Zip", Path.GetDirectoryName(path)), path);
+        public static void UnpackZip(string where) {
+            if(where ==Path.GetDirectoryName(actualModPath)) {
+                if(Directory.Exists(actualModPath)) {
+                    Directory.Delete(actualModPath, true);
                 }
-
+            } else {
+                if (Directory.Exists(where)) {
+                    Directory.Delete(where, true);
+                }
             }
+            ZipFile.ExtractToDirectory(actualZipFilePath, where);
 
         }
 
@@ -263,9 +254,6 @@ namespace ResourceHubLauncher
             functions.getModFolder = new InstallerAPI.Functions.GetModFolderFunction(GetModFolder);
             functions.unpackZip = new InstallerAPI.Functions.UnpackZipFunction(UnpackZip);
             InstallerAPI.functions = functions;
-            //InstallerAPI.functions.getGooseFolder= new InstallerAPI.Functions.GetGooseFolderFunction(GetGooseFolder);
-            //InstallerAPI.functions.getModFolder = new InstallerAPI.Functions.GetModFolderFunction(GetModFolder);
-            //InstallerAPI.functions.unpackZip = new InstallerAPI.Functions.UnpackZipFunction(UnpackZip);
         }
 
         void downloadFile(string url, string folderPath, string filePath, string modName, AsyncCompletedEventHandler afterDownload) {
@@ -302,6 +290,126 @@ namespace ResourceHubLauncher
                 }
             }
         }
+
+        void DllDownloadEnd(object _sender, AsyncCompletedEventArgs args) {
+            if ((string)mod["config-url"] != null) {
+                string urlC = (string)mod["config-url"];
+                string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
+                string f = Path.Combine(filePath, Path.GetFileName(urlC));
+                downloadFile(urlC, modPath, f, (string)mod["name"], (object _sender3, AsyncCompletedEventArgs args3) => {
+                    DownloadPanel.Hide();
+                    if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+
+                    string dataPath = Path.Combine( modPath, (string)mod["name"]);
+                    actualModButton.InstalledMod = true;
+                    actualModButton.changeContextMenu(installedModsContextMenu);
+                    actualModButton.Refresh();
+                    actualModButton.configurable = true;
+                    
+                    dataPath = Path.Combine(dataPath, "RHLInfo.json");
+
+                    try {
+                        if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                        if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                        File.WriteAllText(dataPath, mod.ToString());
+                    } catch (IOException ex) {
+                        MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    download = false;
+                });
+            } else {
+                DownloadPanel.Hide();
+                if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+
+                string dataPath = Path.Combine(modPath, (string)mod["name"]);
+                actualModButton.InstalledMod = true;
+                actualModButton.changeContextMenu(installedModsContextMenu);
+                actualModButton.Refresh();
+
+                dataPath = Path.Combine(dataPath, "RHLInfo.json");
+
+                try {
+                    if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                    if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                    File.WriteAllText(dataPath, mod.ToString());
+                } catch (IOException ex) {
+                    MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                download = false;
+            }
+        }
+
+        void NoDllDownloadEnd(object _sender, AsyncCompletedEventArgs args) {
+            string urlI = (string)mod["install-url"];
+            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
+            string f = Path.Combine(filePath, Path.GetFileName(urlI));
+            downloadFile(urlI, modPath, f, (string)mod["name"], (object _sender2, AsyncCompletedEventArgs args2) => {
+                if ((string)mod["config-url"] != null) {
+                    string urlC = (string)mod["config-url"];
+
+                    f = Path.Combine(filePath, Path.GetFileName(urlC));
+                    downloadFile(urlC, modPath, f, (string)mod["name"], (object _sender3, AsyncCompletedEventArgs args3) => {
+                        DownloadPanel.Hide();
+                        if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+
+                        string dataPath = Path.Combine(modPath, (string)mod["name"]);
+                        actualModButton.InstalledMod = true;
+                        actualModButton.changeContextMenu(installedModsContextMenu);
+                        actualModButton.Refresh();
+                        actualModButton.configurable = true;
+                        dataPath = Path.Combine(dataPath, "RHLInfo.json");
+
+                        try {
+                            if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                            if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                            File.WriteAllText(dataPath, mod.ToString());
+                        } catch (IOException ex) {
+                            MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        download = false;
+                    });
+                } else {
+
+                    Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Installer.dll"));
+
+                    actualModPath = Path.Combine(modPath, actualModButton.modName);
+
+
+
+                    foreach (Type type in installer.GetTypes()) {
+                        if (type.GetInterface("InstallerBasic") != null) {
+                            InstallerBasic installerIns = (InstallerBasic)Activator.CreateInstance(type);
+                            
+                            installerIns.Install();
+
+
+                        }
+                    }
+
+                    DownloadPanel.Hide();
+                    if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+
+                    string dataPath = Path.Combine(modPath, (string)mod["name"]);
+                    actualModButton.InstalledMod = true;
+                    actualModButton.changeContextMenu(installedModsContextMenu);
+                    actualModButton.Refresh();
+
+                    dataPath = Path.Combine(dataPath, "RHLInfo.json");
+
+                    try {
+                        if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                        if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                        File.WriteAllText(dataPath, mod.ToString());
+                    } catch (IOException ex) {
+                        MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    
+
+                    download = false;
+                }
+            });
+        }
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
 
             
@@ -332,8 +440,15 @@ namespace ResourceHubLauncher
             string filePath = modPath;
             if (d) filePath = Path.Combine(filePath, (string)mod["name"]);
 
-            string f = Path.Combine(filePath, Path.GetFileName(url));
-            string zipPath = f;
+            string f;
+            if (d) {
+                filePath = Path.Combine(filePath, (string)mod["name"]);
+                f = Path.Combine(filePath, Path.GetFileName(url));
+            } else {
+                f = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], Path.GetFileName(url));
+                actualZipFilePath = f;
+            }
+
             if (!Directory.Exists(Path.GetDirectoryName(f))) Directory.CreateDirectory(Path.GetDirectoryName(f));
 
             if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
@@ -341,124 +456,16 @@ namespace ResourceHubLauncher
                 Console.WriteLine("Download cancelled by user.");
                 return;
             }
-            download = true;
+            
             if (!download) {
+                download = true;
                 downloadFile(url, modPath, f, m, (object _sender, AsyncCompletedEventArgs args) => {
 
                     if (!d) {
-                        string urlI = (string)mod["install-url"];
-                        filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
-                        f = Path.Combine(filePath, Path.GetFileName(urlI));
-                        downloadFile(urlI, modPath, f, m, (object _sender2, AsyncCompletedEventArgs args2) => {
-                            if ((string)mod["config-url"] != null) {
-                                string urlC = (string)mod["config-url"];
-
-                                f = Path.Combine(filePath, Path.GetFileName(urlC));
-                                downloadFile(urlC, modPath, f, m, (object _sender3, AsyncCompletedEventArgs args3) => {
-                                    DownloadPanel.Hide();
-                                    if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
-
-                                    string dataPath = modPath;
-                                    actualModButton.InstalledMod = true;
-                                    actualModButton.changeContextMenu(installedModsContextMenu);
-                                    actualModButton.Refresh();
-                                    actualModButton.configurable = true;
-                                    dataPath = Path.Combine(dataPath, "RHLInfo.json");
-
-                                    try {
-                                        if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
-                                        if (!File.Exists(dataPath)) File.Create(dataPath).Close();
-                                        File.WriteAllText(dataPath, mod.ToString());
-                                    } catch (IOException ex) {
-                                        MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    }
-                                    download = false;
-                                });
-                            } else {
-                                DownloadPanel.Hide();
-                                if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
-
-                                string dataPath = modPath;
-                                actualModButton.InstalledMod = true;
-                                actualModButton.changeContextMenu(installedModsContextMenu);
-                                actualModButton.Refresh();
-
-                                dataPath = Path.Combine(dataPath, "RHLInfo.json");
-
-                                try {
-                                    if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
-                                    if (!File.Exists(dataPath)) File.Create(dataPath).Close();
-                                    File.WriteAllText(dataPath, mod.ToString());
-                                } catch (IOException ex) {
-                                    MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-
-                                Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Installer.dll"));
-
-                                actualModPath = Path.Combine(modPath, actualModButton.modName);
-                                launcherModPath = filePath;
-                                actualZipFilePath = zipPath;
-                                
-
-                                foreach (Type type in installer.GetTypes()) {
-                                    if (type.GetInterface("InstallerBasic") != null) {
-                                        InstallerBasic installerIns = (InstallerBasic)Activator.CreateInstance(type);
-                                        installerIns.Install();
-
-
-                                    }
-                                    //type.GetInterface("InstallerBasic").GetMethod("Install").Invoke()
-                                }
-
-                                download = false;
-                            }
-                        });
+                        NoDllDownloadEnd(_sender, args);
 
                     } else {
-                        if ((string)mod["config-url"] != null) {
-                            string urlC = (string)mod["config-url"];
-                            filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
-                            f = Path.Combine(filePath, Path.GetFileName(urlC));
-                            downloadFile(urlC, modPath, f, m, (object _sender3, AsyncCompletedEventArgs args3) => {
-                                DownloadPanel.Hide();
-                                if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
-
-                                string dataPath = modPath;
-                                actualModButton.InstalledMod = true;
-                                actualModButton.changeContextMenu(installedModsContextMenu);
-                                actualModButton.Refresh();
-                                actualModButton.configurable = true;
-                                dataPath = Path.Combine(dataPath, "RHLInfo.json");
-
-                                try {
-                                    if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
-                                    if (!File.Exists(dataPath)) File.Create(dataPath).Close();
-                                    File.WriteAllText(dataPath, mod.ToString());
-                                } catch (IOException ex) {
-                                    MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-                                download = false;
-                            });
-                        } else {
-                            DownloadPanel.Hide();
-                            if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
-
-                            string dataPath = modPath;
-                            actualModButton.InstalledMod = true;
-                            actualModButton.changeContextMenu(installedModsContextMenu);
-                            actualModButton.Refresh();
-
-                            dataPath = Path.Combine(dataPath, "RHLInfo.json");
-
-                            try {
-                                if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
-                                if (!File.Exists(dataPath)) File.Create(dataPath).Close();
-                                File.WriteAllText(dataPath, mod.ToString());
-                            } catch (IOException ex) {
-                                MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                            download = false;
-                        }
+                        DllDownloadEnd(_sender, args);
                     }
 
 
@@ -750,6 +757,107 @@ namespace ResourceHubLauncher
 
         private void label3_TextChanged(object sender, EventArgs e) {
 
+        }
+
+        void NoDllDownloadEndTest(object _sender, AsyncCompletedEventArgs args) {
+            //string urlI = (string)mod["install-url"];
+            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
+            //string f = Path.Combine(filePath, Path.GetFileName(urlI));
+
+
+                Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Installer.dll"));
+
+                actualModPath = Path.Combine(modPath, actualModButton.modName);
+
+                foreach (Type type in installer.GetTypes()) {
+                    if (type.GetInterface("InstallerBasic") != null) {
+                        InstallerBasic installerIns = (InstallerBasic)Activator.CreateInstance(type);
+                    
+                    installerIns.Install();
+
+
+                    }
+                }
+
+                DownloadPanel.Hide();
+                    if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+
+                    string dataPath = Path.Combine(modPath, (string)mod["name"]);
+                    actualModButton.InstalledMod = true;
+                    actualModButton.changeContextMenu(installedModsContextMenu);
+                    actualModButton.Refresh();
+
+                    dataPath = Path.Combine(dataPath, "RHLInfo.json");
+
+                    try {
+                        if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                        if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                        File.WriteAllText(dataPath, mod.ToString());
+                    } catch (IOException ex) {
+                        MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    download = false;
+                
+            
+        }
+
+        private void debugButton_Click(object sender, EventArgs e) {
+            mod = mods.ToList().Find(mmm => (string)mmm["name"] == "BreadCrumbs");
+            actualModButton = modsButtons.Find((string)mod["name"]);
+
+            string url = (string)mod["url"];
+
+
+
+            Console.WriteLine($"Downloading {(string)mod["name"]} from {url}");
+
+            int l = (int)mod["level"];
+
+            if (l > 0) {
+                if (!(bool)Config.Options["unsfe"] && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
+                    MsgBox($"This mod is rated as {r2s(l)} and will not be installed for your safety.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                } else if (Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it? Installing it may cause problems.", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                    return;
+                }
+            }
+
+            string n = Path.GetFileName(url);
+            string t = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1);
+            string m = (string)mod["name"];
+
+            bool d = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1) == "dll";
+
+            string filePath = modPath;
+            string f;
+            if (d) {
+                filePath = Path.Combine(filePath, (string)mod["name"]);
+                f = Path.Combine(filePath, Path.GetFileName(url));
+            } else {
+                f = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], Path.GetFileName(url));
+                actualZipFilePath = f;
+            }
+            
+             
+            
+            if (!Directory.Exists(Path.GetDirectoryName(f))) Directory.CreateDirectory(Path.GetDirectoryName(f));
+
+            if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                DownloadPanel.Hide();
+                Console.WriteLine("Download cancelled by user.");
+                return;
+            }
+
+            if (!download) {
+                download = true;
+                downloadFile(url, modPath, f, m, NoDllDownloadEndTest);
+
+            } else {
+                MsgBox("You already have a download in progress. Please wait for it to finish.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DownloadPanel.Hide();
+                return;
+            }
         }
     }
 }

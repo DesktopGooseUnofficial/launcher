@@ -73,6 +73,7 @@
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.metroPanel5 = new MetroFramework.Controls.MetroPanel();
             this.loadingPanel = new MetroFramework.Controls.MetroPanel();
+            this.debugButton = new MetroFramework.Controls.MetroButton();
             this.modListContextMenu.SuspendLayout();
             this.installedModsContextMenu.SuspendLayout();
             this.linksContextMenu.SuspendLayout();
@@ -252,7 +253,7 @@
             this.label3.Size = new System.Drawing.Size(682, 478);
             this.label3.TabIndex = 28;
             this.label3.Text = "<m>Hover or click on the mod buttons (in list on the left) to see mod description" +
-    "s.\n\nClick (on mod button) to see options!</m>";
+    "s.</m>\nsasddadsdas\n<m>Click (on mod button) to see options!</m>";
             // 
             // listBox1
             // 
@@ -555,7 +556,7 @@
             this.changelogPanel.HorizontalScrollbarBarColor = true;
             this.changelogPanel.HorizontalScrollbarHighlightOnWheel = false;
             this.changelogPanel.HorizontalScrollbarSize = 10;
-            this.changelogPanel.Location = new System.Drawing.Point(954, 548);
+            this.changelogPanel.Location = new System.Drawing.Point(954, 560);
             this.changelogPanel.Name = "changelogPanel";
             this.changelogPanel.Size = new System.Drawing.Size(971, 596);
             this.changelogPanel.TabIndex = 39;
@@ -641,12 +642,25 @@
             this.loadingPanel.VerticalScrollbarHighlightOnWheel = false;
             this.loadingPanel.VerticalScrollbarSize = 10;
             // 
+            // debugButton
+            // 
+            this.debugButton.Enabled = false;
+            this.debugButton.Location = new System.Drawing.Point(496, 25);
+            this.debugButton.Name = "debugButton";
+            this.debugButton.Size = new System.Drawing.Size(239, 41);
+            this.debugButton.TabIndex = 41;
+            this.debugButton.Text = "debug";
+            this.debugButton.UseSelectable = true;
+            this.debugButton.Visible = false;
+            this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScrollMinSize = new System.Drawing.Size(0, 481);
             this.ClientSize = new System.Drawing.Size(971, 596);
+            this.Controls.Add(this.debugButton);
             this.Controls.Add(this.changelogPanel);
             this.Controls.Add(this.loadingPanel);
             this.Controls.Add(this.OptionsButton);
@@ -744,5 +758,6 @@
         private MetroFramework.Controls.MetroPanel metroPanel5;
         private MetroFramework.Controls.MetroLabel metroLabel4;
         private MetroFramework.Controls.MetroPanel loadingPanel;
+        private MetroFramework.Controls.MetroButton debugButton;
     }
 }
