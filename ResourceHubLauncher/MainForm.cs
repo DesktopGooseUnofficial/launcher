@@ -55,6 +55,7 @@ namespace ResourceHubLauncher
 
         private void MainForm_Load(object sender, EventArgs e) {
 
+            InstallerAPI.Functions functions = new InstallerAPI.Functions();
             InitializeInstallerAPI();
 
 
@@ -257,13 +258,14 @@ namespace ResourceHubLauncher
         }
 
         private void InitializeInstallerAPI() {
-            //InstallerAPI.Functions functions = new InstallerAPI.Functions();
-            //functions.getGooseFolder = new InstallerAPI.Functions.GetGooseFolderFunction(GetGooseFolder);
-            //functions.getModFolder = new InstallerAPI.Functions.GetModFolderFunction(GetModFolder);
-            //functions.unpackZip = new InstallerAPI.Functions.UnpackZipFunction(UnpackZip);
-            InstallerAPI.functions.getGooseFolder= new InstallerAPI.Functions.GetGooseFolderFunction(GetGooseFolder);
-            InstallerAPI.functions.getModFolder = new InstallerAPI.Functions.GetModFolderFunction(GetModFolder);
-            InstallerAPI.functions.unpackZip = new InstallerAPI.Functions.UnpackZipFunction(UnpackZip);
+            InstallerAPI.Functions functions = new InstallerAPI.Functions();
+            functions.getGooseFolder = new InstallerAPI.Functions.GetGooseFolderFunction(GetGooseFolder);
+            functions.getModFolder = new InstallerAPI.Functions.GetModFolderFunction(GetModFolder);
+            functions.unpackZip = new InstallerAPI.Functions.UnpackZipFunction(UnpackZip);
+            InstallerAPI.functions = functions;
+            //InstallerAPI.functions.getGooseFolder= new InstallerAPI.Functions.GetGooseFolderFunction(GetGooseFolder);
+            //InstallerAPI.functions.getModFolder = new InstallerAPI.Functions.GetModFolderFunction(GetModFolder);
+            //InstallerAPI.functions.unpackZip = new InstallerAPI.Functions.UnpackZipFunction(UnpackZip);
         }
 
         void downloadFile(string url, string folderPath, string filePath, string modName, AsyncCompletedEventHandler afterDownload) {
