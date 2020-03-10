@@ -19,14 +19,14 @@ namespace RHL_Mod_Installer_API
             public delegate string GetGooseFolderFunction();
             public GetGooseFolderFunction getGooseFolder;
 
-            //returns path to folder with a mod
+            //returns path to folder with a mod (GooseFolder\Assets\Mods\%ModName%)
             public delegate string GetModFolderFunction();
             public GetModFolderFunction getModFolder;
 
 
             //add location (there this file will be placed) for every file in your zip with your mod!
             //every item in locationsForFiles is needed to end with a name (and extension) of a file from .zip of your mod
-            public delegate void UnpackZipFunction(List<string> locationsForFiles);
+            public delegate void UnpackZipFunction(string where);
             public UnpackZipFunction unpackZip;
 
         }
