@@ -55,6 +55,7 @@ namespace ResourceHubLauncher
 
         private void MainForm_Load(object sender, EventArgs e) {
 
+            InstallerAPI.Functions functions = new InstallerAPI.Functions();
             InitializeInstallerAPI();
 
 
