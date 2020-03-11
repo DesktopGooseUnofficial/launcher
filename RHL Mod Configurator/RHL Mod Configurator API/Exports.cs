@@ -12,16 +12,7 @@ namespace RHL_Mod_Configurator_API
         void Initialize();
     }
 
-    public class GUIStorage
-    {
-        static public string modConfigComment;
-        static public List<ConfiguratorAPI.ConfStringBox> confStringBoxes;
-        static public List<ConfiguratorAPI.ConfIntBox> confIntBoxes;
-        static public List<ConfiguratorAPI.ConfFloatBox> confFloatBoxes;
-        static public List<ConfiguratorAPI.ConfBoolBox> confBoolBoxes;
-        static public List<ConfiguratorAPI.ConfFileBox> confFileBoxes;
-        static public List<ConfiguratorAPI.ConfColorBox> confColorBoxes;
-    }
+
     public static class ConfiguratorAPI
     {
         public class Functions
@@ -37,75 +28,79 @@ namespace RHL_Mod_Configurator_API
         }
         public static Functions functions;
 
-        //option - file with: OptionName=OptionState (just like in goose config.ini)
-
-        
-        public  class ConfStringBox
+        public class GUIFunctions
         {
+            //Makes comment at the top of configurator window
+            public delegate void AddCommentFunction(string comment);
+            public static AddCommentFunction addComment;
+
+
+            //option - in file: OptionName=OptionState (just like in goose config.ini)
+
+
             //makes textbox for specified option in file
-            public delegate ConfStringBox Init(string fileWithConfig,string configOptionName, string showedName);
-            public static Init init;
+            public delegate void AddStringBoxFunction(string fileWithConfig, string configOptionName, string showedName);
+            public  AddStringBoxFunction addStringBox;
 
             //makes textbox for every option in file
-            public delegate List<ConfStringBox> InitForAll(string fileWithConfig);
-            public static Init initForAll;
-        }
+            public delegate void AddStringBoxForAllFunction(string fileWithConfig);
+            public AddStringBoxForAllFunction addStringBoxForAll;
 
-        //Makes TextBox number only
-        public class ConfIntBox
-        {
+
+            //Makes TextBox number only
             //makes textbox for specified option in file
-            public delegate ConfIntBox Init(string fileWithConfig, string configOptionName, string showedName);
-            public static Init init;
+            public delegate void AddIntBoxFunction(string fileWithConfig, string configOptionName, string showedName);
+            public AddIntBoxFunction addIntBox;
 
+            //Makes TextBoxes number only
             //makes textbox for every option in file
-            public delegate List<ConfIntBox> InitForAll(string fileWithConfig);
-            public static Init initForAll;
-        }
+            public delegate void AddIntBoxForAllFunction(string fileWithConfig);
+            public AddIntBoxForAllFunction addIntBoxForAll;
 
-        //Makes TextBox float numbers only
-        public class ConfFloatBox
-        {
+
+            //Makes TextBox float (and normal) numbers only
             //makes textbox for specified option in file
-            public delegate ConfFloatBox Init(string fileWithConfig, string configOptionName, string showedName);
-            public static Init init;
+            public delegate void AddFloatBoxFunction(string fileWithConfig, string configOptionName, string showedName);
+            public AddFloatBoxFunction addFloatBox;
 
+            //Makes TextBoxes float (and normal) numbers only
             //makes textbox for every option in file
-            public delegate List<ConfFloatBox> InitForAll(string fileWithConfig);
-            public static Init initForAll;
-        }
+            public delegate void AddFloatBoxForAllFunction(string fileWithConfig);
+            public AddFloatBoxForAllFunction addFloatBoxForAll;
 
-        //Makes RadioButton
-        public class ConfBoolBox
-        {
+
+            //Makes RadioButton
             //makes textbox for specified option in file
-            public delegate ConfBoolBox Init(string fileWithConfig, string configOptionName, string showedName);
-            public static Init init;
+            public delegate void AddBoolBoxFunction(string fileWithConfig, string configOptionName, string showedName);
+            public AddBoolBoxFunction addBoolBox;
 
+            //Makes RadioButton
             //makes textbox for every option in file
-            public delegate List<ConfBoolBox> InitForAll(string fileWithConfig);
-            public static Init initForAll;
-        }
+            public delegate void AddBoolBoxForAllFunction(string fileWithConfig);
+            public AddBoolBoxForAllFunction addBoolBoxForAll;
 
-        //Makes TextBox with changeFile button
-        public class ConfFileBox
-        {
-            //makes textbox with option to browse files
-            public delegate ConfFileBox Init(string showedName, OpenFileDialog FileDialog, Action<string>howToUsePath);
-            public static Init init;
-        }
 
-        //Makes Button with Color in it
-        public class ConfColorBox
-        {
+            //makes textbox with option to browse files and changeFile button
+            public delegate void AddFileBoxFunction(string showedName, OpenFileDialog FileDialog, Action<string> howToUsePath);
+            public AddFileBoxFunction addFileBox;
+
+
+            //Makes Button with Color in it
             //makes textbox for specified option in file
-            public delegate ConfColorBox Init(string fileWithConfig, string configOptionName, string showedName);
-            public static Init init;
+            public delegate void AddColorBoxFunction(string fileWithConfig, string configOptionName, string showedName);
+            public AddColorBoxFunction addColorBox;
 
+            //Makes Button with Color in it
             //makes textbox for every option in file
-            public delegate List<ConfColorBox> InitForAll(string fileWithConfig);
-            public static Init initForAll;
+            public delegate void AddColorBoxForAllFunction(string fileWithConfig);
+            public AddColorBoxForAllFunction addColorBoxForAll;
+
+
+            //Makes button that after click redirects user to website
+            public delegate void AddLinkButtonFunction(string buttonText, string buttonLink);
+            public AddLinkButtonFunction addLinkButton;
         }
+        public static GUIFunctions GUI;
     }
 
 }
