@@ -157,7 +157,7 @@ namespace ResourceHubLauncher
 
 
             htmlTags.Apply(ref label3);
-
+            
 
 
 

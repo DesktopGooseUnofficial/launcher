@@ -118,12 +118,21 @@ namespace ResourceHubLauncher
                 tag.GetTagsPos(toApply.Text);
             }
 
-            foreach (RichTextHtmlElement tag in tags) {
+            /*foreach (RichTextHtmlElement tag in tags) {
                 foreach (int pos in tag.startTags) {
                     MoveBackEveryTag(pos, tag.start.Length);
                 }
                 foreach (int pos in tag.endTags) {
                     MoveBackEveryTag(pos, tag.end.Length);
+                }
+            }*/
+
+            foreach (RichTextHtmlElement tag in tags) {
+                for(int i=0;i< tag.startTags.Count;i++) {
+                    MoveBackEveryTag(tag.startTags[i], tag.start.Length);
+                }
+                for (int i = 0; i < tag.endTags.Count; i++) {
+                    MoveBackEveryTag(tag.endTags[i], tag.end.Length);
                 }
             }
 

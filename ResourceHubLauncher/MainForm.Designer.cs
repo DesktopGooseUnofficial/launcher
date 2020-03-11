@@ -253,7 +253,7 @@
             this.label3.Size = new System.Drawing.Size(682, 478);
             this.label3.TabIndex = 28;
             this.label3.Text = "<m>Hover or click on the mod buttons (in list on the left) to see mod description" +
-    "s.</m>\nsasddadsdas\n<m>Click (on mod button) to see options!</m>";
+    "s.</m>\n\n<m>Click (on mod button) to see options!</m>\n";
             // 
             // listBox1
             // 
