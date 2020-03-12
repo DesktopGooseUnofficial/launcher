@@ -15,6 +15,7 @@ using System.Threading;
 using System.Reflection;
 using RHL_Mod_Installer_API;
 using System.IO.Compression;
+using RHL_Mod_Configurator_API;
 
 namespace ResourceHubLauncher
 {
@@ -56,7 +57,7 @@ namespace ResourceHubLauncher
         private void MainForm_Load(object sender, EventArgs e) {
 
             InitializeInstallerAPI();
-
+            InitializeConfiguratorAPI();
 
             loadingPanel.Location = new Point(0, 0);
             htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
@@ -254,6 +255,15 @@ namespace ResourceHubLauncher
             functions.getModFolder = new InstallerAPI.Functions.GetModFolderFunction(GetModFolder);
             functions.unpackZip = new InstallerAPI.Functions.UnpackZipFunction(UnpackZip);
             InstallerAPI.functions = functions;
+        }
+
+        private void InitializeConfiguratorAPI() {
+            ConfiguratorAPI.Functions functions = new ConfiguratorAPI.Functions();
+            functions.getGooseFolder= new ConfiguratorAPI.Functions.GetGooseFolderFunction(GetGooseFolder);
+            functions.getModFolder = new ConfiguratorAPI.Functions.GetModFolderFunction(GetModFolder);
+            ConfiguratorAPI.functions = functions;
+
+
         }
 
         void downloadFile(string url, string folderPath, string filePath, string modName, AsyncCompletedEventHandler afterDownload) {
@@ -759,105 +769,14 @@ namespace ResourceHubLauncher
 
         }
 
-        void NoDllDownloadEndTest(object _sender, AsyncCompletedEventArgs args) {
-            //string urlI = (string)mod["install-url"];
-            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
-            //string f = Path.Combine(filePath, Path.GetFileName(urlI));
-
-
-                Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Installer.dll"));
-
-                actualModPath = Path.Combine(modPath, actualModButton.modName);
-
-                foreach (Type type in installer.GetTypes()) {
-                    if (type.GetInterface("InstallerBasic") != null) {
-                        InstallerBasic installerIns = (InstallerBasic)Activator.CreateInstance(type);
-                    
-                    installerIns.Install();
-
-
-                    }
-                }
-
-                DownloadPanel.Hide();
-                    if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
-
-                    string dataPath = Path.Combine(modPath, (string)mod["name"]);
-                    actualModButton.InstalledMod = true;
-                    actualModButton.changeContextMenu(installedModsContextMenu);
-                    actualModButton.Refresh();
-
-                    dataPath = Path.Combine(dataPath, "RHLInfo.json");
-
-                    try {
-                        if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
-                        if (!File.Exists(dataPath)) File.Create(dataPath).Close();
-                        File.WriteAllText(dataPath, mod.ToString());
-                    } catch (IOException ex) {
-                        MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-
-                    download = false;
-                
-            
-        }
+        
 
         private void debugButton_Click(object sender, EventArgs e) {
-            mod = mods.ToList().Find(mmm => (string)mmm["name"] == "BreadCrumbs");
-            actualModButton = modsButtons.Find((string)mod["name"]);
+            Hide();
 
-            string url = (string)mod["url"];
-
-
-
-            Console.WriteLine($"Downloading {(string)mod["name"]} from {url}");
-
-            int l = (int)mod["level"];
-
-            if (l > 0) {
-                if (!(bool)Config.Options["unsfe"] && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
-                    MsgBox($"This mod is rated as {r2s(l)} and will not be installed for your safety.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                } else if (Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it? Installing it may cause problems.", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
-                    return;
-                }
-            }
-
-            string n = Path.GetFileName(url);
-            string t = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1);
-            string m = (string)mod["name"];
-
-            bool d = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1) == "dll";
-
-            string filePath = modPath;
-            string f;
-            if (d) {
-                filePath = Path.Combine(filePath, (string)mod["name"]);
-                f = Path.Combine(filePath, Path.GetFileName(url));
-            } else {
-                f = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], Path.GetFileName(url));
-                actualZipFilePath = f;
-            }
             
-             
-            
-            if (!Directory.Exists(Path.GetDirectoryName(f))) Directory.CreateDirectory(Path.GetDirectoryName(f));
-
-            if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
-                DownloadPanel.Hide();
-                Console.WriteLine("Download cancelled by user.");
-                return;
-            }
-
-            if (!download) {
-                download = true;
-                downloadFile(url, modPath, f, m, NoDllDownloadEndTest);
-
-            } else {
-                MsgBox("You already have a download in progress. Please wait for it to finish.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                DownloadPanel.Hide();
-                return;
-            }
+            new ModConfigForm().ShowDialog();
+            Show();
         }
     }
 }

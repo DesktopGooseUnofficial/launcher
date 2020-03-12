@@ -24,8 +24,8 @@ namespace RHL_Mod_Configurator
             ConfiguratorAPI.GUI.addLinkButton("Key Codes for Spawn Food Option", "https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.keys?view=netframework-4.8");
             ConfiguratorAPI.GUI.addStringBox(Path.Combine(ConfiguratorAPI.functions.getModFolder(), "Config.txt"), "KeyName", "Spawn Food Key");
             ConfiguratorAPI.GUI.addIntBox(Path.Combine(ConfiguratorAPI.functions.getModFolder(), "Config.txt"), "ImageSize", "Food Image Size");
-            ConfiguratorAPI.GUI.addFileBox("Food Image", fileDialog, (string dir) => { File.Copy(dir, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "crumbs.png"), true); });
-            ConfiguratorAPI.GUI.addFileBox("Eating Food Sound", fileDialog2, (string dir) => { File.Copy(dir, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "nom.wav"), true); });
+            ConfiguratorAPI.GUI.addFileBox("Food Image", fileDialog, (string dir) => { File.Copy(dir, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "crumbs.png"), true); }, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "crumbs.png"));
+            ConfiguratorAPI.GUI.addFileBox("Eating Food Sound", fileDialog2, (string dir) => { File.Copy(dir, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "nom.wav"), true); }, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "crumbs.png"));
         }
     }
 }

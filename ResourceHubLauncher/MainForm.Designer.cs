@@ -287,7 +287,6 @@
             this.toolStripMenuItem3});
             this.UtilitiesContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.UtilitiesContextMenu.Name = "modListContextMenu";
-            this.UtilitiesContextMenu.OwnerItem = this.gooseToolStripMenuItem;
             this.UtilitiesContextMenu.ShowImageMargin = false;
             this.UtilitiesContextMenu.Size = new System.Drawing.Size(85, 52);
             // 
@@ -372,14 +371,14 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(165, 24);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(185, 24);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // giveUsFeedbackToolStripMenuItem
             // 
             this.giveUsFeedbackToolStripMenuItem.Name = "giveUsFeedbackToolStripMenuItem";
-            this.giveUsFeedbackToolStripMenuItem.Size = new System.Drawing.Size(165, 24);
+            this.giveUsFeedbackToolStripMenuItem.Size = new System.Drawing.Size(185, 24);
             this.giveUsFeedbackToolStripMenuItem.Text = "Give us feedback";
             this.giveUsFeedbackToolStripMenuItem.Click += new System.EventHandler(this.giveUsFeedbackToolStripMenuItem_Click);
             // 
@@ -388,7 +387,7 @@
             this.toolStripMenuItem7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.toolStripMenuItem7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(165, 24);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(185, 24);
             this.toolStripMenuItem7.Text = "Settings";
             this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
             // 
@@ -644,14 +643,13 @@
             // 
             // debugButton
             // 
-            this.debugButton.Enabled = false;
             this.debugButton.Location = new System.Drawing.Point(496, 25);
             this.debugButton.Name = "debugButton";
             this.debugButton.Size = new System.Drawing.Size(239, 41);
             this.debugButton.TabIndex = 41;
             this.debugButton.Text = "debug";
+            this.debugButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.debugButton.UseSelectable = true;
-            this.debugButton.Visible = false;
             this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
             // 
             // MainForm

@@ -125,10 +125,11 @@ namespace ResourceHubLauncher
                     string configPath = Path.Combine(Path.GetDirectoryName((string)Config.Options["gpath"]), "config.ini");
                     using (StreamReader rrrr = new StreamReader(configPath)) {
                         parts = rrrr.ReadToEnd().Split('\n');
-                        if (parts[1].Substring(11).ToLower() == "false") {
+                        int partIndex = parts.ToList().FindIndex((line) => { return line.StartsWith("EnableMods"); });
+                        if (parts[partIndex].Substring(11).ToLower() == "false") {
                             Console.WriteLine($"User has mods disabled. Asking if they want to enable...");
                             if (MetroMessageBox.Show(form, "Do you want to enable them?", "Your config.ini file says that mods should be disabled.", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
-                                parts[1] = parts[1].Replace("False", "True");
+                                parts[partIndex] = parts[partIndex].Replace("False", "True");
                                 newConfigIni = true;
                                 form.Focus();
                             }

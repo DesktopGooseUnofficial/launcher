@@ -89,6 +89,7 @@
     <Compile Include="ModButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ModConfigClasses.cs" />
     <Compile Include="ModConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
