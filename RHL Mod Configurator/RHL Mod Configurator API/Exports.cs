@@ -21,7 +21,7 @@ namespace RHL_Mod_Configurator_API
             public delegate string GetGooseFolderFunction();
             public GetGooseFolderFunction getGooseFolder;
 
-            //returns path to folder with a mod
+            //returns path to folder with a mod (GooseFolder\Assets\Mods\%ModName%)
             public delegate string GetModFolderFunction();
             public GetModFolderFunction getModFolder;
 
@@ -39,60 +39,60 @@ namespace RHL_Mod_Configurator_API
 
 
             //makes textbox for specified option in file
-            public delegate void AddStringBoxFunction(string fileWithConfig, string configOptionName, string showedName);
+            public delegate void AddStringBoxFunction(string fileWithConfigPath, string configOptionName, string showedName);
             public  AddStringBoxFunction addStringBox;
 
             //makes textbox for every option in file
-            public delegate void AddStringBoxForAllFunction(string fileWithConfig);
+            public delegate void AddStringBoxForAllFunction(string fileWithConfigPath);
             public AddStringBoxForAllFunction addStringBoxForAll;
 
 
             //Makes TextBox number only
             //makes textbox for specified option in file
-            public delegate void AddIntBoxFunction(string fileWithConfig, string configOptionName, string showedName);
+            public delegate void AddIntBoxFunction(string fileWithConfigPath, string configOptionName, string showedName);
             public AddIntBoxFunction addIntBox;
 
             //Makes TextBoxes number only
             //makes textbox for every option in file
-            public delegate void AddIntBoxForAllFunction(string fileWithConfig);
+            public delegate void AddIntBoxForAllFunction(string fileWithConfigPath);
             public AddIntBoxForAllFunction addIntBoxForAll;
 
 
             //Makes TextBox float (and normal) numbers only
             //makes textbox for specified option in file
-            public delegate void AddFloatBoxFunction(string fileWithConfig, string configOptionName, string showedName);
+            public delegate void AddFloatBoxFunction(string fileWithConfigPath, string configOptionName, string showedName);
             public AddFloatBoxFunction addFloatBox;
 
             //Makes TextBoxes float (and normal) numbers only
             //makes textbox for every option in file
-            public delegate void AddFloatBoxForAllFunction(string fileWithConfig);
+            public delegate void AddFloatBoxForAllFunction(string fileWithConfigPath);
             public AddFloatBoxForAllFunction addFloatBoxForAll;
 
 
-            //Makes RadioButton
+            //Makes CheckBox
             //makes textbox for specified option in file
-            public delegate void AddBoolBoxFunction(string fileWithConfig, string configOptionName, string showedName);
+            public delegate void AddBoolBoxFunction(string fileWithConfigPath, string configOptionName, string showedName);
             public AddBoolBoxFunction addBoolBox;
 
             //Makes RadioButton
             //makes textbox for every option in file
-            public delegate void AddBoolBoxForAllFunction(string fileWithConfig);
+            public delegate void AddBoolBoxForAllFunction(string fileWithConfigPath);
             public AddBoolBoxForAllFunction addBoolBoxForAll;
 
 
             //makes textbox with option to browse files and changeFile button
-            public delegate void AddFileBoxFunction(string showedName, OpenFileDialog FileDialog, Action<string> howToUsePath);
+            public delegate void AddFileBoxFunction(string showedName, OpenFileDialog FileDialog, Action<string> howToUsePath,string toFilePath);
             public AddFileBoxFunction addFileBox;
 
 
             //Makes Button with Color in it
             //makes textbox for specified option in file
-            public delegate void AddColorBoxFunction(string fileWithConfig, string configOptionName, string showedName);
+            public delegate void AddColorBoxFunction(string fileWithConfigPath, string configOptionName, string showedName);
             public AddColorBoxFunction addColorBox;
 
             //Makes Button with Color in it
             //makes textbox for every option in file
-            public delegate void AddColorBoxForAllFunction(string fileWithConfig);
+            public delegate void AddColorBoxForAllFunction(string fileWithConfigPath);
             public AddColorBoxForAllFunction addColorBoxForAll;
 
 
