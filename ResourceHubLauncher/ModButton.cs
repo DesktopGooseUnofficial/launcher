@@ -19,6 +19,8 @@ namespace ResourceHubLauncher {
         Color modSafetyColor;
         string modState;
         Color modStateColor;
+        public bool hasConfigurator = false;
+        public bool fromOutside = false;
         
         protected Font font = new Font("Segoe UI Light", 10f);
 
@@ -107,7 +109,7 @@ namespace ResourceHubLauncher {
         }
 
         public bool InstalledMod {
-            get { return modState == "Installed"; }
+            get { return modState == "Installed"|| modState == "Disabled"; }
             set {
                 if (value) {
                     modState = "Installed";
@@ -120,7 +122,7 @@ namespace ResourceHubLauncher {
         }
 
         public bool EnabledMod {
-            get { return modState == "Installed"; }
+            get { return modState == "Installed"|| modState == "Available"; }
             set {
                 if (value) {
                     modState = "Installed";
@@ -184,21 +186,41 @@ namespace ResourceHubLauncher {
     class ModButtonList {
         public List<ModButton> list;
         Point latestAddedPos = new Point(0, -88);
-        Point Location = new Point(0, 0);
         public ModButtonList() {
             list = new List<ModButton>();
         }
 
         public void Add(ModButton mod) {
-            mod.setLocation(new Point(Location.X, Location.Y + latestAddedPos.Y + 88));
+            mod.setLocation(new Point(0, latestAddedPos.Y + 88));
             latestAddedPos = new Point(latestAddedPos.X, latestAddedPos.Y + 88);
             list.Add(mod);
 
         }
 
         public void Remove(string modName) {
-            list.RemoveAt(list.FindIndex(mod => mod.modName == modName));
+            int index = list.FindIndex(mod => mod.modName == modName);
+            list.RemoveAt(index);
+            latestAddedPos = new Point(latestAddedPos.X, latestAddedPos.Y - 88);
+            for (int i= index;i< list.Count;i++) {
+                
+                    list[i].setLocation(new Point(latestAddedPos.X,88*i));
+                
+                
+            }
             
+        }
+
+        public void ShowOnly(Func<ModButton,bool> how) {
+            int actualMemberListN = 0;
+            for(int i=0;i< list.Count;i++) {
+                if(how(list[i])) {
+                    list[i].setLocation(new Point(latestAddedPos.X, 88 * actualMemberListN));
+                    actualMemberListN++;
+                } else {
+                    list[i].setLocation(new Point(300, 0));
+                }
+            }
+            latestAddedPos = new Point(latestAddedPos.X, 0 - 88+ actualMemberListN*88);
         }
 
         public void Clear() {
