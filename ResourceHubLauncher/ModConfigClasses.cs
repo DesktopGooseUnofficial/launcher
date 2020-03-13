@@ -18,7 +18,7 @@ namespace ResourceHubLauncher
     {
         public ConfigFile(string fileLocation) {
             fileLocationPath = fileLocation;
-            StreamReader file = new StreamReader(fileLocation);
+            StreamReader file = new StreamReader(fileLocationPath);
             string[] lines = file.ReadToEnd().Split('\n');
             file.Close();
             foreach (string line in lines) {
@@ -29,6 +29,18 @@ namespace ResourceHubLauncher
             }
         }
 
+        public void Reload() {
+            options.Clear();
+            StreamReader file = new StreamReader(fileLocationPath);
+            string[] lines = file.ReadToEnd().Split('\n');
+            file.Close();
+            foreach (string line in lines) {
+                int equal = line.IndexOf('=');
+                string key = line.Substring(0, equal);
+                string value = line.Substring(equal + 1);
+                options.Add(new KeyValuePair<string, string>(key, value));
+            }
+        }
         public string getOption(string optionName) {
             return options.Find((p) => { return p.Key == optionName; }).Value;
         }
@@ -57,7 +69,7 @@ namespace ResourceHubLauncher
             file.Close();
         }
 
-        string fileLocationPath;
+        public string fileLocationPath;
         public List<KeyValuePair<string, string>> options;
     }
     class ModConfigClasses
@@ -79,6 +91,7 @@ namespace ResourceHubLauncher
                 BoxName.Text = showedName;
                 configOption = configOptionName;
                 configFilePath = fileWithConfig;
+                MouseDown += MouseDown_;
             }
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
@@ -96,6 +109,28 @@ namespace ResourceHubLauncher
             
             void ModConfigBox.Apply(List<KeyValuePair<string, ConfigFile>> configFiles) {
                 configFiles.Find((p) => { return p.Key == configFilePath; }).Value.ChangeOption(configOption, Text);
+            }
+
+            private void MouseDown_(object sender, MouseEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem",false)[0].Click += DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click += ToDefault;
+                MouseDown -= MouseDown_;
+                ContextMenuStrip.Closed += ContextMenu_Closed;
+            }
+
+            private void ContextMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem", false)[0].Click -= DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click -= ToDefault;
+                MouseDown += MouseDown_;
+                ContextMenuStrip.Closed -= ContextMenu_Closed;
+            }
+
+            private void ToDefault(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.defaultConfigFiles);
+            }
+
+            private void DiscardChanges(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.configFiles);
             }
 
             MetroLabel BoxName = new MetroLabel();
@@ -139,6 +174,7 @@ namespace ResourceHubLauncher
                 MaxLength = 10;
                 KeyPress += IntBox_KeyPress;
                 ShortcutsEnabled = false;
+                MouseDown += MouseDown_;
             }
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
@@ -156,6 +192,28 @@ namespace ResourceHubLauncher
 
             void ModConfigBox.Apply(List<KeyValuePair<string, ConfigFile>> configFiles) {
                 configFiles.Find((p) => { return p.Key == configFilePath; }).Value.ChangeOption(configOption, Text);
+            }
+
+            private void MouseDown_(object sender, MouseEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem", false)[0].Click += DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click += ToDefault;
+                MouseDown -= MouseDown_;
+                ContextMenuStrip.Closed += ContextMenu_Closed;
+            }
+
+            private void ContextMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem", false)[0].Click -= DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click -= ToDefault;
+                MouseDown += MouseDown_;
+                ContextMenuStrip.Closed -= ContextMenu_Closed;
+            }
+
+            private void ToDefault(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.defaultConfigFiles);
+            }
+
+            private void DiscardChanges(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.configFiles);
             }
 
             private void IntBox_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e) {
@@ -189,6 +247,7 @@ namespace ResourceHubLauncher
                 MaxLength = 20;
                 KeyPress += FloatBox_KeyPress;
                 ShortcutsEnabled = false;
+                MouseDown += MouseDown_;
             }
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
@@ -206,6 +265,28 @@ namespace ResourceHubLauncher
 
             void ModConfigBox.Apply(List<KeyValuePair<string, ConfigFile>> configFiles) {
                 configFiles.Find((p) => { return p.Key == configFilePath; }).Value.ChangeOption(configOption, Text);
+            }
+
+            private void MouseDown_(object sender, MouseEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem", false)[0].Click += DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click += ToDefault;
+                MouseDown -= MouseDown_;
+                ContextMenuStrip.Closed += ContextMenu_Closed;
+            }
+
+            private void ContextMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem", false)[0].Click -= DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click -= ToDefault;
+                MouseDown += MouseDown_;
+                ContextMenuStrip.Closed -= ContextMenu_Closed;
+            }
+
+            private void ToDefault(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.defaultConfigFiles);
+            }
+
+            private void DiscardChanges(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.configFiles);
             }
 
             /*private bool isNumber(string s,bool point,bool pointAndZeroOnStart) {
@@ -279,6 +360,7 @@ namespace ResourceHubLauncher
                 Text = showedName;
                 configOption = configOptionName;
                 configFilePath = fileWithConfig;
+                MouseDown += MouseDown_;
             }
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
@@ -292,6 +374,28 @@ namespace ResourceHubLauncher
 
             Point ModConfigBox.GetNextBoxLocation() {
                 return new Point(Location.X, Location.Y + Size.Height + 6);
+            }
+
+            private void MouseDown_(object sender, MouseEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem", false)[0].Click += DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click += ToDefault;
+                MouseDown -= MouseDown_;
+                ContextMenuStrip.Closed += ContextMenu_Closed;
+            }
+
+            private void ContextMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem", false)[0].Click -= DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click -= ToDefault;
+                MouseDown += MouseDown_;
+                ContextMenuStrip.Closed -= ContextMenu_Closed;
+            }
+
+            private void ToDefault(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.defaultConfigFiles);
+            }
+
+            private void DiscardChanges(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.configFiles);
             }
 
             void ModConfigBox.Apply(List<KeyValuePair<string, ConfigFile>> configFiles) {
@@ -319,13 +423,38 @@ namespace ResourceHubLauncher
                 fileDialog = FileDialog;
                 fileDialogButton.Click += FileDialogButtonClick;
                 modFilePath = toFilePath;
+
+                string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string filePath = Path.GetDirectoryName(modFilePath);
+                string filePathPath = Path.GetDirectoryName(filePath);
+                string filePathPathPath = Path.GetDirectoryName(filePathPath);
+                string filePathPathPathPath = Path.GetDirectoryName(filePathPathPath);
+                string filePathPathPathPathPath = Path.GetDirectoryName(filePathPathPathPath);
+                string forDefaultPath = modFilePath.Substring(filePathPathPathPathPath.Length);
+                string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName, "Default", forDefaultPath);
+                try {
+                    File.Copy(toFilePath, defaultPath, false);
+                } catch(IOException) {
+
+                }
+
+                MouseDown += MouseDown_;
             }
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
                 //Text = configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption);
                 string ModsFilesPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles");
-                if ( configFiles.First().Key.StartsWith(ModsFilesPath)) {
-                    Text = Path.Combine(ModsFilesPath, Path.GetDirectoryName(modFilePath),"Default",Path.GetFileName(modFilePath));
+                if ( configFiles.First().Value.fileLocationPath.StartsWith(ModsFilesPath)) {
+                    string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    string filePath = Path.GetDirectoryName(modFilePath);
+                    string filePathPath = Path.GetDirectoryName(filePath);
+                    string filePathPathPath = Path.GetDirectoryName(filePathPath);
+                    string filePathPathPathPath = Path.GetDirectoryName(filePathPathPath);
+                    string filePathPathPathPathPath = Path.GetDirectoryName(filePathPathPathPath);
+                    string forDefaultPath = modFilePath.Substring(filePathPathPathPathPath.Length);
+                    string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName, "Default", forDefaultPath);
+
+                    Text = defaultPath;
                 }
             }
 
@@ -342,6 +471,28 @@ namespace ResourceHubLauncher
                 if(File.Exists(Text)) {
                     applyAction(Text);
                 }
+            }
+
+            private void MouseDown_(object sender, MouseEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem", false)[0].Click += DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click += ToDefault;
+                MouseDown -= MouseDown_;
+                ContextMenuStrip.Closed += ContextMenu_Closed;
+            }
+
+            private void ContextMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem", false)[0].Click -= DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click -= ToDefault;
+                MouseDown += MouseDown_;
+                ContextMenuStrip.Closed -= ContextMenu_Closed;
+            }
+
+            private void ToDefault(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.defaultConfigFiles);
+            }
+
+            private void DiscardChanges(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.configFiles);
             }
 
             void FileDialogButtonClick(object sender, EventArgs e) {
@@ -369,7 +520,8 @@ namespace ResourceHubLauncher
                 configFilePath = fileWithConfig;
                 Click += OnClick;
                 colorDialog.ShowHelp = true;
-                
+
+                MouseDown += MouseDown_;
             }
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
@@ -394,6 +546,28 @@ namespace ResourceHubLauncher
 
             Point ModConfigBox.GetNextBoxLocation() {
                 return new Point(Location.X, Location.Y + Size.Height + 6);
+            }
+
+            private void MouseDown_(object sender, MouseEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem", false)[0].Click += DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click += ToDefault;
+                MouseDown -= MouseDown_;
+                ContextMenuStrip.Closed += ContextMenu_Closed;
+            }
+
+            private void ContextMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e) {
+                ContextMenuStrip.Items.Find("DiscardChangesToolStripMenuItem", false)[0].Click -= DiscardChanges;
+                ContextMenuStrip.Items.Find("SetToDefaultToolStripMenuItem", false)[0].Click -= ToDefault;
+                MouseDown += MouseDown_;
+                ContextMenuStrip.Closed -= ContextMenu_Closed;
+            }
+
+            private void ToDefault(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.defaultConfigFiles);
+            }
+
+            private void DiscardChanges(object sender, EventArgs e) {
+                ((ModConfigBox)this).ApplyValue(ModConfigForm.actualModConfig.configFiles);
             }
 
             void ModConfigBox.Apply(List<KeyValuePair<string, ConfigFile>> configFiles) {
