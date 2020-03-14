@@ -17,15 +17,19 @@ namespace ResourceHubLauncher
     class ConfigFile
     {
         public ConfigFile(string fileLocation) {
+            options = new List<KeyValuePair<string, string>>();
             fileLocationPath = fileLocation;
             StreamReader file = new StreamReader(fileLocationPath);
             string[] lines = file.ReadToEnd().Split('\n');
             file.Close();
             foreach (string line in lines) {
                 int equal = line.IndexOf('=');
-                string key = line.Substring(0, equal);
-                string value = line.Substring(equal + 1);
-                options.Add(new KeyValuePair<string, string>(key, value));
+                if(equal!=-1) {
+                    string key = line.Substring(0, equal);
+                    string value = line.Substring(equal + 1);
+                    options.Add(new KeyValuePair<string, string>(key, value));
+                }
+                
             }
         }
 
@@ -74,6 +78,7 @@ namespace ResourceHubLauncher
     }
     class ModConfigClasses
     {
+        
         public interface ModConfigBox
         {
             void Apply(List<KeyValuePair<string, ConfigFile>> configFiles);
@@ -81,7 +86,9 @@ namespace ResourceHubLauncher
             void SetLocation(Point newLocation);
             void ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles);
 
+            void setContextMenuStrip(ContextMenuStrip newMenuStrip);
         }
+
         public class StringBox : MetroTextBox, ModConfigBox
         {
             public StringBox(string fileWithConfig, string configOptionName, string showedName) {
@@ -96,6 +103,10 @@ namespace ResourceHubLauncher
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
                 Text = configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption);
+            }
+
+            void ModConfigBox.setContextMenuStrip(ContextMenuStrip newMenuStrip) {
+                ContextMenuStrip = newMenuStrip;
             }
 
             void ModConfigBox.SetLocation(Point newLocation) {
@@ -145,6 +156,9 @@ namespace ResourceHubLauncher
                 Text = comment;
             }
 
+            void ModConfigBox.setContextMenuStrip(ContextMenuStrip newMenuStrip) {
+            }
+
             void ModConfigBox.SetLocation(Point newLocation) {
                 Location = newLocation;
             }
@@ -175,6 +189,10 @@ namespace ResourceHubLauncher
                 KeyPress += IntBox_KeyPress;
                 ShortcutsEnabled = false;
                 MouseDown += MouseDown_;
+            }
+
+            void ModConfigBox.setContextMenuStrip(ContextMenuStrip newMenuStrip) {
+                ContextMenuStrip = newMenuStrip;
             }
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
@@ -248,6 +266,10 @@ namespace ResourceHubLauncher
                 KeyPress += FloatBox_KeyPress;
                 ShortcutsEnabled = false;
                 MouseDown += MouseDown_;
+            }
+
+            void ModConfigBox.setContextMenuStrip(ContextMenuStrip newMenuStrip) {
+                ContextMenuStrip = newMenuStrip;
             }
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
@@ -363,6 +385,10 @@ namespace ResourceHubLauncher
                 MouseDown += MouseDown_;
             }
 
+            void ModConfigBox.setContextMenuStrip(ContextMenuStrip newMenuStrip) {
+                ContextMenuStrip = newMenuStrip;
+            }
+
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
 
                 Checked = configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption).ToLower()=="true";
@@ -439,6 +465,10 @@ namespace ResourceHubLauncher
                 }
 
                 MouseDown += MouseDown_;
+            }
+
+            void ModConfigBox.setContextMenuStrip(ContextMenuStrip newMenuStrip) {
+                ContextMenuStrip = newMenuStrip;
             }
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
@@ -524,6 +554,10 @@ namespace ResourceHubLauncher
                 MouseDown += MouseDown_;
             }
 
+            void ModConfigBox.setContextMenuStrip(ContextMenuStrip newMenuStrip) {
+                ContextMenuStrip = newMenuStrip;
+            }
+
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
                 SetButtonColor(ColorTranslator.FromHtml(configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption)));
             }
@@ -594,7 +628,8 @@ namespace ResourceHubLauncher
                
             }
 
-
+            void ModConfigBox.setContextMenuStrip(ContextMenuStrip newMenuStrip) {
+            }
 
             void OnClick(object sender, EventArgs e) {
                 if (MsgBox("This will open a link: "+'"' + link + '"' + ". Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) == DialogResult.Yes) {

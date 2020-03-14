@@ -36,7 +36,7 @@ namespace ResourceHubLauncher
         private MetroButton DefaultButton;
 
 
-        public static List<KeyValuePair<string, ModConfigData>> modsConfigs;
+        public static List<KeyValuePair<string, ModConfigData>> modsConfigs=new List<KeyValuePair<string, ModConfigData>>();
         public static ModConfigData actualModConfig;
         private MetroButton DiscardChangesButton;
         private ContextMenuStrip OptionOptionsContextMenu;
@@ -66,21 +66,24 @@ namespace ResourceHubLauncher
                 configurator.Initialize();
             }
 
-            
 
             for (int i = 0; i < actualModConfig.configGUI.Count; i++) {
                 actualModConfig.configGUI[i].ApplyValue(actualModConfig.configFiles);
             }
-
             thisConfigForm = this;
-
             Size = new Size(Size.Width, actualModConfig.configGUI.Last().GetNextBoxLocation().Y+ 25+23);
 
-            foreach(Control c in actualModConfig.configGUI) {
+            //Stack Overflow Error
+            for (int i=0;i< actualModConfig.configGUI.Count;i++) {
+                Controls.Add((Control)actualModConfig.configGUI[i]);
+                //@todo Repair Stack Overflow Error when Activating Mod Configurator
+                //@body Happens when applying ContextMenuStrip to a StringBox "Memory Error: Unable To Read Memory (MetroTextBox)"
+                actualModConfig.configGUI[i].setContextMenuStrip( OptionOptionsContextMenu);
+            }
+            /*foreach (Control c in actualModConfig.configGUI) {
                 Controls.Add(c);
                 c.ContextMenuStrip = OptionOptionsContextMenu;
-            }
-
+            }*/
         }
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
@@ -216,6 +219,10 @@ namespace ResourceHubLauncher
                 string forDefaultPath = pair.Key.Substring(filePathPathPathPathPath.Length);
                 string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName,"Default", forDefaultPath);
                 try {
+                    if(!Directory.Exists(Path.GetDirectoryName(Path.Combine(exePath, "ModsFiles", MainForm.modName, "Default", forDefaultPath)))) {
+                        Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(exePath, "ModsFiles", MainForm.modName, "Default", forDefaultPath)));
+                    }
+                    
                     File.Copy(pair.Key, defaultPath,false);
                 }
                 catch(IOException) {

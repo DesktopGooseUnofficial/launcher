@@ -27,8 +27,6 @@ namespace ResourceHubLauncher {
         Action<string> clickR;
         Action<string> hoverR;
 
-        public bool configurable = false;
-
         public ModButton(string _modName, int _modSafety, ModButtonStates _modState, Action<string> clickResult, Action<string> hoverResult) {
 
             modNameColor = Color.FromArgb(170, 170, 170);
@@ -109,7 +107,7 @@ namespace ResourceHubLauncher {
         }
 
         public bool InstalledMod {
-            get { return modState == "Installed"|| modState == "Disabled"; }
+            get { return modState == "Installed"; }
             set {
                 if (value) {
                     modState = "Installed";
@@ -122,9 +120,22 @@ namespace ResourceHubLauncher {
         }
 
         public bool EnabledMod {
-            get { return modState == "Installed"|| modState == "Available"; }
+            get { return modState == "Installed"; }
             set {
                 if (value) {
+                    modState = "Installed";
+                    modStateColor = Color.Green;
+                } else {
+                    modState = "Disabled";
+                    modStateColor = Color.Red;
+                }
+            }
+        }
+
+        public bool DisabledMod {
+            get { return modState == "Disabled"; }
+            set {
+                if (!value) {
                     modState = "Installed";
                     modStateColor = Color.Green;
                 } else {
@@ -214,10 +225,11 @@ namespace ResourceHubLauncher {
             int actualMemberListN = 0;
             for(int i=0;i< list.Count;i++) {
                 if(how(list[i])) {
+                    list[i].Visible = true;
                     list[i].setLocation(new Point(latestAddedPos.X, 88 * actualMemberListN));
                     actualMemberListN++;
                 } else {
-                    list[i].setLocation(new Point(300, 0));
+                    list[i].Visible=false;
                 }
             }
             latestAddedPos = new Point(latestAddedPos.X, 0 - 88+ actualMemberListN*88);
