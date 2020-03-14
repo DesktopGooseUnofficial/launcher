@@ -29,7 +29,16 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.modListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.installToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resourceHubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openInModsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.showModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ShowedModsMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.installedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disabledToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.availableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new MetroFramework.Controls.MetroLabel();
             this.label6 = new MetroFramework.Controls.MetroLabel();
             this.styleExtender = new MetroFramework.Components.MetroStyleExtender(this.components);
@@ -38,7 +47,6 @@
             this.discordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.twitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.futureOfTheLauncherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.label3 = new System.Windows.Forms.RichTextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.UtilitiesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -48,6 +56,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.giveUsFeedbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.gooseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.metroProgressBar1 = new MetroFramework.Controls.MetroProgressBar();
@@ -66,16 +75,8 @@
             this.metroPanel5 = new MetroFramework.Controls.MetroPanel();
             this.loadingPanel = new MetroFramework.Controls.MetroPanel();
             this.debugButton = new MetroFramework.Controls.MetroButton();
-            this.openInModsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.disableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.configureModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ShowedModsMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.installedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.disabledToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.availableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modListContextMenu.SuspendLayout();
+            this.ShowedModsMenuStrip.SuspendLayout();
             this.linksContextMenu.SuspendLayout();
             this.UtilitiesContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
@@ -85,7 +86,6 @@
             this.changelogPanel.SuspendLayout();
             this.metroPanel4.SuspendLayout();
             this.metroPanel5.SuspendLayout();
-            this.ShowedModsMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // modListContextMenu
@@ -115,12 +115,101 @@
             this.installToolStripMenuItem.Text = "Install";
             this.installToolStripMenuItem.Click += new System.EventHandler(this.installToolStripMenuItem_Click);
             // 
+            // disableToolStripMenuItem1
+            // 
+            this.disableToolStripMenuItem1.Enabled = false;
+            this.disableToolStripMenuItem1.Name = "disableToolStripMenuItem1";
+            this.disableToolStripMenuItem1.Size = new System.Drawing.Size(153, 24);
+            this.disableToolStripMenuItem1.Text = "Disable";
+            this.disableToolStripMenuItem1.Click += new System.EventHandler(this.disableToolStripMenuItem1_Click);
+            // 
+            // configureModToolStripMenuItem
+            // 
+            this.configureModToolStripMenuItem.Enabled = false;
+            this.configureModToolStripMenuItem.Name = "configureModToolStripMenuItem";
+            this.configureModToolStripMenuItem.Size = new System.Drawing.Size(153, 24);
+            this.configureModToolStripMenuItem.Text = "Configure Mod";
+            this.configureModToolStripMenuItem.Click += new System.EventHandler(this.configureModToolStripMenuItem_Click);
+            // 
             // resourceHubToolStripMenuItem
             // 
             this.resourceHubToolStripMenuItem.Name = "resourceHubToolStripMenuItem";
             this.resourceHubToolStripMenuItem.Size = new System.Drawing.Size(153, 24);
             this.resourceHubToolStripMenuItem.Text = "ResourceHub";
             this.resourceHubToolStripMenuItem.Click += new System.EventHandler(this.resourceHubToolStripMenuItem_Click);
+            // 
+            // openInModsToolStripMenuItem1
+            // 
+            this.openInModsToolStripMenuItem1.Enabled = false;
+            this.openInModsToolStripMenuItem1.Name = "openInModsToolStripMenuItem1";
+            this.openInModsToolStripMenuItem1.Size = new System.Drawing.Size(153, 24);
+            this.openInModsToolStripMenuItem1.Text = "Open in Mods";
+            this.openInModsToolStripMenuItem1.Click += new System.EventHandler(this.openInModsToolStripMenuItem1_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(150, 6);
+            // 
+            // showModsToolStripMenuItem
+            // 
+            this.showModsToolStripMenuItem.DropDown = this.ShowedModsMenuStrip;
+            this.showModsToolStripMenuItem.Name = "showModsToolStripMenuItem";
+            this.showModsToolStripMenuItem.Size = new System.Drawing.Size(153, 24);
+            this.showModsToolStripMenuItem.Text = "Show Mods...";
+            // 
+            // ShowedModsMenuStrip
+            // 
+            this.styleExtender.SetApplyMetroTheme(this.ShowedModsMenuStrip, true);
+            this.ShowedModsMenuStrip.AutoClose = false;
+            this.ShowedModsMenuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.ShowedModsMenuStrip.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.ShowedModsMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.ShowedModsMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.installedToolStripMenuItem,
+            this.disabledToolStripMenuItem,
+            this.availableToolStripMenuItem});
+            this.ShowedModsMenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
+            this.ShowedModsMenuStrip.Name = "modListContextMenu";
+            this.ShowedModsMenuStrip.ShowImageMargin = false;
+            this.ShowedModsMenuStrip.Size = new System.Drawing.Size(197, 82);
+            // 
+            // installedToolStripMenuItem
+            // 
+            this.installedToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.installedToolStripMenuItem.Checked = true;
+            this.installedToolStripMenuItem.CheckOnClick = true;
+            this.installedToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.installedToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.installedToolStripMenuItem.Name = "installedToolStripMenuItem";
+            this.installedToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
+            this.installedToolStripMenuItem.Text = "Show Installed Mods";
+            this.installedToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click_1);
+            // 
+            // disabledToolStripMenuItem
+            // 
+            this.disabledToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.disabledToolStripMenuItem.Checked = true;
+            this.disabledToolStripMenuItem.CheckOnClick = true;
+            this.disabledToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.disabledToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.disabledToolStripMenuItem.Name = "disabledToolStripMenuItem";
+            this.disabledToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
+            this.disabledToolStripMenuItem.Text = "Show Disabled Mods";
+            this.disabledToolStripMenuItem.Click += new System.EventHandler(this.disabledToolStripMenuItem_Click);
+            // 
+            // availableToolStripMenuItem
+            // 
+            this.availableToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.availableToolStripMenuItem.Checked = true;
+            this.availableToolStripMenuItem.CheckOnClick = true;
+            this.availableToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.availableToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.availableToolStripMenuItem.Name = "availableToolStripMenuItem";
+            this.availableToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
+            this.availableToolStripMenuItem.Text = "Show Available Mods";
+            this.availableToolStripMenuItem.Click += new System.EventHandler(this.availableToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -159,6 +248,7 @@
             this.futureOfTheLauncherToolStripMenuItem});
             this.linksContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.linksContextMenu.Name = "modListContextMenu";
+            this.linksContextMenu.OwnerItem = this.toolStripMenuItem8;
             this.linksContextMenu.ShowImageMargin = false;
             this.linksContextMenu.Size = new System.Drawing.Size(182, 100);
             // 
@@ -193,15 +283,6 @@
             this.futureOfTheLauncherToolStripMenuItem.Size = new System.Drawing.Size(181, 24);
             this.futureOfTheLauncherToolStripMenuItem.Text = "Upcoming Features";
             this.futureOfTheLauncherToolStripMenuItem.Click += new System.EventHandler(this.futureOfTheLauncherToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem8
-            // 
-            this.toolStripMenuItem8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.toolStripMenuItem8.DropDown = this.linksContextMenu;
-            this.toolStripMenuItem8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
-            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(165, 24);
-            this.toolStripMenuItem8.Text = "Links";
             // 
             // label3
             // 
@@ -254,6 +335,7 @@
             this.toolStripMenuItem3});
             this.UtilitiesContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.UtilitiesContextMenu.Name = "modListContextMenu";
+            this.UtilitiesContextMenu.OwnerItem = this.gooseToolStripMenuItem;
             this.UtilitiesContextMenu.ShowImageMargin = false;
             this.UtilitiesContextMenu.Size = new System.Drawing.Size(85, 52);
             // 
@@ -314,6 +396,15 @@
             this.toolStripMenuItem7.Size = new System.Drawing.Size(165, 24);
             this.toolStripMenuItem7.Text = "Settings";
             this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.toolStripMenuItem8.DropDown = this.linksContextMenu;
+            this.toolStripMenuItem8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(165, 24);
+            this.toolStripMenuItem8.Text = "Links";
             // 
             // gooseToolStripMenuItem
             // 
@@ -582,96 +673,8 @@
             this.debugButton.Text = "debug";
             this.debugButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.debugButton.UseSelectable = true;
+            this.debugButton.Visible = false;
             this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
-            // 
-            // openInModsToolStripMenuItem1
-            // 
-            this.openInModsToolStripMenuItem1.Enabled = false;
-            this.openInModsToolStripMenuItem1.Name = "openInModsToolStripMenuItem1";
-            this.openInModsToolStripMenuItem1.Size = new System.Drawing.Size(153, 24);
-            this.openInModsToolStripMenuItem1.Text = "Open in Mods";
-            this.openInModsToolStripMenuItem1.Click += new System.EventHandler(this.openInModsToolStripMenuItem1_Click);
-            // 
-            // disableToolStripMenuItem1
-            // 
-            this.disableToolStripMenuItem1.Enabled = false;
-            this.disableToolStripMenuItem1.Name = "disableToolStripMenuItem1";
-            this.disableToolStripMenuItem1.Size = new System.Drawing.Size(153, 24);
-            this.disableToolStripMenuItem1.Text = "Disable";
-            this.disableToolStripMenuItem1.Click += new System.EventHandler(this.disableToolStripMenuItem1_Click);
-            // 
-            // configureModToolStripMenuItem
-            // 
-            this.configureModToolStripMenuItem.Enabled = false;
-            this.configureModToolStripMenuItem.Name = "configureModToolStripMenuItem";
-            this.configureModToolStripMenuItem.Size = new System.Drawing.Size(153, 24);
-            this.configureModToolStripMenuItem.Text = "Configure Mod";
-            this.configureModToolStripMenuItem.Click += new System.EventHandler(this.configureModToolStripMenuItem_Click);
-            // 
-            // showModsToolStripMenuItem
-            // 
-            this.showModsToolStripMenuItem.DropDown = this.ShowedModsMenuStrip;
-            this.showModsToolStripMenuItem.Name = "showModsToolStripMenuItem";
-            this.showModsToolStripMenuItem.Size = new System.Drawing.Size(153, 24);
-            this.showModsToolStripMenuItem.Text = "Show Mods";
-            // 
-            // ShowedModsMenuStrip
-            // 
-            this.styleExtender.SetApplyMetroTheme(this.ShowedModsMenuStrip, true);
-            this.ShowedModsMenuStrip.AutoClose = false;
-            this.ShowedModsMenuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.ShowedModsMenuStrip.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
-            this.ShowedModsMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.ShowedModsMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.installedToolStripMenuItem,
-            this.disabledToolStripMenuItem,
-            this.availableToolStripMenuItem});
-            this.ShowedModsMenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-            this.ShowedModsMenuStrip.Name = "modListContextMenu";
-            this.ShowedModsMenuStrip.ShowImageMargin = false;
-            this.ShowedModsMenuStrip.Size = new System.Drawing.Size(197, 82);
-            // 
-            // installedToolStripMenuItem
-            // 
-            this.installedToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.installedToolStripMenuItem.Checked = true;
-            this.installedToolStripMenuItem.CheckOnClick = true;
-            this.installedToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.installedToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.installedToolStripMenuItem.Name = "installedToolStripMenuItem";
-            this.installedToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
-            this.installedToolStripMenuItem.Text = "Show Installed Mods";
-            this.installedToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click_1);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(150, 6);
-            // 
-            // disabledToolStripMenuItem
-            // 
-            this.disabledToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.disabledToolStripMenuItem.Checked = true;
-            this.disabledToolStripMenuItem.CheckOnClick = true;
-            this.disabledToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.disabledToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.disabledToolStripMenuItem.Name = "disabledToolStripMenuItem";
-            this.disabledToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
-            this.disabledToolStripMenuItem.Text = "Show Disabled Mods";
-            this.disabledToolStripMenuItem.Click += new System.EventHandler(this.disabledToolStripMenuItem_Click);
-            // 
-            // availableToolStripMenuItem
-            // 
-            this.availableToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.availableToolStripMenuItem.Checked = true;
-            this.availableToolStripMenuItem.CheckOnClick = true;
-            this.availableToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.availableToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.availableToolStripMenuItem.Name = "availableToolStripMenuItem";
-            this.availableToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
-            this.availableToolStripMenuItem.Text = "Show Available Mods";
-            this.availableToolStripMenuItem.Click += new System.EventHandler(this.availableToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -710,6 +713,7 @@
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseUp);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.modListContextMenu.ResumeLayout(false);
+            this.ShowedModsMenuStrip.ResumeLayout(false);
             this.linksContextMenu.ResumeLayout(false);
             this.UtilitiesContextMenu.ResumeLayout(false);
             this.OptionsContextMenu.ResumeLayout(false);
@@ -722,7 +726,6 @@
             this.metroPanel4.ResumeLayout(false);
             this.metroPanel4.PerformLayout();
             this.metroPanel5.ResumeLayout(false);
-            this.ShowedModsMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
