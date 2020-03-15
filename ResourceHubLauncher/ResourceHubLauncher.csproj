@@ -73,12 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
-    <Compile Include="frmChngLog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmChngLog.Designer.cs">
-      <DependentUpon>frmChngLog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Loading.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,9 +102,6 @@
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="_G.cs" />
-    <EmbeddedResource Include="frmChngLog.resx">
-      <DependentUpon>frmChngLog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Loading.resx">
       <DependentUpon>Loading.cs</DependentUpon>
     </EmbeddedResource>
