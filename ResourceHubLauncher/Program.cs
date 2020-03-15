@@ -98,7 +98,11 @@ namespace ResourceHubLauncher
                         }
                             
                     } else {
-                        Console.WriteLine("Launcher is up to date!");
+                        if(_G.dev || !_G.update) {
+                            Console.WriteLine("Looks like the user doesn't want updates.");
+                        } else {
+                            Console.WriteLine("Launcher is up to date!");
+                        }
                     }
 
                     if (_G.dev && MetroMessageBox.Show(form, "Copy Version MD5 to clipboard?", "Developer Mode", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
