@@ -25,7 +25,7 @@ namespace RHL_Mod_Configurator
             ConfiguratorAPI.GUI.addStringBox(Path.Combine(ConfiguratorAPI.functions.getModFolder(), "Config.txt"), "KeyName", "Spawn Food Key");
             ConfiguratorAPI.GUI.addIntBox(Path.Combine(ConfiguratorAPI.functions.getModFolder(), "Config.txt"), "ImageSize", "Food Image Size");
             ConfiguratorAPI.GUI.addFileBox("Food Image", fileDialog, (string dir) => { File.Copy(dir, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "crumbs.png"), true); }, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "crumbs.png"));
-            ConfiguratorAPI.GUI.addFileBox("Eating Food Sound", fileDialog2, (string dir) => { File.Copy(dir, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "nom.wav"), true); }, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "crumbs.png"));
+            ConfiguratorAPI.GUI.addFileBox("Eating Food Sound", fileDialog2, (string dir) => { File.Copy(dir, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "nom.wav"), true); }, Path.Combine(ConfiguratorAPI.functions.getModFolder(), "nom.wav"));
         }
     }
 }
