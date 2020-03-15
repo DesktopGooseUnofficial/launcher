@@ -44,6 +44,7 @@ namespace ResourceHubLauncher
         private ToolStripMenuItem DiscardChangesToolStripMenuItem;
         private ToolStripMenuItem SetToDefaultToolStripMenuItem;
         public static ModConfigForm thisConfigForm;
+        //public static ContextMenuStrip GUIContextMenu;
 
         public ModConfigForm() {
             InitializeComponent();
@@ -52,6 +53,8 @@ namespace ResourceHubLauncher
         public ModConfigForm(ConfiguratorBasic configurator) {
             InitializeComponent();
             int modConfigIndex = modsConfigs.FindIndex((p) => { return p.Key == MainForm.modName; });
+            thisConfigForm = this;
+            //GUIContextMenu = OptionOptionsContextMenu;
             if (modConfigIndex == -1) {
                 actualModConfig = new ModConfigData();
                 modsConfigs.Add(new KeyValuePair<string, ModConfigData>(MainForm.modName, actualModConfig));
@@ -70,7 +73,7 @@ namespace ResourceHubLauncher
             for (int i = 0; i < actualModConfig.configGUI.Count; i++) {
                 actualModConfig.configGUI[i].ApplyValue(actualModConfig.configFiles);
             }
-            thisConfigForm = this;
+            
             Size = new Size(Size.Width, actualModConfig.configGUI.Last().GetNextBoxLocation().Y+ 25+23);
 
             //Stack Overflow Error
@@ -78,7 +81,7 @@ namespace ResourceHubLauncher
                 Controls.Add((Control)actualModConfig.configGUI[i]);
                 //@todo Repair Stack Overflow Error when Activating Mod Configurator
                 //@body Happens when applying ContextMenuStrip to a StringBox "Memory Error: Unable To Read Memory (MetroTextBox)"
-                actualModConfig.configGUI[i].setContextMenuStrip( OptionOptionsContextMenu);
+                //actualModConfig.configGUI[i].setContextMenuStrip( OptionOptionsContextMenu);
             }
             /*foreach (Control c in actualModConfig.configGUI) {
                 Controls.Add(c);
@@ -238,13 +241,17 @@ namespace ResourceHubLauncher
             }
         }
 
+        public static void setPosition(ModConfigClasses.ModConfigBox box) {
+            if (actualModConfig.configGUI.Count > 0) {
+                box.SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
+            } else {
+                box.SetLocation(new Point(23, 33));
+            }
+        }
+
         public static void AddCommentFunction(string comment) {
             ModConfigClasses.Comment commentClass = new ModConfigClasses.Comment(comment);
-            if (actualModConfig.configGUI.Count > 0) {
-                ((ModConfigClasses.ModConfigBox) commentClass).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-            } else {
-                ((ModConfigClasses.ModConfigBox)commentClass).SetLocation( new Point(23, 23));
-            }
+            setPosition(commentClass);
             actualModConfig.configGUI.Add(commentClass);
             
         }
@@ -252,38 +259,34 @@ namespace ResourceHubLauncher
         public static void AddStringBoxFunction(string fileWithConfigPath, string configOptionName, string showedName) {
             ModConfigClasses.StringBox Box = new ModConfigClasses.StringBox(fileWithConfigPath, configOptionName, showedName);
             OpenConfigFile(fileWithConfigPath);
+            //Box.ContextMenuStrip = GUIContextMenu;
+            ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
             ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-            if (actualModConfig.configGUI.Count > 0) {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-            } else {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-            }
+            setPosition(Box);
             actualModConfig.configGUI.Add(Box);
         }
+
+        
 
         public static void AddStringBoxForAllFunction(string fileWithConfigPath) {
             OpenConfigFile(fileWithConfigPath);
             foreach(KeyValuePair<string,string> pair in actualModConfig.configFiles.Last().Value.options) {
                 ModConfigClasses.StringBox Box = new ModConfigClasses.StringBox(fileWithConfigPath, pair.Key, pair.Key+':');
+                //Box.ContextMenuStrip = GUIContextMenu;
                 ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-                if (actualModConfig.configGUI.Count > 0) {
-                    ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-                } else {
-                    ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-                }
+                ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
+                setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
         }
 
         public static void AddIntBoxFunction(string fileWithConfigPath, string configOptionName, string showedName) {
             ModConfigClasses.IntBox Box = new ModConfigClasses.IntBox(fileWithConfigPath, configOptionName, showedName);
+            //Box.ContextMenuStrip = GUIContextMenu;
             OpenConfigFile(fileWithConfigPath);
+            ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
             ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-            if (actualModConfig.configGUI.Count > 0) {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-            } else {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-            }
+            setPosition(Box);
             actualModConfig.configGUI.Add(Box);
         }
 
@@ -291,25 +294,21 @@ namespace ResourceHubLauncher
             OpenConfigFile(fileWithConfigPath);
             foreach (KeyValuePair<string, string> pair in actualModConfig.configFiles.Last().Value.options) {
                 ModConfigClasses.IntBox Box = new ModConfigClasses.IntBox(fileWithConfigPath, pair.Key, pair.Key+':');
+                //Box.ContextMenuStrip = GUIContextMenu;
                 ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-                if (actualModConfig.configGUI.Count > 0) {
-                    ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-                } else {
-                    ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-                }
+                ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
+                setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
         }
 
         public static void AddFloatBoxFunction(string fileWithConfigPath, string configOptionName, string showedName) {
             ModConfigClasses.FloatBox Box = new ModConfigClasses.FloatBox(fileWithConfigPath, configOptionName, showedName);
+            //Box.ContextMenuStrip = GUIContextMenu;
             OpenConfigFile(fileWithConfigPath);
+            ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
             ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-            if (actualModConfig.configGUI.Count > 0) {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-            } else {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-            }
+            setPosition(Box);
             actualModConfig.configGUI.Add(Box);
         }
 
@@ -317,25 +316,20 @@ namespace ResourceHubLauncher
             OpenConfigFile(fileWithConfigPath);
             foreach (KeyValuePair<string, string> pair in actualModConfig.configFiles.Last().Value.options) {
                 ModConfigClasses.FloatBox Box = new ModConfigClasses.FloatBox(fileWithConfigPath, pair.Key, pair.Key+':');
+                //Box.ContextMenuStrip = GUIContextMenu;
                 ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-                if (actualModConfig.configGUI.Count > 0) {
-                    ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-                } else {
-                    ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-                }
+                ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
+                setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
         }
 
         public static void AddBoolBoxFunction(string fileWithConfigPath, string configOptionName, string showedName) {
             ModConfigClasses.BoolBox Box = new ModConfigClasses.BoolBox(fileWithConfigPath, configOptionName, showedName);
+            //Box.ContextMenuStrip = GUIContextMenu;
             OpenConfigFile(fileWithConfigPath);
             ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-            if (actualModConfig.configGUI.Count > 0) {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-            } else {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-            }
+            setPosition(Box);
             actualModConfig.configGUI.Add(Box);
         }
 
@@ -343,12 +337,9 @@ namespace ResourceHubLauncher
             OpenConfigFile(fileWithConfigPath);
             foreach (KeyValuePair<string, string> pair in actualModConfig.configFiles.Last().Value.options) {
                 ModConfigClasses.BoolBox Box = new ModConfigClasses.BoolBox(fileWithConfigPath, pair.Key, pair.Key+':');
+                //Box.ContextMenuStrip = GUIContextMenu;
                 ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-                if (actualModConfig.configGUI.Count > 0) {
-                    ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-                } else {
-                    ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-                }
+                setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
         }
@@ -356,24 +347,19 @@ namespace ResourceHubLauncher
         public static void AddFileBoxFunction(string showedName, OpenFileDialog FileDialog, Action<string> howToUsePath, string toFilePath) {
 
             ModConfigClasses.FileBox Box = new ModConfigClasses.FileBox(showedName, FileDialog, howToUsePath, toFilePath);
+            //Box.ContextMenuStrip = GUIContextMenu;
             Box.Text = toFilePath;
-            if (actualModConfig.configGUI.Count > 0) {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-            } else {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-            }
+            ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
+            setPosition(Box);
             actualModConfig.configGUI.Add(Box);
         }
 
         public static void AddColorBoxFunction(string fileWithConfigPath, string configOptionName, string showedName) {
             ModConfigClasses.ColorBox Box = new ModConfigClasses.ColorBox(fileWithConfigPath, configOptionName, showedName);
+            //Box.ContextMenuStrip = GUIContextMenu;
             OpenConfigFile(fileWithConfigPath);
             ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-            if (actualModConfig.configGUI.Count > 0) {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-            } else {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-            }
+            setPosition(Box);
             actualModConfig.configGUI.Add(Box);
         }
 
@@ -381,23 +367,16 @@ namespace ResourceHubLauncher
             OpenConfigFile(fileWithConfigPath);
             foreach (KeyValuePair<string, string> pair in actualModConfig.configFiles.Last().Value.options) {
                 ModConfigClasses.ColorBox Box = new ModConfigClasses.ColorBox(fileWithConfigPath, pair.Key, pair.Key+':');
+                //Box.ContextMenuStrip = GUIContextMenu;
                 ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-                if (actualModConfig.configGUI.Count > 0) {
-                    ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-                } else {
-                    ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-                }
+                setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
         }
 
         public static void AddLinkButtonFunction(string buttonText, string buttonLink) {
             ModConfigClasses.LinkButton Box = new ModConfigClasses.LinkButton(buttonText, buttonLink, MsgBox);
-            if (actualModConfig.configGUI.Count > 0) {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(actualModConfig.configGUI.Last().GetNextBoxLocation());
-            } else {
-                ((ModConfigClasses.ModConfigBox)Box).SetLocation(new Point(23, 23));
-            }
+            setPosition(Box);
             actualModConfig.configGUI.Add(Box);
         }
 
@@ -411,7 +390,10 @@ namespace ResourceHubLauncher
 
         private void ApplyButton_Click(object sender, EventArgs e) {
             for (int i = 0; i < actualModConfig.configGUI.Count; i++) {
-                actualModConfig.configGUI[i].ApplyValue(actualModConfig.configFiles);
+                actualModConfig.configGUI[i].Apply(actualModConfig.configFiles);
+            }
+            foreach(KeyValuePair<string,ConfigFile> p in actualModConfig.configFiles) {
+                p.Value.SaveChanges();
             }
         }
 
