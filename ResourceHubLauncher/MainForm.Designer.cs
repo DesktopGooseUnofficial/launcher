@@ -390,11 +390,12 @@
             // 
             // metroPanel2
             // 
+            this.metroPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.metroPanel2.AutoScroll = true;
             this.metroPanel2.AutoScrollMinSize = new System.Drawing.Size(0, 400);
             this.metroPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.metroPanel2.ContextMenuStrip = this.ShowedModsMenuStrip;
-            this.metroPanel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.metroPanel2.HorizontalScrollbar = true;
             this.metroPanel2.HorizontalScrollbarBarColor = false;
             this.metroPanel2.HorizontalScrollbarHighlightOnWheel = false;
@@ -402,7 +403,7 @@
             this.metroPanel2.Location = new System.Drawing.Point(20, 60);
             this.metroPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.metroPanel2.Name = "metroPanel2";
-            this.metroPanel2.Size = new System.Drawing.Size(184, 439);
+            this.metroPanel2.Size = new System.Drawing.Size(182, 437);
             this.metroPanel2.TabIndex = 33;
             this.metroPanel2.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroPanel2.VerticalScrollbar = true;
@@ -419,10 +420,10 @@
             this.resizingPanel.HorizontalScrollbarBarColor = true;
             this.resizingPanel.HorizontalScrollbarHighlightOnWheel = false;
             this.resizingPanel.HorizontalScrollbarSize = 8;
-            this.resizingPanel.Location = new System.Drawing.Point(22, 62);
+            this.resizingPanel.Location = new System.Drawing.Point(20, 60);
             this.resizingPanel.Margin = new System.Windows.Forms.Padding(2);
             this.resizingPanel.Name = "resizingPanel";
-            this.resizingPanel.Size = new System.Drawing.Size(182, 17);
+            this.resizingPanel.Size = new System.Drawing.Size(182, 437);
             this.resizingPanel.TabIndex = 35;
             this.resizingPanel.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.resizingPanel.VerticalScrollbarBarColor = true;
@@ -434,7 +435,7 @@
             // 
             this.pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pictureBox2.InitialImage = global::ResourceHubLauncher.Properties.Resources.RHLTSmall;
-            this.pictureBox2.Location = new System.Drawing.Point(53, 186);
+            this.pictureBox2.Location = new System.Drawing.Point(53, 396);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(75, 81);
@@ -490,13 +491,15 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel1.Location = new System.Drawing.Point(204, 60);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(651, 439);
+            this.panel1.Size = new System.Drawing.Size(651, 437);
             this.panel1.TabIndex = 43;
             // 
             // label3
@@ -510,7 +513,7 @@
             this.label3.Location = new System.Drawing.Point(0, 0);
             this.label3.Name = "label3";
             this.label3.ReadOnly = true;
-            this.label3.Size = new System.Drawing.Size(649, 437);
+            this.label3.Size = new System.Drawing.Size(649, 435);
             this.label3.TabIndex = 43;
             this.label3.Text = "<m>Hover or click on the mod buttons (in list on the left) to see mod description" +
     "s.</m>\n\n<m>Click (on mod button) to see options!</m>\n";
