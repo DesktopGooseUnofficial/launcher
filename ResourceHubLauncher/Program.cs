@@ -66,13 +66,21 @@ namespace ResourceHubLauncher
 
                     MainForm form = new MainForm(RestartForm);
 
-
+                    
 
 
 
 
 
                     form.results = data["mods"].Children().ToList();
+                    if (!_G.beta && !File.Exists("Updater.exe")) {
+                        if (MetroMessageBox.Show(form, "This is an unstable build.\nAre you sure you want to proceed?\nLink for the latest stable build: https://github.com/DesktopGooseUnofficial/launcher/releases/latest \n When you will click "+'"'+"No"+'"'+ " File "+'"'+ "Latest Stable Build" + '"'+" will be created with that link easy to copy.", "Warming", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) {
+                            StreamWriter wr = new StreamWriter("Latest Stable Build.txt");
+                            wr.WriteLine("https://github.com/DesktopGooseUnofficial/launcher/releases/latest");
+                            wr.Close();
+                            Environment.Exit(0);
+                        }
+                    }
 
                     byte[] hash = MD5.Create().ComputeHash(File.ReadAllBytes(Application.ExecutablePath));
 
