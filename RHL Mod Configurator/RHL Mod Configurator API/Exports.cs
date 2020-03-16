@@ -32,7 +32,7 @@ namespace RHL_Mod_Configurator_API
         {
             //Makes comment at the top of configurator window
             public delegate void AddCommentFunction(string comment);
-            public static AddCommentFunction addComment;
+            public AddCommentFunction addComment;
 
 
             //option - in file: OptionName=OptionState (just like in goose config.ini)

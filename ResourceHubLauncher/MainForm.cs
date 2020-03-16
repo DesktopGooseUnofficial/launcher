@@ -1,4 +1,4 @@
-﻿using MetroFramework;
+﻿ using MetroFramework;
 using MetroFramework.Forms;
 using Newtonsoft.Json.Linq;
 using System;
@@ -64,8 +64,8 @@ namespace ResourceHubLauncher
             htmlTags.Add("i", "Segoe UI Light", 0, FontStyle.Italic);
             htmlTags.Add("u", "Segoe UI Light", 0, FontStyle.Underline);
             htmlTags.Add("s", "Segoe UI Light", 0, FontStyle.Strikeout);
-            htmlTags.Add("m", "Segoe UI Light", 13f);
-            htmlTags.Add("big", "Segoe UI Light", 16f);
+            htmlTags.Add("m", "Segoe UI Light", 15f);
+            htmlTags.Add("big", "Segoe UI Light", 18f);
 
             if ((string)Config.Options["latestU"] != md5.ToString()) {
                 Console.WriteLine($"User appears to have updated.\nDisplaying changelog...");
@@ -363,6 +363,25 @@ namespace ResourceHubLauncher
                     DownloadPanel.Hide();
                     if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
+                    string launcherModPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
+                    if (Directory.Exists(Path.Combine(launcherModPath, "Default"))) {
+                        Directory.Delete(Path.Combine(launcherModPath, "Default"), true);
+                    }
+                    if (Directory.Exists(Path.Combine(launcherModPath, "Used Before"))) {
+                        Assembly configurator = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Configurator.dll"));
+                        ConfiguratorBasic configuratorIns;
+                        foreach (Type type in configurator.GetTypes()) {
+                            if (type.GetInterface("ConfiguratorBasic") != null) {
+                                configuratorIns = (ConfiguratorBasic)Activator.CreateInstance(type);
+                                ModConfigForm.OpenMod((string)mod["name"], configuratorIns);
+
+
+                                ModConfigForm.UseSafetyCopy((string)mod["name"]);
+                            }
+                        }
+
+                    }
+
                     string dataPath = Path.Combine( modPath, (string)mod["name"]);
                     actualModButton.InstalledMod = true;
                     installToolStripMenuItem.Text = "Uninstall";
@@ -385,6 +404,7 @@ namespace ResourceHubLauncher
                 DownloadPanel.Hide();
                 if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
+
                 string dataPath = Path.Combine(modPath, (string)mod["name"]);
                 actualModButton.InstalledMod = true;
                 installToolStripMenuItem.Text = "Uninstall";
@@ -404,6 +424,7 @@ namespace ResourceHubLauncher
         }
 
         void NoDllDownloadEnd(object _sender, AsyncCompletedEventArgs args) {
+
             string urlI = (string)mod["install-url"];
             string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
             string f = Path.Combine(filePath, Path.GetFileName(urlI));
@@ -417,14 +438,31 @@ namespace ResourceHubLauncher
                         if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
                         string dataPath = Path.Combine(modPath, (string)mod["name"]);
+                        string launcherModPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
+                        if (Directory.Exists(Path.Combine(launcherModPath, "Default"))) {
+                            Directory.Delete(Path.Combine(launcherModPath, "Default"), true);
+                        }
+                        if (Directory.Exists(Path.Combine(launcherModPath, "Used Before"))) {
+                            Assembly configurator = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Configurator.dll"));
+                            ConfiguratorBasic configuratorIns;
+                            foreach (Type type in configurator.GetTypes()) {
+                                if (type.GetInterface("ConfiguratorBasic") != null) {
+                                    configuratorIns = (ConfiguratorBasic)Activator.CreateInstance(type);
+                                    ModConfigForm.OpenMod((string)mod["name"], configuratorIns);
+
+
+                                    ModConfigForm.UseSafetyCopy((string)mod["name"]);
+                                }
+                            }
+                            
+                        }
+                        dataPath = Path.Combine(dataPath, "RHLInfo.json");
                         actualModButton.InstalledMod = true;
                         installToolStripMenuItem.Text = "Uninstall";
                         actualModButton.Refresh();
                         actualModButton.hasConfigurator = true;
                         configureModToolStripMenuItem.Enabled = true;
                         openInModsToolStripMenuItem1.Enabled = true;
-                        dataPath = Path.Combine(dataPath, "RHLInfo.json");
-
                         try {
                             if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
                             if (!File.Exists(dataPath)) File.Create(dataPath).Close();
@@ -434,7 +472,8 @@ namespace ResourceHubLauncher
                         }
                         download = false;
                     });
-                } else {
+                } 
+                else {
 
                     Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Installer.dll"));
 

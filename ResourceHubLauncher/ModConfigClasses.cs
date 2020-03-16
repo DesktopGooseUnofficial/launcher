@@ -40,9 +40,12 @@ namespace ResourceHubLauncher
             file.Close();
             foreach (string line in lines) {
                 int equal = line.IndexOf('=');
-                string key = line.Substring(0, equal);
-                string value = line.Substring(equal + 1);
-                options.Add(new KeyValuePair<string, string>(key, value));
+                if(equal!=-1) {
+                    string key = line.Substring(0, equal);
+                    string value = line.Substring(equal + 1);
+                    options.Add(new KeyValuePair<string, string>(key, value));
+                }
+                
             }
         }
         public string getOption(string optionName) {
@@ -50,9 +53,13 @@ namespace ResourceHubLauncher
         }
 
         public void ChangeOption(string optionName,string toWhat) {
-
-            KeyValuePair<string, string> optionPair= options.Find(( p) => { return p.Key == optionName; });
-            options.Remove(optionPair);
+            int index= options.FindIndex((p) => { return p.Key == optionName; });
+            if(index!=-1) {
+                KeyValuePair<string, string> optionPair = options[index];
+                options.Remove(optionPair);
+            }
+            
+            
             options.Add(new KeyValuePair<string, string>(optionName, toWhat));
 
         }
@@ -71,6 +78,25 @@ namespace ResourceHubLauncher
             }
             file.Write(toWrite);
             file.Close();
+        }
+
+        public void ApplyFrom(string what) {
+            options = new List<KeyValuePair<string, string>>();
+            StreamReader file = new StreamReader(what);
+            string[] lines = file.ReadToEnd().Split('\n');
+            file.Close();
+            foreach (string line in lines) {
+                int equal = line.IndexOf('=');
+                if (equal != -1) {
+                    string key = line.Substring(0, equal);
+                    string value = line.Substring(equal + 1);
+                    if(options.FindIndex((p)=> { return p.Key == key; })==-1) {
+                        options.Add(new KeyValuePair<string, string>(key, value));
+                    }
+                    
+                }
+
+            }
         }
 
         public string fileLocationPath;
@@ -127,6 +153,11 @@ namespace ResourceHubLauncher
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
                 Text = configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption);
+                for (int i = 0; i < Text.Length; i++) {
+                    if (Text[i] == '\n' || Text[i] == '\r') {
+                        Text = Text.Remove(i, 1);
+                    }
+                }
             }
 
             void ModConfigBox.addControlsToControl(Control c) {
@@ -143,12 +174,17 @@ namespace ResourceHubLauncher
             }
             
             void ModConfigBox.Apply(List<KeyValuePair<string, ConfigFile>> configFiles) {
+                for(int i=0;i< Text.Length;i++) {
+                    if(Text[i]=='\n'|| Text[i] == '\r') {
+                        Text= Text.Remove(i, 1);
+                    }
+                }
                 configFiles.Find((p) => { return p.Key == configFilePath; }).Value.ChangeOption(configOption, Text);
             }
 
-            MetroLabel BoxName = new MetroLabel();
-            string configFilePath;
-            string configOption;
+            protected MetroLabel BoxName = new MetroLabel();
+            protected string configFilePath;
+            protected string configOption;
         }
 
         public class Comment : MetroLabel, ModConfigBox {
@@ -178,38 +214,12 @@ namespace ResourceHubLauncher
             }
         }
 
-        public class IntBox : MetroTextBox, ModConfigBox
+        public class IntBox : StringBox
         {
-            public IntBox(string fileWithConfig, string configOptionName, string showedName) {
-                BoxName.Text = showedName + ':';
-                BoxName.AutoSize = true;
-                Size = new Size(388, 23);
-                configOption = configOptionName;
-                configFilePath = fileWithConfig;
+            public IntBox(string fileWithConfig, string configOptionName, string showedName) : base(fileWithConfig, configOptionName, showedName) {
                 MaxLength = 10;
                 KeyPress += IntBox_KeyPress;
                 ShortcutsEnabled = false;
-            }
-
-            void ModConfigBox.addControlsToControl(Control c) {
-                c.Controls.Add(BoxName);
-            }
-
-            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
-                Text = configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption);
-            }
-
-            void ModConfigBox.SetLocation(Point newLocation) {
-                BoxName.Location = newLocation;
-                Location = new Point(newLocation.X, newLocation.Y + BoxName.Size.Height + 3);
-            }
-
-            Point ModConfigBox.GetNextBoxLocation() {
-                return new Point(Location.X, Location.Y + Size.Height + 6);
-            }
-
-            void ModConfigBox.Apply(List<KeyValuePair<string, ConfigFile>> configFiles) {
-                configFiles.Find((p) => { return p.Key == configFilePath; }).Value.ChangeOption(configOption, Text);
             }
 
             private void IntBox_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e) {
@@ -226,43 +236,14 @@ namespace ResourceHubLauncher
 
             }
 
-            MetroLabel BoxName = new MetroLabel();
-            string configFilePath;
-            string configOption;
         }
 
-        public class FloatBox : MetroTextBox, ModConfigBox
+        public class FloatBox : StringBox
         {
-            public FloatBox(string fileWithConfig, string configOptionName, string showedName) {
-                BoxName.Text = showedName + ':';
-                BoxName.AutoSize = true;
-                Size = new Size(388, 23);
-                configOption = configOptionName;
-                configFilePath = fileWithConfig;
+            public FloatBox(string fileWithConfig, string configOptionName, string showedName) : base(fileWithConfig, configOptionName, showedName) {
                 MaxLength = 20;
                 KeyPress += FloatBox_KeyPress;
                 ShortcutsEnabled = false;
-            }
-
-            void ModConfigBox.addControlsToControl(Control c) {
-                c.Controls.Add(BoxName);
-            }
-
-            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
-                Text = configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption);
-            }
-
-            void ModConfigBox.SetLocation(Point newLocation) {
-                BoxName.Location = newLocation;
-                Location = new Point(newLocation.X, newLocation.Y + BoxName.Size.Height + 3);
-            }
-
-            Point ModConfigBox.GetNextBoxLocation() {
-                return new Point(Location.X, Location.Y + Size.Height + 6);
-            }
-
-            void ModConfigBox.Apply(List<KeyValuePair<string, ConfigFile>> configFiles) {
-                configFiles.Find((p) => { return p.Key == configFilePath; }).Value.ChangeOption(configOption, Text);
             }
 
             /*private bool isNumber(string s,bool point,bool pointAndZeroOnStart) {
@@ -325,9 +306,6 @@ namespace ResourceHubLauncher
                 }
             }
 
-            MetroLabel BoxName = new MetroLabel();
-            string configFilePath;
-            string configOption;
         }
 
         public class BoolBox : MetroCheckBox, ModConfigBox
@@ -379,13 +357,11 @@ namespace ResourceHubLauncher
                 modFilePath = toFilePath;
 
                 string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string filePath = Path.GetDirectoryName(modFilePath);
-                string filePathPath = Path.GetDirectoryName(filePath);
-                string filePathPathPath = Path.GetDirectoryName(filePathPath);
-                string filePathPathPathPath = Path.GetDirectoryName(filePathPathPath);
-                string filePathPathPathPathPath = Path.GetDirectoryName(filePathPathPathPath);
-                string forDefaultPath = modFilePath.Substring(filePathPathPathPathPath.Length);
+                string forDefaultPath = ModConfigForm.getInGooseFilePath(modFilePath);
                 string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName, "Default", forDefaultPath);
+                if(!Directory.Exists(Path.GetDirectoryName(defaultPath))) {
+                    Directory.CreateDirectory(Path.GetDirectoryName(defaultPath));
+                }
                 try {
                     File.Copy(toFilePath, defaultPath, false);
                 } catch(IOException) {
@@ -400,20 +376,30 @@ namespace ResourceHubLauncher
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
                 //Text = configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption);
-                string ModsFilesPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles");
+                string ModsFilesPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles",MainForm.modName,"Default");
                 if ( configFiles.First().Value.fileLocationPath.StartsWith(ModsFilesPath)) {
                     string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                    string filePath = Path.GetDirectoryName(modFilePath);
-                    string filePathPath = Path.GetDirectoryName(filePath);
-                    string filePathPathPath = Path.GetDirectoryName(filePathPath);
-                    string filePathPathPathPath = Path.GetDirectoryName(filePathPathPath);
-                    string filePathPathPathPathPath = Path.GetDirectoryName(filePathPathPathPath);
-                    string forDefaultPath = modFilePath.Substring(filePathPathPathPathPath.Length);
+
+                    string forDefaultPath = ModConfigForm.getInGooseFilePath( modFilePath);
                     string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName, "Default", forDefaultPath);
 
                     Text = defaultPath;
+                    return;
                 }
-            }
+                
+                if (configFiles.First().Value.fileLocationPath.StartsWith(Path.GetDirectoryName((string)Config.Options["gpath"]))) {
+                    Text = modFilePath;
+                    return;
+                }
+                    /*ModsFilesPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", MainForm.modName, "Used Before");
+                    if (configFiles.First().Value.fileLocationPath.StartsWith(ModsFilesPath)) {
+                        string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                        string forDefaultPath = ModConfigForm.getInGooseFilePath(modFilePath);
+                        string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName, "Used Before", forDefaultPath);
+
+                        Text = defaultPath;
+                    }*/
+                }
 
             void ModConfigBox.SetLocation(Point newLocation) {
                 BoxName.Location = newLocation;
@@ -430,6 +416,16 @@ namespace ResourceHubLauncher
                 if(Text!= modFilePath) {
                     if (File.Exists(Text)) {
                         applyAction(Text);
+
+
+                        string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                        string forDefaultPath = ModConfigForm.getInGooseFilePath(modFilePath);
+                        string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName, "Used Before", forDefaultPath);
+                        try {
+                            File.Copy(modFilePath, defaultPath, true);
+                        } catch (IOException) {
+
+                        }
                     }
                 }
                 
@@ -465,6 +461,7 @@ namespace ResourceHubLauncher
             }
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
+                
                 SetButtonColor(ColorTranslator.FromHtml(configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption)));
             }
 
@@ -491,6 +488,7 @@ namespace ResourceHubLauncher
             void ModConfigBox.Apply(List<KeyValuePair<string, ConfigFile>> configFiles) {
                 string newValue = "#" + BackColor.R.ToString("X2") + BackColor.G.ToString("X2") + BackColor.B.ToString("X2");
                 configFiles.Find((p) => { return p.Key == configFilePath; }).Value.ChangeOption(configOption, newValue);
+                
             }
 
             ColorDialog colorDialog = new ColorDialog();

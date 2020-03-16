@@ -30,19 +30,21 @@ namespace ResourceHubLauncher
             public List<ModConfigClasses.ModConfigBox> configGUI = new List<ModConfigClasses.ModConfigBox>();
             public List<KeyValuePair<string, ConfigFile>> configFiles = new List<KeyValuePair<string, ConfigFile>>();
             public List<KeyValuePair<string, ConfigFile>> defaultConfigFiles = new List<KeyValuePair<string, ConfigFile>>();
+
         }
         private MetroButton ApplyButton;
         private MetroButton CancelConfigButton;
-        private MetroButton DefaultButton;
 
 
         public static List<KeyValuePair<string, ModConfigData>> modsConfigs=new List<KeyValuePair<string, ModConfigData>>();
         public static ModConfigData actualModConfig;
-        private MetroButton DiscardChangesButton;
         private ContextMenuStrip OptionOptionsContextMenu;
         private System.ComponentModel.IContainer components;
         private ToolStripMenuItem DiscardChangesToolStripMenuItem;
         private ToolStripMenuItem SetToDefaultToolStripMenuItem;
+        private ToolStripMenuItem optionsUsedBeforeToolStripMenuItem;
+        private MetroButton metroButton1;
+        private MetroButton metroButton2;
         public static ModConfigForm thisConfigForm;
         //public static ContextMenuStrip GUIContextMenu;
 
@@ -52,23 +54,9 @@ namespace ResourceHubLauncher
         }
         public ModConfigForm(ConfiguratorBasic configurator) {
             InitializeComponent();
-            int modConfigIndex = modsConfigs.FindIndex((p) => { return p.Key == MainForm.modName; });
             thisConfigForm = this;
-            //GUIContextMenu = OptionOptionsContextMenu;
-            if (modConfigIndex == -1) {
-                actualModConfig = new ModConfigData();
-                modsConfigs.Add(new KeyValuePair<string, ModConfigData>(MainForm.modName, actualModConfig));
-                configurator.Initialize();
-                MakeDefaultFiles();
-            } else {
-                actualModConfig = modsConfigs[modConfigIndex].Value;
-                actualModConfig.configGUI.Clear();
-                for (int i = 0; i < actualModConfig.configFiles.Count; i++) {
-                    actualModConfig.configFiles[i].Value.Reload();
-                }
-                configurator.Initialize();
-            }
-
+            OpenMod(MainForm.modName, configurator);
+            
 
             for (int i = 0; i < actualModConfig.configGUI.Count; i++) {
                 actualModConfig.configGUI[i].ApplyValue(actualModConfig.configFiles);
@@ -76,28 +64,24 @@ namespace ResourceHubLauncher
             
             Size = new Size(Size.Width, actualModConfig.configGUI.Last().GetNextBoxLocation().Y+ 25+23);
 
-            //Stack Overflow Error
+
             for (int i=0;i< actualModConfig.configGUI.Count;i++) {
                 Controls.Add((Control)actualModConfig.configGUI[i]);
-                //@todo Repair Stack Overflow Error when Activating Mod Configurator
-                //@body Happens when applying ContextMenuStrip to a StringBox "Memory Error: Unable To Read Memory (MetroTextBox)"
-                //actualModConfig.configGUI[i].setContextMenuStrip( OptionOptionsContextMenu);
+                actualModConfig.configGUI[i].addControlsToControl(thisConfigForm);
             }
-            /*foreach (Control c in actualModConfig.configGUI) {
-                Controls.Add(c);
-                c.ContextMenuStrip = OptionOptionsContextMenu;
-            }*/
+
         }
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModConfigForm));
             this.ApplyButton = new MetroFramework.Controls.MetroButton();
             this.CancelConfigButton = new MetroFramework.Controls.MetroButton();
-            this.DefaultButton = new MetroFramework.Controls.MetroButton();
-            this.DiscardChangesButton = new MetroFramework.Controls.MetroButton();
             this.OptionOptionsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.DiscardChangesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SetToDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsUsedBeforeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.metroButton1 = new MetroFramework.Controls.MetroButton();
+            this.metroButton2 = new MetroFramework.Controls.MetroButton();
             this.OptionOptionsContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -127,32 +111,6 @@ namespace ResourceHubLauncher
             this.CancelConfigButton.UseSelectable = true;
             this.CancelConfigButton.Click += new System.EventHandler(this.CancelConfigButton_Click);
             // 
-            // DefaultButton
-            // 
-            this.DefaultButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DefaultButton.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.DefaultButton.Location = new System.Drawing.Point(141, 364);
-            this.DefaultButton.Name = "DefaultButton";
-            this.DefaultButton.Size = new System.Drawing.Size(94, 25);
-            this.DefaultButton.TabIndex = 16;
-            this.DefaultButton.Text = "Set To Default";
-            this.DefaultButton.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.DefaultButton.UseSelectable = true;
-            this.DefaultButton.Click += new System.EventHandler(this.DefaultButton_Click);
-            // 
-            // DiscardChangesButton
-            // 
-            this.DiscardChangesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DiscardChangesButton.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.DiscardChangesButton.Location = new System.Drawing.Point(23, 364);
-            this.DiscardChangesButton.Name = "DiscardChangesButton";
-            this.DiscardChangesButton.Size = new System.Drawing.Size(112, 25);
-            this.DiscardChangesButton.TabIndex = 17;
-            this.DiscardChangesButton.Text = "Discard Changes";
-            this.DiscardChangesButton.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.DiscardChangesButton.UseSelectable = true;
-            this.DiscardChangesButton.Click += new System.EventHandler(this.DiscardChangesButton_Click);
-            // 
             // OptionOptionsContextMenu
             // 
             this.OptionOptionsContextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
@@ -160,29 +118,64 @@ namespace ResourceHubLauncher
             this.OptionOptionsContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.OptionOptionsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.DiscardChangesToolStripMenuItem,
-            this.SetToDefaultToolStripMenuItem});
+            this.SetToDefaultToolStripMenuItem,
+            this.optionsUsedBeforeToolStripMenuItem});
             this.OptionOptionsContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.OptionOptionsContextMenu.Name = "modListContextMenu";
             this.OptionOptionsContextMenu.ShowImageMargin = false;
-            this.OptionOptionsContextMenu.Size = new System.Drawing.Size(186, 80);
+            this.OptionOptionsContextMenu.Size = new System.Drawing.Size(191, 76);
             // 
             // DiscardChangesToolStripMenuItem
             // 
             this.DiscardChangesToolStripMenuItem.Name = "DiscardChangesToolStripMenuItem";
-            this.DiscardChangesToolStripMenuItem.Size = new System.Drawing.Size(185, 24);
+            this.DiscardChangesToolStripMenuItem.Size = new System.Drawing.Size(190, 24);
             this.DiscardChangesToolStripMenuItem.Text = "Discard Changes";
+            this.DiscardChangesToolStripMenuItem.Click += new System.EventHandler(this.DiscardChangesButton_Click);
             // 
             // SetToDefaultToolStripMenuItem
             // 
             this.SetToDefaultToolStripMenuItem.Name = "SetToDefaultToolStripMenuItem";
-            this.SetToDefaultToolStripMenuItem.Size = new System.Drawing.Size(185, 24);
+            this.SetToDefaultToolStripMenuItem.Size = new System.Drawing.Size(190, 24);
             this.SetToDefaultToolStripMenuItem.Text = "Set To Default";
+            this.SetToDefaultToolStripMenuItem.Click += new System.EventHandler(this.DefaultButton_Click);
+            // 
+            // optionsUsedBeforeToolStripMenuItem
+            // 
+            this.optionsUsedBeforeToolStripMenuItem.Name = "optionsUsedBeforeToolStripMenuItem";
+            this.optionsUsedBeforeToolStripMenuItem.Size = new System.Drawing.Size(190, 24);
+            this.optionsUsedBeforeToolStripMenuItem.Text = "Options Used Before";
+            // 
+            // metroButton1
+            // 
+            this.metroButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.metroButton1.FontWeight = MetroFramework.MetroButtonWeight.Regular;
+            this.metroButton1.Location = new System.Drawing.Point(23, 364);
+            this.metroButton1.Name = "metroButton1";
+            this.metroButton1.Size = new System.Drawing.Size(114, 25);
+            this.metroButton1.TabIndex = 16;
+            this.metroButton1.Text = "Discard Changes";
+            this.metroButton1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroButton1.UseSelectable = true;
+            this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click);
+            // 
+            // metroButton2
+            // 
+            this.metroButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.metroButton2.FontWeight = MetroFramework.MetroButtonWeight.Regular;
+            this.metroButton2.Location = new System.Drawing.Point(143, 364);
+            this.metroButton2.Name = "metroButton2";
+            this.metroButton2.Size = new System.Drawing.Size(92, 25);
+            this.metroButton2.TabIndex = 17;
+            this.metroButton2.Text = "Set To Default";
+            this.metroButton2.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroButton2.UseSelectable = true;
+            this.metroButton2.Click += new System.EventHandler(this.metroButton2_Click);
             // 
             // ModConfigForm
             // 
             this.ClientSize = new System.Drawing.Size(434, 412);
-            this.Controls.Add(this.DiscardChangesButton);
-            this.Controls.Add(this.DefaultButton);
+            this.Controls.Add(this.metroButton2);
+            this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.CancelConfigButton);
             this.Controls.Add(this.ApplyButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -211,19 +204,40 @@ namespace ResourceHubLauncher
             }
         }
 
-        void MakeDefaultFiles() {
+        public static void OpenMod(string modName, ConfiguratorBasic configurator) {
+            int modConfigIndex = modsConfigs.FindIndex((p) => { return p.Key == modName; });
+
+            if (modConfigIndex == -1) {
+                actualModConfig = new ModConfigData();
+                modsConfigs.Add(new KeyValuePair<string, ModConfigData>(MainForm.modName, actualModConfig));
+                configurator.Initialize();
+                MakeDefaultFiles();
+
+            } else {
+                actualModConfig = modsConfigs[modConfigIndex].Value;
+                actualModConfig.configGUI.Clear();
+                for (int i = 0; i < actualModConfig.configFiles.Count; i++) {
+                    actualModConfig.configFiles[i].Value.Reload();
+                }
+                
+                configurator.Initialize();
+                MakeDefaultFiles();
+            }
+
+        }
+
+        public static string getInGooseFilePath(string path) {
+            return path.Substring(Path.GetDirectoryName((string)Config.Options["gpath"]).Length+1);
+        }
+
+        static void MakeDefaultFiles() {
             foreach(KeyValuePair<string, ConfigFile> pair in actualModConfig.configFiles) {
                 string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string filePath = Path.GetDirectoryName(pair.Key);
-                string filePathPath = Path.GetDirectoryName(filePath);
-                string filePathPathPath = Path.GetDirectoryName(filePathPath);
-                string filePathPathPathPath = Path.GetDirectoryName(filePathPathPath);
-                string filePathPathPathPathPath = Path.GetDirectoryName(filePathPathPathPath);
-                string forDefaultPath = pair.Key.Substring(filePathPathPathPathPath.Length);
+                string forDefaultPath = getInGooseFilePath( pair.Key);
                 string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName,"Default", forDefaultPath);
                 try {
-                    if(!Directory.Exists(Path.GetDirectoryName(Path.Combine(exePath, "ModsFiles", MainForm.modName, "Default", forDefaultPath)))) {
-                        Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(exePath, "ModsFiles", MainForm.modName, "Default", forDefaultPath)));
+                    if(!Directory.Exists(Path.GetDirectoryName(defaultPath))) {
+                        Directory.CreateDirectory(Path.GetDirectoryName(defaultPath));
                     }
                     
                     File.Copy(pair.Key, defaultPath,false);
@@ -235,10 +249,45 @@ namespace ResourceHubLauncher
             }
         }
 
+        void MakeSafetyCopy() {
+            foreach (KeyValuePair<string, ConfigFile> pair in actualModConfig.configFiles) {
+                string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string forDefaultPath = getInGooseFilePath(pair.Key);
+                string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName, "Used Before", forDefaultPath);
+                try {
+                    if (!Directory.Exists(Path.GetDirectoryName(defaultPath))) {
+                        Directory.CreateDirectory(Path.GetDirectoryName(defaultPath));
+                    }
+
+                    File.Copy(pair.Key, defaultPath, true);
+                } catch (IOException) {
+
+                }
+            }
+        }
+
         void UseDefaultOptions() {
             for(int i=0;i< actualModConfig.configGUI.Count;i++) {
                 actualModConfig.configGUI[i].ApplyValue(actualModConfig.defaultConfigFiles);
             }
+        }
+
+        public static void UseSafetyCopy(string modName) {
+            string safetyCopyPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", modName, "Used Before");
+
+            foreach(KeyValuePair<string,ConfigFile> pair in actualModConfig.configFiles) {
+                string inGoosePath = getInGooseFilePath(pair.Key);
+                ConfigFile configFile = new ConfigFile(Path.Combine(safetyCopyPath,inGoosePath ));
+                configFile.ApplyFrom(pair.Key);
+                pair.Value.SaveChanges();
+            }
+
+            foreach( string file in Directory.GetFiles(safetyCopyPath, "*", SearchOption.AllDirectories)) {
+                string forDefaultPath = file.Substring(safetyCopyPath.Length);
+                
+                File.Copy(file, Path.Combine((string)Config.Options["gpath"], forDefaultPath));
+            }
+
         }
 
         public static void setPosition(ModConfigClasses.ModConfigBox box) {
@@ -260,7 +309,7 @@ namespace ResourceHubLauncher
             ModConfigClasses.StringBox Box = new ModConfigClasses.StringBox(fileWithConfigPath, configOptionName, showedName);
             OpenConfigFile(fileWithConfigPath);
             //Box.ContextMenuStrip = GUIContextMenu;
-            ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
+            
             ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
             setPosition(Box);
             actualModConfig.configGUI.Add(Box);
@@ -274,7 +323,6 @@ namespace ResourceHubLauncher
                 ModConfigClasses.StringBox Box = new ModConfigClasses.StringBox(fileWithConfigPath, pair.Key, pair.Key+':');
                 //Box.ContextMenuStrip = GUIContextMenu;
                 ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-                ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
                 setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
@@ -284,7 +332,6 @@ namespace ResourceHubLauncher
             ModConfigClasses.IntBox Box = new ModConfigClasses.IntBox(fileWithConfigPath, configOptionName, showedName);
             //Box.ContextMenuStrip = GUIContextMenu;
             OpenConfigFile(fileWithConfigPath);
-            ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
             ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
             setPosition(Box);
             actualModConfig.configGUI.Add(Box);
@@ -296,7 +343,6 @@ namespace ResourceHubLauncher
                 ModConfigClasses.IntBox Box = new ModConfigClasses.IntBox(fileWithConfigPath, pair.Key, pair.Key+':');
                 //Box.ContextMenuStrip = GUIContextMenu;
                 ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-                ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
                 setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
@@ -306,7 +352,6 @@ namespace ResourceHubLauncher
             ModConfigClasses.FloatBox Box = new ModConfigClasses.FloatBox(fileWithConfigPath, configOptionName, showedName);
             //Box.ContextMenuStrip = GUIContextMenu;
             OpenConfigFile(fileWithConfigPath);
-            ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
             ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
             setPosition(Box);
             actualModConfig.configGUI.Add(Box);
@@ -318,7 +363,6 @@ namespace ResourceHubLauncher
                 ModConfigClasses.FloatBox Box = new ModConfigClasses.FloatBox(fileWithConfigPath, pair.Key, pair.Key+':');
                 //Box.ContextMenuStrip = GUIContextMenu;
                 ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-                ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
                 setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
@@ -349,7 +393,6 @@ namespace ResourceHubLauncher
             ModConfigClasses.FileBox Box = new ModConfigClasses.FileBox(showedName, FileDialog, howToUsePath, toFilePath);
             //Box.ContextMenuStrip = GUIContextMenu;
             Box.Text = toFilePath;
-            ((ModConfigClasses.ModConfigBox)Box).addControlsToControl(thisConfigForm);
             setPosition(Box);
             actualModConfig.configGUI.Add(Box);
         }
@@ -395,9 +438,18 @@ namespace ResourceHubLauncher
             foreach(KeyValuePair<string,ConfigFile> p in actualModConfig.configFiles) {
                 p.Value.SaveChanges();
             }
+            MakeSafetyCopy();
         }
 
         private void DiscardChangesButton_Click(object sender, EventArgs e) {
+            
+        }
+
+        private void metroButton2_Click(object sender, EventArgs e) {
+            UseDefaultOptions();
+        }
+
+        private void metroButton1_Click(object sender, EventArgs e) {
             for (int i = 0; i < actualModConfig.configGUI.Count; i++) {
                 actualModConfig.configGUI[i].ApplyValue(actualModConfig.configFiles);
             }
