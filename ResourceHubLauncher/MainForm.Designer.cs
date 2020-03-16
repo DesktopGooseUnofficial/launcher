@@ -172,7 +172,6 @@
             this.availableToolStripMenuItem});
             this.ShowedModsMenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.ShowedModsMenuStrip.Name = "modListContextMenu";
-            this.ShowedModsMenuStrip.OwnerItem = this.showModsToolStripMenuItem;
             this.ShowedModsMenuStrip.ShowImageMargin = false;
             this.ShowedModsMenuStrip.Size = new System.Drawing.Size(197, 82);
             // 
@@ -249,7 +248,6 @@
             this.futureOfTheLauncherToolStripMenuItem});
             this.linksContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.linksContextMenu.Name = "modListContextMenu";
-            this.linksContextMenu.OwnerItem = this.toolStripMenuItem8;
             this.linksContextMenu.ShowImageMargin = false;
             this.linksContextMenu.Size = new System.Drawing.Size(182, 100);
             // 
@@ -302,7 +300,7 @@
             this.styleExtender.SetApplyMetroTheme(this.label3, true);
             this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.label3.Font = new System.Drawing.Font("Segoe UI Light", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label3.Font = new System.Drawing.Font("Segoe UI Light", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.label3.Location = new System.Drawing.Point(265, 95);
             this.label3.Margin = new System.Windows.Forms.Padding(4);
@@ -686,11 +684,11 @@
             this.ClientSize = new System.Drawing.Size(971, 596);
             this.Controls.Add(this.changelogPanel);
             this.Controls.Add(this.loadingPanel);
-            this.Controls.Add(this.DownloadPanel);
+            this.Controls.Add(this.metroButton6);
             this.Controls.Add(this.metroPanel2);
+            this.Controls.Add(this.DownloadPanel);
             this.Controls.Add(this.debugButton);
             this.Controls.Add(this.OptionsButton);
-            this.Controls.Add(this.metroButton6);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.metroLabel3);
