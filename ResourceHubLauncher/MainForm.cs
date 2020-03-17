@@ -359,7 +359,7 @@ namespace ResourceHubLauncher
             if ((string)mod["config-url"] != null) {
                 string urlC = (string)mod["config-url"];
                 string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
-                string f = Path.Combine(filePath, Path.GetFileName(urlC));
+                string f = Path.Combine(filePath, "Configurator.dll");
                 downloadFile(urlC, modPath, f, (string)mod["name"], (object _sender3, AsyncCompletedEventArgs args3) => {
                     DownloadPanel.Hide();
                     if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
@@ -428,12 +428,12 @@ namespace ResourceHubLauncher
 
             string urlI = (string)mod["install-url"];
             string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
-            string f = Path.Combine(filePath, Path.GetFileName(urlI));
+            string f = Path.Combine(filePath, "Installer.dll");
             downloadFile(urlI, modPath, f, (string)mod["name"], (object _sender2, AsyncCompletedEventArgs args2) => {
                 if ((string)mod["config-url"] != null) {
                     string urlC = (string)mod["config-url"];
 
-                    f = Path.Combine(filePath, Path.GetFileName(urlC));
+                    f = Path.Combine(filePath, "Configurator.dll");
                     downloadFile(urlC, modPath, f, (string)mod["name"], (object _sender3, AsyncCompletedEventArgs args3) => {
                         DownloadPanel.Hide();
                         if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
@@ -527,7 +527,7 @@ namespace ResourceHubLauncher
             Console.WriteLine($"Downloading {(string)mod["name"]} from {url}");
 
             int l = (int)mod["level"];
-
+            actualModPath = Path.Combine(modPath, actualModButton.modName);
             if (l > 0) {
                 if (!(bool)Config.Options["unsfe"] && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
                     MsgBox($"This mod is rated as {r2s(l)} and will not be installed for your safety.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -544,7 +544,6 @@ namespace ResourceHubLauncher
             bool d = n.Substring(Path.GetFileNameWithoutExtension(n).Length + 1) == "dll";
 
             string filePath = modPath;
-            if (d) filePath = Path.Combine(filePath, (string)mod["name"]);
 
             string f;
             if (d) {
@@ -554,7 +553,6 @@ namespace ResourceHubLauncher
                 f = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], Path.GetFileName(url));
                 actualZipFilePath = f;
             }
-
             if (!Directory.Exists(Path.GetDirectoryName(f))) Directory.CreateDirectory(Path.GetDirectoryName(f));
 
             if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
