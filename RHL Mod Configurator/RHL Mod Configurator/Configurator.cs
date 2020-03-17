@@ -17,10 +17,6 @@ namespace RHL_Mod_Configurator
             fileDialog.InitialDirectory = ConfiguratorAPI.functions.getModFolder();
             fileDialog.Filter = "png files (*.png)|*.png";
 
-            OpenFileDialog fileDialog2 = new OpenFileDialog();
-            fileDialog2.InitialDirectory = ConfiguratorAPI.functions.getModFolder();
-            fileDialog2.Filter = "wav files (*.wav)|*.wav";
-
             ConfiguratorAPI.GUI.addLinkButton("Key Codes for Spawn Food Option", "https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.keys?view=netframework-4.8");
             ConfiguratorAPI.GUI.addStringBox(Path.Combine(ConfiguratorAPI.functions.getModFolder(), "Config.txt"), "KeyName", "Spawn Food Key");
             ConfiguratorAPI.GUI.addIntBox(Path.Combine(ConfiguratorAPI.functions.getModFolder(), "Config.txt"), "ImageSize", "Food Image Size");

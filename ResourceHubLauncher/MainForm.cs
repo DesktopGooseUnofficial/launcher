@@ -14,8 +14,9 @@ using System.Text;
 using System.Threading;
 using System.Reflection;
 using RHL_Mod_Installer_API;
-using System.IO.Compression;
+//using System.IO.Compression;
 using RHL_Mod_Configurator_API;
+using Ionic.Zip;
 
 namespace ResourceHubLauncher
 {
@@ -285,7 +286,14 @@ namespace ResourceHubLauncher
                     Directory.Delete(where, true);
                 }
             }
-            ZipFile.ExtractToDirectory(actualZipFilePath, where);
+
+            using (ZipFile zip1 = ZipFile.Read(actualZipFilePath)) {
+                // here, we extract every entry, but we could extract conditionally
+                // based on entry name, size, date, checkbox status, etc.  
+                foreach (ZipEntry e in zip1) {
+                    e.Extract(where, ExtractExistingFileAction.OverwriteSilently);
+                }
+            }
 
         }
 
