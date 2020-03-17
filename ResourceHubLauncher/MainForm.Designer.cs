@@ -47,6 +47,7 @@
             this.discordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.twitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.futureOfTheLauncherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.label3 = new System.Windows.Forms.RichTextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.UtilitiesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -57,7 +58,6 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.giveUsFeedbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.metroProgressBar1 = new MetroFramework.Controls.MetroProgressBar();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
@@ -285,6 +285,15 @@
             this.futureOfTheLauncherToolStripMenuItem.Text = "Upcoming Features";
             this.futureOfTheLauncherToolStripMenuItem.Click += new System.EventHandler(this.futureOfTheLauncherToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.toolStripMenuItem8.DropDown = this.linksContextMenu;
+            this.toolStripMenuItem8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(165, 24);
+            this.toolStripMenuItem8.Text = "Links";
+            // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -404,15 +413,6 @@
             this.toolStripMenuItem7.Size = new System.Drawing.Size(165, 24);
             this.toolStripMenuItem7.Text = "Settings";
             this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
-            // 
-            // toolStripMenuItem8
-            // 
-            this.toolStripMenuItem8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.toolStripMenuItem8.DropDown = this.linksContextMenu;
-            this.toolStripMenuItem8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
-            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(165, 24);
-            this.toolStripMenuItem8.Text = "Links";
             // 
             // changelogRichTextBox
             // 
@@ -684,11 +684,11 @@
             this.AutoScroll = true;
             this.AutoScrollMinSize = new System.Drawing.Size(0, 481);
             this.ClientSize = new System.Drawing.Size(971, 596);
+            this.Controls.Add(this.DownloadPanel);
             this.Controls.Add(this.changelogPanel);
             this.Controls.Add(this.loadingPanel);
             this.Controls.Add(this.metroButton6);
             this.Controls.Add(this.metroPanel2);
-            this.Controls.Add(this.DownloadPanel);
             this.Controls.Add(this.debugButton);
             this.Controls.Add(this.OptionsButton);
             this.Controls.Add(this.label3);

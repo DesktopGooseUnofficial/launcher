@@ -67,7 +67,7 @@ namespace ResourceHubLauncher
                 actualModConfig.configGUI[i].addControlsToControl(thisConfigForm);
                 if (i > 0) {
                     actualModConfig.configGUI[i].SetLocation(actualModConfig.configGUI[i - 1].GetNextBoxLocation());
-                } else {
+                } else { 
                     actualModConfig.configGUI[i].SetLocation(new Point(23, 33));
                 }
             }
@@ -213,9 +213,9 @@ namespace ResourceHubLauncher
 
             if (modConfigIndex == -1) {
                 actualModConfig = new ModConfigData();
-                modsConfigs.Add(new KeyValuePair<string, ModConfigData>(MainForm.modName, actualModConfig));
+                modsConfigs.Add(new KeyValuePair<string, ModConfigData>(modName, actualModConfig));
                 configurator.Initialize();
-                MakeDefaultFiles();
+                MakeDefaultFiles(modName);
 
             } else {
                 actualModConfig = modsConfigs[modConfigIndex].Value;
@@ -225,7 +225,7 @@ namespace ResourceHubLauncher
                 }
                 
                 configurator.Initialize();
-                MakeDefaultFiles();
+                MakeDefaultFiles(modName);
             }
 
         }
@@ -234,11 +234,12 @@ namespace ResourceHubLauncher
             return path.Substring(Path.GetDirectoryName((string)Config.Options["gpath"]).Length+1);
         }
 
-        static void MakeDefaultFiles() {
+        static void MakeDefaultFiles(string modName) {
             foreach(KeyValuePair<string, ConfigFile> pair in actualModConfig.configFiles) {
                 string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                //Console.WriteLine(pair.Key);
                 string forDefaultPath = getInGooseFilePath( pair.Key);
-                string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName,"Default", forDefaultPath);
+                string defaultPath = Path.Combine(exePath, "ModsFiles", modName, "Default", forDefaultPath);
                 try {
                     if(!Directory.Exists(Path.GetDirectoryName(defaultPath))) {
                         Directory.CreateDirectory(Path.GetDirectoryName(defaultPath));
@@ -287,9 +288,8 @@ namespace ResourceHubLauncher
             }
 
             foreach( string file in Directory.GetFiles(safetyCopyPath, "*", SearchOption.AllDirectories)) {
-                string forDefaultPath = file.Substring(safetyCopyPath.Length);
-                
-                File.Copy(file, Path.Combine((string)Config.Options["gpath"], forDefaultPath));
+                string forDefaultPath = file.Substring(safetyCopyPath.Length+1);
+                File.Copy(file, Path.Combine(Path.GetDirectoryName( (string)Config.Options["gpath"]), forDefaultPath),true);
             }
 
         }

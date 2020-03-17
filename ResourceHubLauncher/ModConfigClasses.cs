@@ -28,6 +28,7 @@ namespace ResourceHubLauncher
                     if (equal != -1) {
                         string key = line.Substring(0, equal);
                         string value = line.Substring(equal + 1);
+                        value= value.Replace("\r", "");
                         options.Add(new KeyValuePair<string, string>(key, value));
                     }
 
@@ -47,6 +48,7 @@ namespace ResourceHubLauncher
                     if (equal != -1) {
                         string key = line.Substring(0, equal);
                         string value = line.Substring(equal + 1);
+                        value=value.Replace("\r", "");
                         options.Add(new KeyValuePair<string, string>(key, value));
                     }
 
@@ -75,8 +77,11 @@ namespace ResourceHubLauncher
         }
 
         public void SaveChanges() {
-            FileStream stream = new FileStream(fileLocationPath, FileMode.Truncate);
-            stream.Close();
+            if(File.Exists(fileLocationPath)) {
+                FileStream stream = new FileStream(fileLocationPath, FileMode.Truncate);
+                stream.Close();
+            }
+            
             StreamWriter file = new StreamWriter(fileLocationPath);
             string toWrite = "";
             foreach(KeyValuePair<string, string> pair in options) {
@@ -92,21 +97,24 @@ namespace ResourceHubLauncher
 
         public void ApplyFrom(string what) {
             options = new List<KeyValuePair<string, string>>();
-            StreamReader file = new StreamReader(what);
-            string[] lines = file.ReadToEnd().Split('\n');
-            file.Close();
-            foreach (string line in lines) {
-                int equal = line.IndexOf('=');
-                if (equal != -1) {
-                    string key = line.Substring(0, equal);
-                    string value = line.Substring(equal + 1);
-                    if(options.FindIndex((p)=> { return p.Key == key; })==-1) {
-                        options.Add(new KeyValuePair<string, string>(key, value));
-                    }
-                    
-                }
+            if(File.Exists(what)) {
+                StreamReader file = new StreamReader(what);
+                string[] lines = file.ReadToEnd().Split('\n');
+                file.Close();
+                foreach (string line in lines) {
+                    int equal = line.IndexOf('=');
+                    if (equal != -1) {
+                        string key = line.Substring(0, equal);
+                        string value = line.Substring(equal + 1);
+                        if (options.FindIndex((p) => { return p.Key == key; }) == -1) {
+                            options.Add(new KeyValuePair<string, string>(key, value));
+                        }
 
+                    }
+
+                }
             }
+            
         }
 
         public string fileLocationPath;
@@ -253,7 +261,6 @@ namespace ResourceHubLauncher
             }
             
             Point ModConfigBox.GetNextBoxLocation() {
-                Console.WriteLine(Size);
                 return new Point(Location.X, Location.Y + Size.Height + 6);
             }
 
