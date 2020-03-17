@@ -19,36 +19,42 @@ namespace ResourceHubLauncher
         public ConfigFile(string fileLocation) {
             options = new List<KeyValuePair<string, string>>();
             fileLocationPath = fileLocation;
-            StreamReader file = new StreamReader(fileLocationPath);
-            string[] lines = file.ReadToEnd().Split('\n');
-            file.Close();
-            foreach (string line in lines) {
-                int equal = line.IndexOf('=');
-                if(equal!=-1) {
-                    string key = line.Substring(0, equal);
-                    string value = line.Substring(equal + 1);
-                    options.Add(new KeyValuePair<string, string>(key, value));
+            if(File.Exists(fileLocationPath)) {
+                StreamReader file = new StreamReader(fileLocationPath);
+                string[] lines = file.ReadToEnd().Split('\n');
+                file.Close();
+                foreach (string line in lines) {
+                    int equal = line.IndexOf('=');
+                    if (equal != -1) {
+                        string key = line.Substring(0, equal);
+                        string value = line.Substring(equal + 1);
+                        options.Add(new KeyValuePair<string, string>(key, value));
+                    }
+
                 }
-                
             }
+            
         }
 
         public void Reload() {
             options.Clear();
-            StreamReader file = new StreamReader(fileLocationPath);
-            string[] lines = file.ReadToEnd().Split('\n');
-            file.Close();
-            foreach (string line in lines) {
-                int equal = line.IndexOf('=');
-                if(equal!=-1) {
-                    string key = line.Substring(0, equal);
-                    string value = line.Substring(equal + 1);
-                    options.Add(new KeyValuePair<string, string>(key, value));
+            if (File.Exists(fileLocationPath)) {
+                StreamReader file = new StreamReader(fileLocationPath);
+                string[] lines = file.ReadToEnd().Split('\n');
+                file.Close();
+                foreach (string line in lines) {
+                    int equal = line.IndexOf('=');
+                    if (equal != -1) {
+                        string key = line.Substring(0, equal);
+                        string value = line.Substring(equal + 1);
+                        options.Add(new KeyValuePair<string, string>(key, value));
+                    }
+
                 }
-                
             }
         }
         public string getOption(string optionName) {
+            int index = options.FindIndex((p) => { return p.Key == optionName; });
             return options.Find((p) => { return p.Key == optionName; }).Value;
         }
 
@@ -189,12 +195,57 @@ namespace ResourceHubLauncher
 
         public class Comment : MetroLabel, ModConfigBox {
             public Comment(string comment) {
+                
                 MaximumSize = new Size(388, 9999999);
-                WrapToLine = true;
-                Text = comment;
+                Graphics g = CreateGraphics();
+                Font f = new Font("Segoe UI", 9f);
+                string measured = "";
+                string measuredBefore = "";
+                string readyT = "";
+                AutoSize = true;
+                foreach (string word in comment.Split(' ')) {
+                    if (measured != "") {
+                        measured += ' ' + word;
+                    } else {
+                        measured += word;
+                    }
+
+                    if (g.MeasureString(measured, f).Width > 388) {
+                        if (readyT == "") {
+                            readyT += measuredBefore;
+                        } else {
+                            readyT += "\r\n" + measuredBefore;
+                        }
+
+                        measured = word;
+                    }
+
+                    measuredBefore = measured;
+                }
+                if (measured != "") {
+                    if (readyT == "") {
+                        readyT += measured;
+                    } else {
+                        readyT += "\r\n" + measured;
+                    }
+                }
+                //AutoEllipsis = true;
+                //Size = new Size(388,(int) g.MeasureString(readyT, f).Height+);
+                Text = readyT;
+                
+                //WrapToLine = true;
+
+
+
+
+
+
+
+
             }
 
             void ModConfigBox.addControlsToControl(Control c) {
+                
             }
 
             void ModConfigBox.SetLocation(Point newLocation) {
@@ -202,6 +253,7 @@ namespace ResourceHubLauncher
             }
             
             Point ModConfigBox.GetNextBoxLocation() {
+                Console.WriteLine(Size);
                 return new Point(Location.X, Location.Y + Size.Height + 6);
             }
 
@@ -314,14 +366,18 @@ namespace ResourceHubLauncher
                 Text = showedName;
                 configOption = configOptionName;
                 configFilePath = fileWithConfig;
+                AutoSize = true;
             }
 
             void ModConfigBox.addControlsToControl(Control c) {
             }
 
             void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
-
-                Checked = configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption).ToLower()=="true";
+                int index = configFiles.FindIndex((p) => { return p.Key == configFilePath; });
+                if(index!=-1) {
+                    Checked = configFiles[index].Value.getOption(configOption).ToLower() == "true";
+                }
+                
             }
 
             void ModConfigBox.SetLocation(Point newLocation) {

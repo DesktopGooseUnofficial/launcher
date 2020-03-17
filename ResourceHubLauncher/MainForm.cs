@@ -183,7 +183,7 @@ namespace ResourceHubLauncher
         private void changeModDescription() {
             try {
 
-                label3.Text = (string)mod["description"];
+                label3.Text = "<big>"+(string)mod["name"]+ "</big>\r\n\r\n" + (string)mod["description"];
                 htmlTags.Apply(ref label3);
 
             } catch (Exception) {
@@ -304,6 +304,7 @@ namespace ResourceHubLauncher
             ConfiguratorAPI.functions = functions;
 
             ConfiguratorAPI.GUIFunctions GUI = new ConfiguratorAPI.GUIFunctions();
+            GUI.addComment = new ConfiguratorAPI.GUIFunctions.AddCommentFunction(ModConfigForm.AddCommentFunction);
             GUI.addBoolBox = new ConfiguratorAPI.GUIFunctions.AddBoolBoxFunction(ModConfigForm.AddBoolBoxFunction);
             GUI.addBoolBoxForAll = new ConfiguratorAPI.GUIFunctions.AddBoolBoxForAllFunction(ModConfigForm.AddBoolBoxForAllFunction);
             GUI.addColorBox = new ConfiguratorAPI.GUIFunctions.AddColorBoxFunction(ModConfigForm.AddColorBoxFunction);
@@ -610,7 +611,7 @@ namespace ResourceHubLauncher
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
             if (!closedSpecially) {
-                e.Cancel = MsgBox("Are you sure you want to close ResourceHub Launcher?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes;
+                e.Cancel = MsgBox("Are you sure you want to close the Launcher?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes;
             }
 
         }
@@ -663,7 +664,7 @@ namespace ResourceHubLauncher
         private void toolStripMenuItem1_Click(object sender, EventArgs e) {
             string modd = actualModButton.modName;
             string path = Path.Combine(modPath, modd);
-            if (MsgBox($"Are you sure you want to uninstall {modd}? This will erase all data in the Mods folder for {modd}!", "Uninstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox($"Are you sure you want to uninstall {modd}? This will delete the {modd} folder!", "Uninstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
                 toolStripMenuItem3_Click(sender, e);
                 try {
@@ -700,7 +701,7 @@ namespace ResourceHubLauncher
                     disableToolStripMenuItem1.Text = "Disable";
                     actualModButton.Refresh();
                 } catch (Exception ex) {
-                    MsgBox($"Error while enabling {modd}.\r\nError: {ex.Message}", "Enable error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MsgBox($"Error while enabling {modd}.\r\nError: {ex.Message}", "Error while enabling mod.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 for (int i = 0; i < geese; i++) {
                     RunGoose_Click(sender, e);
@@ -715,7 +716,7 @@ namespace ResourceHubLauncher
             path = Path.Combine(path, modd + ".dll");
             string newPath = path + ".RHLdisabled";
             Console.WriteLine($"Now disabling {modd}, new path will be {newPath}");
-            if (MsgBox($"Are you sure you want to disable {modd}? This will restart goose if enabled!", "Disabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox($"Are you sure you want to disable {modd}? This will restart the goose if it is running!", "Disabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
                 toolStripMenuItem3_Click(sender, e);
                 metroButton4_Click(sender, e);
@@ -856,7 +857,7 @@ namespace ResourceHubLauncher
         }
 
         private void futureOfTheLauncherToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (MsgBox("This will open a link to our Upcoming Features. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox("This will open a link to the list of upcoming features. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher/milestones");
             }
         }
@@ -868,7 +869,7 @@ namespace ResourceHubLauncher
         }
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (MsgBox("This will open a link where you will be taken to a README. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox("This will open a link where you will be taken to a README for the Launcher. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher#readme");
             }
         }

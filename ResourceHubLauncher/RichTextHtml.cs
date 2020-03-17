@@ -141,6 +141,8 @@ namespace ResourceHubLauncher
             foreach (RichTextHtmlElement tag in tags) {
                 tag.ApplyTag(ref toApply);
             }
+
+            toApply.Select(0, 0);
         }
         
         
