@@ -55,7 +55,11 @@ namespace ResourceHubLauncher
         }
         public string getOption(string optionName) {
             int index = options.FindIndex((p) => { return p.Key == optionName; });
-            return options.Find((p) => { return p.Key == optionName; }).Value;
+            if(index!=-1) {
+                return options.Find((p) => { return p.Key == optionName; }).Value;
+            } else {
+                return "";
+            }
         }
 
         public void ChangeOption(string optionName,string toWhat) {
@@ -229,11 +233,7 @@ namespace ResourceHubLauncher
                         readyT += "\r\n" + measured;
                     }
                 }
-                //AutoEllipsis = true;
-                //Size = new Size(388,(int) g.MeasureString(readyT, f).Height+);
                 Text = readyT;
-                
-                //WrapToLine = true;
 
 
 
