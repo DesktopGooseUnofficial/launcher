@@ -162,7 +162,6 @@
             // ShowedModsMenuStrip
             // 
             this.styleExtender.SetApplyMetroTheme(this.ShowedModsMenuStrip, true);
-            this.ShowedModsMenuStrip.AutoClose = false;
             this.ShowedModsMenuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.ShowedModsMenuStrip.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.ShowedModsMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -172,9 +171,9 @@
             this.availableToolStripMenuItem});
             this.ShowedModsMenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.ShowedModsMenuStrip.Name = "modListContextMenu";
-            this.ShowedModsMenuStrip.OwnerItem = this.showModsToolStripMenuItem;
             this.ShowedModsMenuStrip.ShowImageMargin = false;
             this.ShowedModsMenuStrip.Size = new System.Drawing.Size(197, 82);
+            this.ShowedModsMenuStrip.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.ShowedModsMenuStrip_Closing);
             // 
             // installedToolStripMenuItem
             // 

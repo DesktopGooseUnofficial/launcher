@@ -112,8 +112,8 @@ namespace ResourceHubLauncher
                     JObject data = JObject.Parse(File.ReadAllText(datPath));
                     if ((string)data["mod-version"] != (string)mod["mod-version"]) {
                         if (MsgBox($"{data["name"]} is outdated.\r\nWould you like to update?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
-
-                            installToolStripMenuItem_Click(sender, e);
+                            
+                            AddToInstallQueue(mod);
                         }
                         continue;
                     }
@@ -122,7 +122,7 @@ namespace ResourceHubLauncher
                 if (foundObj != null) {
                     Console.WriteLine($"The mod \"{modName}\" was successfully found in the list!");
                     if (File.Exists(Path.Combine(pMod, modName + ".dll.RHLdisabled"))) {
-                        foundObj.EnabledMod = false;
+                        foundObj.DisabledMod = true;
                         disableToolStripMenuItem1.Text = "Enable";
                     } else {
                         foundObj.InstalledMod = true;
@@ -183,8 +183,11 @@ namespace ResourceHubLauncher
 
         private void changeModDescription() {
             try {
-
-                label3.Text = "<big>"+(string)mod["name"]+ "</big>\r\n\r\n" + (string)mod["description"];
+                string description = (string)mod["description"];
+                if(mod["description-debug"]!=null) {
+                    description = (string)mod["description-debug"];
+                }
+                label3.Text = "<big>"+(string)mod["name"]+ "</big>  Version: "+(string)mod["mod-version"] +"\r\nAuthor: "+(string)mod["author"] + "\r\n\r\n" + description;
                 htmlTags.Apply(ref label3);
 
             } catch (Exception) {
@@ -198,12 +201,28 @@ namespace ResourceHubLauncher
 
             actualModButton = modsButtons.Find(actualMod);
             changeModDescription();
-            
-            if(actualModButton.InstalledMod || actualModButton.DisabledMod) {
+            AfterInstallUpdate();
+
+
+
+        }
+
+        private void AfterInstallUpdate() {
+            if (actualModButton.InQueue) {
+                installToolStripMenuItem.Enabled = false;
+            } else {
+                installToolStripMenuItem.Enabled = true;
+            }
+            if((string)mod["resourcehub"] != null) {
+                resourceHubToolStripMenuItem.Enabled = true;
+            } else {
+                resourceHubToolStripMenuItem.Enabled = false;
+            }
+            if (actualModButton.InstalledMod || actualModButton.DisabledMod) {
                 installToolStripMenuItem.Text = "Uninstall";
                 disableToolStripMenuItem1.Enabled = true;
                 openInModsToolStripMenuItem1.Enabled = true;
-                if (actualModButton.EnabledMod) {
+                if (!actualModButton.DisabledMod) {
                     disableToolStripMenuItem1.Text = "Disable";
                 } else {
                     disableToolStripMenuItem1.Text = "Enable";
@@ -220,16 +239,13 @@ namespace ResourceHubLauncher
                     configureModToolStripMenuItem.Enabled = false;
                 }
 
-            } 
-            else {
+            } else {
                 installToolStripMenuItem.Text = "Install";
                 disableToolStripMenuItem1.Enabled = false;
                 openInModsToolStripMenuItem1.Enabled = false;
                 configureModToolStripMenuItem.Enabled = false;
                 resourceHubToolStripMenuItem.Enabled = true;
             }
-            
-            
         }
 
         private void ModHover(string actualMod) {
@@ -328,6 +344,10 @@ namespace ResourceHubLauncher
             ConfiguratorAPI.GUI = GUI;
         }
 
+        List<JToken> queue=new List<JToken>();
+        ModButton installModButton;//actualModButton = modsButtons.Find((string)mod["name"]);
+        bool installing = false;
+
         void downloadFile(string url, string folderPath, string filePath, string modName, AsyncCompletedEventHandler afterDownload) {
             using (WebClient wc = new WebClient()) {
                 try {
@@ -363,7 +383,7 @@ namespace ResourceHubLauncher
             }
         }
 
-        void DllDownloadEnd(object _sender, AsyncCompletedEventArgs args) {
+        void DllDownloadEnd(object _sender, AsyncCompletedEventArgs args, JToken mod, ModButton actualModButton) {
             if ((string)mod["config-url"] != null) {
                 string urlC = (string)mod["config-url"];
                 string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
@@ -393,10 +413,10 @@ namespace ResourceHubLauncher
 
                     string dataPath = Path.Combine( modPath, (string)mod["name"]);
                     actualModButton.InstalledMod = true;
-                    installToolStripMenuItem.Text = "Uninstall";
-                    configureModToolStripMenuItem.Enabled = true;
-                    actualModButton.Refresh();
                     actualModButton.hasConfigurator = true;
+                    AfterInstallUpdate();
+                    actualModButton.Refresh();
+                    
                     
                     dataPath = Path.Combine(dataPath, "RHLInfo.json");
 
@@ -408,15 +428,18 @@ namespace ResourceHubLauncher
                         MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     download = false;
+                    installing = false;
+                    ContinueInstalling();
                 });
-            } else {
+            } 
+            else {
                 DownloadPanel.Hide();
                 if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
 
                 string dataPath = Path.Combine(modPath, (string)mod["name"]);
                 actualModButton.InstalledMod = true;
-                installToolStripMenuItem.Text = "Uninstall";
+                AfterInstallUpdate();
                 actualModButton.Refresh();
 
                 dataPath = Path.Combine(dataPath, "RHLInfo.json");
@@ -429,10 +452,12 @@ namespace ResourceHubLauncher
                     MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 download = false;
+                installing = false;
+                ContinueInstalling();
             }
         }
 
-        void NoDllDownloadEnd(object _sender, AsyncCompletedEventArgs args) {
+        void NoDllDownloadEnd(object _sender, AsyncCompletedEventArgs args, JToken mod, ModButton actualModButton) {
 
             string urlI = (string)mod["install-url"];
             string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
@@ -467,11 +492,10 @@ namespace ResourceHubLauncher
                         }
                         dataPath = Path.Combine(dataPath, "RHLInfo.json");
                         actualModButton.InstalledMod = true;
-                        installToolStripMenuItem.Text = "Uninstall";
-                        actualModButton.Refresh();
                         actualModButton.hasConfigurator = true;
-                        configureModToolStripMenuItem.Enabled = true;
-                        openInModsToolStripMenuItem1.Enabled = true;
+                        AfterInstallUpdate();
+                        actualModButton.Refresh();
+                        
                         try {
                             if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
                             if (!File.Exists(dataPath)) File.Create(dataPath).Close();
@@ -480,6 +504,8 @@ namespace ResourceHubLauncher
                             MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         download = false;
+                        installing = false;
+                        ContinueInstalling();
                     });
                 } 
                 else {
@@ -505,9 +531,7 @@ namespace ResourceHubLauncher
 
                     string dataPath = Path.Combine(modPath, (string)mod["name"]);
                     actualModButton.InstalledMod = true;
-                    installToolStripMenuItem.Text = "Uninstall";
-                    disableToolStripMenuItem1.Enabled = true;
-                    openInModsToolStripMenuItem1.Enabled = true;
+                    AfterInstallUpdate();
                     actualModButton.Refresh();
 
                     dataPath = Path.Combine(dataPath, "RHLInfo.json");
@@ -523,14 +547,41 @@ namespace ResourceHubLauncher
                     
 
                     download = false;
+                    installing = false;
+                    ContinueInstalling();
                 }
             });
         }
 
-        private void install() {
+
+
+        void AddToInstallQueue(JToken mod) {
+            queue.Add(mod.DeepClone());
+            modsButtons.Find((string)queue.First()["name"]).InQueue = true;
+            actualModButton.Refresh();
+            if (!installing) {
+                installing = true;
+                JToken t = queue.First().DeepClone();
+                queue.RemoveAt(0);
+                installModButton = modsButtons.Find((string)t["name"]);
+                
+                install(t, installModButton);
+            }
+            
+        }
+
+        void ContinueInstalling() {
+            if(queue.Count>0) {
+                JToken t = queue.First().DeepClone();
+                queue.RemoveAt(0);
+                installModButton = modsButtons.Find((string)t["name"]);
+                install(t, installModButton);
+                installing = true;
+            }
+        }
+
+        private void install(JToken mod, ModButton actualModButton) {
             string url = (string)mod["url"];
-
-
 
             Console.WriteLine($"Downloading {(string)mod["name"]} from {url}");
 
@@ -541,6 +592,8 @@ namespace ResourceHubLauncher
                     MsgBox($"This mod is rated as {r2s(l)} and will not be installed for your safety.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 } else if (Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it? Installing it may cause problems.", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+                    actualModButton.InstalledMod = false;
+                    ContinueInstalling();
                     return;
                 }
             }
@@ -563,21 +616,20 @@ namespace ResourceHubLauncher
             }
             if (!Directory.Exists(Path.GetDirectoryName(f))) Directory.CreateDirectory(Path.GetDirectoryName(f));
 
-            if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
+            /*if (actualModButton.InstalledMod && Log("Mod seems to already be installed; Prompting user if they still want to download.") && MsgBox($"This mod seems to already be installed.\r\nAre you sure you want to continue and download?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
                 DownloadPanel.Hide();
                 Console.WriteLine("Download cancelled by user.");
                 return;
-            }
+            }*/
 
             if (!download) {
                 download = true;
                 downloadFile(url, modPath, f, m, (object _sender, AsyncCompletedEventArgs args) => {
-
                     if (!d) {
-                        NoDllDownloadEnd(_sender, args);
+                        NoDllDownloadEnd(_sender, args,mod,actualModButton);
 
                     } else {
-                        DllDownloadEnd(_sender, args);
+                        DllDownloadEnd(_sender, args, mod, actualModButton);
                     }
 
 
@@ -597,7 +649,7 @@ namespace ResourceHubLauncher
            if( actualModButton.InstalledMod || actualModButton.DisabledMod) {
                 toolStripMenuItem1_Click(sender, e);
             } else {
-                install();
+                AddToInstallQueue(mod);
             }
             
 
@@ -703,7 +755,7 @@ namespace ResourceHubLauncher
                 toolStripMenuItem3_Click(sender, e);
                 try {
                     if (File.Exists(path)) File.Move(path, newPath);
-                    actualModButton.EnabledMod = true;
+                    actualModButton.InstalledMod = true;
                     disableToolStripMenuItem1.Text = "Disable";
                     actualModButton.Refresh();
                 } catch (Exception ex) {
@@ -728,7 +780,7 @@ namespace ResourceHubLauncher
                 metroButton4_Click(sender, e);
                 try {
                     if (File.Exists(path)) File.Move(path, newPath);
-                    actualModButton.EnabledMod = false;
+                    actualModButton.DisabledMod = true;
                     disableToolStripMenuItem1.Text = "Enable";
                     actualModButton.Refresh();
                 } catch (Exception ex) {
@@ -899,7 +951,7 @@ namespace ResourceHubLauncher
         }
 
         private void disableToolStripMenuItem1_Click(object sender, EventArgs e) {
-            if(actualModButton.EnabledMod) {
+            if(actualModButton.InstalledMod) {
                 openInModsToolStripMenuItem_Click(sender, e);
             } else {
                 toolStripMenuItem5_Click(sender, e);
@@ -927,34 +979,42 @@ namespace ResourceHubLauncher
         }
 
         private void toolStripMenuItem1_Click_1(object sender, EventArgs e) {
-            if(installedToolStripMenuItem.Checked) {
+            metroPanel2.VerticalScroll.Value = 0;
+            if (installedToolStripMenuItem.Checked) {
                 installedToolStripMenuItem.ForeColor = Color.FromArgb(0, 170, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod&& installedToolStripMenuItem.Checked) || (B.DisabledMod&& disabledToolStripMenuItem.Checked) ||(!B.InstalledMod&& !B.DisabledMod && availableToolStripMenuItem.Checked); });
+                modsButtons.ShowOnly((B) => { return (B.InstalledMod&& installedToolStripMenuItem.Checked) || (B.DisabledMod&& disabledToolStripMenuItem.Checked) ||(B.AvailableMod && availableToolStripMenuItem.Checked); });
             } 
             else {
                 installedToolStripMenuItem.ForeColor = Color.FromArgb(170, 0, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (!B.InstalledMod && !B.DisabledMod && availableToolStripMenuItem.Checked); });
+                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
             }
         }
 
         private void disabledToolStripMenuItem_Click(object sender, EventArgs e) {
+            metroPanel2.VerticalScroll.Value = 0;
             if (disabledToolStripMenuItem.Checked) {
                 disabledToolStripMenuItem.ForeColor = Color.FromArgb(0, 170, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (!B.InstalledMod && !B.DisabledMod && availableToolStripMenuItem.Checked); });
+                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
             } else {
                 disabledToolStripMenuItem.ForeColor = Color.FromArgb(170, 0, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (!B.InstalledMod && !B.DisabledMod && availableToolStripMenuItem.Checked); });
+                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
             }
         }
 
         private void availableToolStripMenuItem_Click(object sender, EventArgs e) {
+            metroPanel2.VerticalScroll.Value = 0;
             if (availableToolStripMenuItem.Checked) {
                 availableToolStripMenuItem.ForeColor = Color.FromArgb(0, 170, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (!B.InstalledMod && !B.DisabledMod && availableToolStripMenuItem.Checked); });
+                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
             } else {
                 availableToolStripMenuItem.ForeColor = Color.FromArgb(170, 0, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (!B.InstalledMod && !B.DisabledMod && availableToolStripMenuItem.Checked); });
+                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
             }
+        }
+
+        private void ShowedModsMenuStrip_Closing(object sender, ToolStripDropDownClosingEventArgs e) {
+            if (e.CloseReason == ToolStripDropDownCloseReason.ItemClicked)
+                e.Cancel = true;
         }
     }
 }

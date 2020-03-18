@@ -25,6 +25,13 @@ namespace RHL_Mod_Configurator_API
             public delegate string GetModFolderFunction();
             public GetModFolderFunction getModFolder;
 
+            public delegate void OpenFileFunction(string filePath);
+            public OpenFileFunction openFile;
+
+            public delegate void ChangeFileOptionFunction(string filePath);
+            public ChangeFileOptionFunction changeFileOption;
+
+
         }
         public static Functions functions;
 

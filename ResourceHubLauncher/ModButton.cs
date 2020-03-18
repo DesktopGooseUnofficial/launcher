@@ -21,7 +21,8 @@ namespace ResourceHubLauncher {
         Color modStateColor;
         public bool hasConfigurator = false;
         public bool fromOutside = false;
-        
+        public ModButtonStates State;
+
         protected Font font = new Font("Segoe UI Light", 10f);
 
         Action<string> clickR;
@@ -86,7 +87,10 @@ namespace ResourceHubLauncher {
             MouseDown += button1_Click;
             MouseHover += MouseHover_;
             //BackColorChanged += ColorChanged;
+            State = _modState;
         }
+
+        
 
         public void setLocation(Point newLocation) {
             Location = newLocation;
@@ -106,39 +110,65 @@ namespace ResourceHubLauncher {
             GC.Collect();
         }
 
+        public bool InQueue {
+            set { if (value) {
+                    modState = "In Queue";
+                } else {
+                    switch(State) {
+                        case ModButtonStates.Available:
+                            modState = "Available";
+                            break;
+                        case ModButtonStates.Disabled:
+                            modState = "Disabled";
+                            break;
+                        case ModButtonStates.Installed:
+                            modState = "Installed";
+                            break;
+                    }
+                }
+            }
+            get { return modState == "In Queue"; }
+        }
+
         public bool InstalledMod {
-            get { return modState == "Installed"; }
+            get { return State == ModButtonStates.Installed; }
             set {
                 if (value) {
+                    State = ModButtonStates.Installed;
                     modState = "Installed";
                     modStateColor = Color.Green;
                 } else {
+                    State = ModButtonStates.Available;
                     modState = "Available";
                     modStateColor = Color.DodgerBlue;
                 }
             }
         }
 
-        public bool EnabledMod {
-            get { return modState == "Installed"; }
+        public bool AvailableMod {
+            get { return State == ModButtonStates.Available; }
             set {
-                if (value) {
+                if (!value) {
+                    State = ModButtonStates.Installed;
                     modState = "Installed";
                     modStateColor = Color.Green;
                 } else {
-                    modState = "Disabled";
-                    modStateColor = Color.Red;
+                    State = ModButtonStates.Available;
+                    modState = "Available";
+                    modStateColor = Color.DodgerBlue;
                 }
             }
         }
 
         public bool DisabledMod {
-            get { return modState == "Disabled"; }
+            get { return State == ModButtonStates.Disabled; }
             set {
                 if (!value) {
+                    State = ModButtonStates.Installed;
                     modState = "Installed";
                     modStateColor = Color.Green;
                 } else {
+                    State = ModButtonStates.Disabled;
                     modState = "Disabled";
                     modStateColor = Color.Red;
                 }
