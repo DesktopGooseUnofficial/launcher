@@ -14,6 +14,16 @@ using System.Reflection;
 
 namespace ResourceHubLauncher
 {
+    class OptionValueString
+    {
+        public OptionValueString(string value) {
+            string[] spl = value.Split('"');
+        }
+        string option;
+        string beforeOption;
+        string afterOption;
+    }
+
     class ConfigFile
     {
         public ConfigFile(string fileLocation) {
@@ -27,8 +37,20 @@ namespace ResourceHubLauncher
                     int equal = line.IndexOf('=');
                     if (equal != -1) {
                         string key = line.Substring(0, equal);
+                        if(key.Last()==' ') {
+                            key= key.Remove(key.Length-1, 1);
+                        }
+                        if (key.First() == ' ') {
+                            key = key.Remove(0, 1);
+                        }
                         string value = line.Substring(equal + 1);
-                        value= value.Replace("\r", "");
+                        if (value.Last() == ' ') {
+                            value = value.Remove(value.Length - 1, 1);
+                        }
+                        if (value.First() == ' ') {
+                            value = value.Remove(0, 1);
+                        }
+                        value = value.Replace("\r", "");
                         options.Add(new KeyValuePair<string, string>(key, value));
                     }
 
