@@ -73,6 +73,7 @@ namespace ResourceHubLauncher
 
 
                     form.results = data["mods"].Children().ToList();
+                    /*
                     if (!_G.beta && !File.Exists("Updater.exe")) {
                         if (MetroMessageBox.Show(form, "This is an unstable build.\nAre you sure you want to proceed?\nLink for the latest stable build: https://github.com/DesktopGooseUnofficial/launcher/releases/latest \n When you will click "+'"'+"No"+'"'+ " File "+'"'+ "Latest Stable Build" + '"'+" will be created with that link easy to copy.", "Warming", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) {
                             StreamWriter wr = new StreamWriter("Latest Stable Build.txt");
@@ -81,7 +82,7 @@ namespace ResourceHubLauncher
                             Environment.Exit(0);
                         }
                     }
-
+                    */
                     byte[] hash = MD5.Create().ComputeHash(File.ReadAllBytes(Application.ExecutablePath));
 
                     StringBuilder md5 = new StringBuilder();
@@ -95,6 +96,7 @@ namespace ResourceHubLauncher
                     loading.Visible = false;
                     loading.Close();
                     form.md5 = md5;
+                    /*
                     if (latest != md5.ToString() && !_G.dev && _G.update) {
                         try {
                             Process.Start("Updater.exe");
@@ -112,7 +114,7 @@ namespace ResourceHubLauncher
                             Console.WriteLine("Launcher is up to date!");
                         }
                     }
-
+                    */
                     if (_G.dev && MetroMessageBox.Show(form, "Copy Version MD5 to clipboard?", "Developer Mode", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         Clipboard.SetText(md5.ToString());
 
