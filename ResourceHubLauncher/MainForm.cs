@@ -305,10 +305,10 @@ namespace ResourceHubLauncher
         private void changeModDescription() {
             try {
                 string description = (string)mod["description"];
-                if(mod["description-debug"]!=null) {
+                if(mod["description-debug"] != null) {
                     description = (string)mod["description-debug"];
                 }
-                label3.Text = "<big>"+(string)mod["name"]+ "</big>  Version: "+(string)mod["mod-version"] +"\r\nAuthor: "+(string)mod["author"] + "\r\n\r\n" + description;
+                label3.Text = $"<big>{(string)mod["name"]} </big> Version {(string)mod["mod-version"]} for Goose version {(string)mod["goose-version"]} \r\nAuthor: {(string)mod["author"]} \r\n\r\n{description}";
                 htmlTags.Apply(ref label3);
 
             } catch (Exception) {
