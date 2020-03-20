@@ -41,7 +41,6 @@
             this.allowUnsafe = new MetroFramework.Controls.MetroCheckBox();
             this.Launcher = new System.Windows.Forms.TabPage();
             this.metroPanel4 = new MetroFramework.Controls.MetroPanel();
-            this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.metroCheckBox2 = new MetroFramework.Controls.MetroCheckBox();
             this.metroCheckBox1 = new MetroFramework.Controls.MetroCheckBox();
             this.PStyle = new System.Windows.Forms.TabPage();
@@ -62,6 +61,7 @@
             this.colorPicker9 = new System.Windows.Forms.Panel();
             this.colorPicker8 = new System.Windows.Forms.Panel();
             this.colorPicker7 = new System.Windows.Forms.Panel();
+            this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             ((System.ComponentModel.ISupportInitialize)(this.styleManager)).BeginInit();
             this.metroTabControl1.SuspendLayout();
@@ -210,7 +210,7 @@
             this.metroTabControl1.Location = new System.Drawing.Point(27, 74);
             this.metroTabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 2;
+            this.metroTabControl1.SelectedIndex = 0;
             this.metroTabControl1.Size = new System.Drawing.Size(871, 441);
             this.metroTabControl1.TabIndex = 21;
             this.metroTabControl1.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -314,19 +314,6 @@
             this.metroPanel4.VerticalScrollbarBarColor = true;
             this.metroPanel4.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel4.VerticalScrollbarSize = 13;
-            // 
-            // metroButton1
-            // 
-            this.metroButton1.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.metroButton1.Location = new System.Drawing.Point(613, 425);
-            this.metroButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.metroButton1.Name = "metroButton1";
-            this.metroButton1.Size = new System.Drawing.Size(120, 30);
-            this.metroButton1.TabIndex = 22;
-            this.metroButton1.Text = "Contributors";
-            this.metroButton1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroButton1.UseSelectable = true;
-            this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click_1);
             // 
             // metroCheckBox2
             // 
@@ -547,6 +534,19 @@
             this.colorPicker7.Name = "colorPicker7";
             this.colorPicker7.Size = new System.Drawing.Size(43, 39);
             this.colorPicker7.TabIndex = 9;
+            // 
+            // metroButton1
+            // 
+            this.metroButton1.FontWeight = MetroFramework.MetroButtonWeight.Regular;
+            this.metroButton1.Location = new System.Drawing.Point(613, 425);
+            this.metroButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.metroButton1.Name = "metroButton1";
+            this.metroButton1.Size = new System.Drawing.Size(120, 30);
+            this.metroButton1.TabIndex = 22;
+            this.metroButton1.Text = "Contributors";
+            this.metroButton1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroButton1.UseSelectable = true;
+            this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click_1);
             // 
             // metroLabel2
             // 

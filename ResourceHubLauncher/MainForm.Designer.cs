@@ -47,18 +47,28 @@
             this.discordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.twitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.futureOfTheLauncherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
             this.label3 = new System.Windows.Forms.RichTextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.UtilitiesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.gooseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.giveUsFeedbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
+            this.gooseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forModCreatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.BoldToolButton = new System.Windows.Forms.ToolStripButton();
+            this.ItalicToolButton = new System.Windows.Forms.ToolStripButton();
+            this.UnderlineToolButton = new System.Windows.Forms.ToolStripButton();
+            this.StrikeoutToolButton = new System.Windows.Forms.ToolStripButton();
+            this.SizeToolButton = new System.Windows.Forms.ToolStripComboBox();
+            this.DescriptionContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.metroProgressBar1 = new MetroFramework.Controls.MetroProgressBar();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroButton6 = new MetroFramework.Controls.MetroButton();
@@ -74,12 +84,14 @@
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.metroPanel5 = new MetroFramework.Controls.MetroPanel();
             this.loadingPanel = new MetroFramework.Controls.MetroPanel();
-            this.debugButton = new MetroFramework.Controls.MetroButton();
+            this.descriptionButton = new MetroFramework.Controls.MetroButton();
             this.modListContextMenu.SuspendLayout();
             this.ShowedModsMenuStrip.SuspendLayout();
             this.linksContextMenu.SuspendLayout();
             this.UtilitiesContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            this.DescriptionContextMenu.SuspendLayout();
             this.resizingPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.DownloadPanel.SuspendLayout();
@@ -171,6 +183,7 @@
             this.availableToolStripMenuItem});
             this.ShowedModsMenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.ShowedModsMenuStrip.Name = "modListContextMenu";
+            this.ShowedModsMenuStrip.OwnerItem = this.showModsToolStripMenuItem;
             this.ShowedModsMenuStrip.ShowImageMargin = false;
             this.ShowedModsMenuStrip.Size = new System.Drawing.Size(197, 82);
             this.ShowedModsMenuStrip.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.ShowedModsMenuStrip_Closing);
@@ -284,15 +297,6 @@
             this.futureOfTheLauncherToolStripMenuItem.Text = "Upcoming Features";
             this.futureOfTheLauncherToolStripMenuItem.Click += new System.EventHandler(this.futureOfTheLauncherToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem8
-            // 
-            this.toolStripMenuItem8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.toolStripMenuItem8.DropDown = this.linksContextMenu;
-            this.toolStripMenuItem8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
-            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(165, 24);
-            this.toolStripMenuItem8.Text = "Links";
-            // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -311,6 +315,7 @@
             this.label3.TabIndex = 28;
             this.label3.Text = "<m>Hover or click on the mod buttons (in list on the left) to see mod description" +
     "s.</m>\n\n<m>Click (on mod button) to see options!</m>";
+            this.label3.SelectionChanged += new System.EventHandler(this.label3_SelectionChanged);
             // 
             // listBox1
             // 
@@ -320,7 +325,6 @@
             this.styleExtender.SetApplyMetroTheme(this.listBox1, true);
             this.listBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listBox1.ContextMenuStrip = this.modListContextMenu;
             this.listBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.IntegralHeight = false;
@@ -366,13 +370,6 @@
             this.toolStripMenuItem3.Text = "Stop";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
-            // gooseToolStripMenuItem
-            // 
-            this.gooseToolStripMenuItem.DropDown = this.UtilitiesContextMenu;
-            this.gooseToolStripMenuItem.Name = "gooseToolStripMenuItem";
-            this.gooseToolStripMenuItem.Size = new System.Drawing.Size(165, 24);
-            this.gooseToolStripMenuItem.Text = "Goose";
-            // 
             // OptionsContextMenu
             // 
             this.styleExtender.SetApplyMetroTheme(this.OptionsContextMenu, true);
@@ -384,23 +381,24 @@
             this.giveUsFeedbackToolStripMenuItem,
             this.toolStripMenuItem7,
             this.toolStripMenuItem8,
-            this.gooseToolStripMenuItem});
+            this.gooseToolStripMenuItem,
+            this.forModCreatorsToolStripMenuItem});
             this.OptionsContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.OptionsContextMenu.Name = "modListContextMenu";
             this.OptionsContextMenu.ShowImageMargin = false;
-            this.OptionsContextMenu.Size = new System.Drawing.Size(166, 124);
+            this.OptionsContextMenu.Size = new System.Drawing.Size(169, 148);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(165, 24);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(168, 24);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // giveUsFeedbackToolStripMenuItem
             // 
             this.giveUsFeedbackToolStripMenuItem.Name = "giveUsFeedbackToolStripMenuItem";
-            this.giveUsFeedbackToolStripMenuItem.Size = new System.Drawing.Size(165, 24);
+            this.giveUsFeedbackToolStripMenuItem.Size = new System.Drawing.Size(168, 24);
             this.giveUsFeedbackToolStripMenuItem.Text = "Give us feedback";
             this.giveUsFeedbackToolStripMenuItem.Click += new System.EventHandler(this.giveUsFeedbackToolStripMenuItem_Click);
             // 
@@ -409,9 +407,32 @@
             this.toolStripMenuItem7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.toolStripMenuItem7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(165, 24);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(168, 24);
             this.toolStripMenuItem7.Text = "Settings";
             this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.toolStripMenuItem8.DropDown = this.linksContextMenu;
+            this.toolStripMenuItem8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(168, 24);
+            this.toolStripMenuItem8.Text = "Links";
+            // 
+            // gooseToolStripMenuItem
+            // 
+            this.gooseToolStripMenuItem.DropDown = this.UtilitiesContextMenu;
+            this.gooseToolStripMenuItem.Name = "gooseToolStripMenuItem";
+            this.gooseToolStripMenuItem.Size = new System.Drawing.Size(168, 24);
+            this.gooseToolStripMenuItem.Text = "Goose";
+            // 
+            // forModCreatorsToolStripMenuItem
+            // 
+            this.forModCreatorsToolStripMenuItem.Name = "forModCreatorsToolStripMenuItem";
+            this.forModCreatorsToolStripMenuItem.Size = new System.Drawing.Size(168, 24);
+            this.forModCreatorsToolStripMenuItem.Text = "For Mod Creators";
+            this.forModCreatorsToolStripMenuItem.Click += new System.EventHandler(this.forModCreatorsToolStripMenuItem_Click);
             // 
             // changelogRichTextBox
             // 
@@ -427,6 +448,117 @@
             this.changelogRichTextBox.Size = new System.Drawing.Size(801, 400);
             this.changelogRichTextBox.TabIndex = 2;
             this.changelogRichTextBox.Text = resources.GetString("changelogRichTextBox.Text");
+            // 
+            // toolStrip1
+            // 
+            this.styleExtender.SetApplyMetroTheme(this.toolStrip1, true);
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BoldToolButton,
+            this.ItalicToolButton,
+            this.UnderlineToolButton,
+            this.StrikeoutToolButton,
+            this.SizeToolButton});
+            this.toolStrip1.Location = new System.Drawing.Point(663, 30);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(281, 28);
+            this.toolStrip1.TabIndex = 42;
+            this.toolStrip1.Text = "toolStrip1";
+            this.toolStrip1.Visible = false;
+            // 
+            // BoldToolButton
+            // 
+            this.BoldToolButton.CheckOnClick = true;
+            this.BoldToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.BoldToolButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.BoldToolButton.Image = ((System.Drawing.Image)(resources.GetObject("BoldToolButton.Image")));
+            this.BoldToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BoldToolButton.Name = "BoldToolButton";
+            this.BoldToolButton.Size = new System.Drawing.Size(29, 25);
+            this.BoldToolButton.Text = "B";
+            this.BoldToolButton.ToolTipText = "Bold";
+            this.BoldToolButton.Click += new System.EventHandler(this.BoldToolButton_Click);
+            // 
+            // ItalicToolButton
+            // 
+            this.ItalicToolButton.CheckOnClick = true;
+            this.ItalicToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ItalicToolButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.ItalicToolButton.Image = ((System.Drawing.Image)(resources.GetObject("ItalicToolButton.Image")));
+            this.ItalicToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ItalicToolButton.Name = "ItalicToolButton";
+            this.ItalicToolButton.Size = new System.Drawing.Size(29, 25);
+            this.ItalicToolButton.Text = "I";
+            this.ItalicToolButton.ToolTipText = "Italic";
+            this.ItalicToolButton.Click += new System.EventHandler(this.ItalicToolButton_Click);
+            // 
+            // UnderlineToolButton
+            // 
+            this.UnderlineToolButton.CheckOnClick = true;
+            this.UnderlineToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.UnderlineToolButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Underline);
+            this.UnderlineToolButton.Image = ((System.Drawing.Image)(resources.GetObject("UnderlineToolButton.Image")));
+            this.UnderlineToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.UnderlineToolButton.Name = "UnderlineToolButton";
+            this.UnderlineToolButton.Size = new System.Drawing.Size(29, 25);
+            this.UnderlineToolButton.Text = "U";
+            this.UnderlineToolButton.ToolTipText = "Underline";
+            this.UnderlineToolButton.Click += new System.EventHandler(this.UnderlineToolButton_Click);
+            // 
+            // StrikeoutToolButton
+            // 
+            this.StrikeoutToolButton.CheckOnClick = true;
+            this.StrikeoutToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.StrikeoutToolButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Strikeout);
+            this.StrikeoutToolButton.Image = ((System.Drawing.Image)(resources.GetObject("StrikeoutToolButton.Image")));
+            this.StrikeoutToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.StrikeoutToolButton.Name = "StrikeoutToolButton";
+            this.StrikeoutToolButton.Size = new System.Drawing.Size(29, 25);
+            this.StrikeoutToolButton.Text = "S";
+            this.StrikeoutToolButton.ToolTipText = "Strikeout";
+            this.StrikeoutToolButton.Click += new System.EventHandler(this.StrikeoutToolButton_Click);
+            // 
+            // SizeToolButton
+            // 
+            this.SizeToolButton.Items.AddRange(new object[] {
+            "Normal Size",
+            "Medium Size",
+            "Big Size"});
+            this.SizeToolButton.Name = "SizeToolButton";
+            this.SizeToolButton.Size = new System.Drawing.Size(121, 28);
+            this.SizeToolButton.Text = "Normal Size";
+            this.SizeToolButton.ToolTipText = "Text Size";
+            this.SizeToolButton.Click += new System.EventHandler(this.toolStripComboBox1_Click);
+            // 
+            // DescriptionContextMenu
+            // 
+            this.styleExtender.SetApplyMetroTheme(this.DescriptionContextMenu, true);
+            this.DescriptionContextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.DescriptionContextMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.DescriptionContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.DescriptionContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem4});
+            this.DescriptionContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
+            this.DescriptionContextMenu.Name = "modListContextMenu";
+            this.DescriptionContextMenu.ShowImageMargin = false;
+            this.DescriptionContextMenu.Size = new System.Drawing.Size(98, 52);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(97, 24);
+            this.toolStripMenuItem1.Text = "Save";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click_2);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(97, 24);
+            this.toolStripMenuItem4.Text = "Cancel";
+            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click_1);
             // 
             // metroProgressBar1
             // 
@@ -664,17 +796,19 @@
             this.loadingPanel.VerticalScrollbarHighlightOnWheel = false;
             this.loadingPanel.VerticalScrollbarSize = 10;
             // 
-            // debugButton
+            // descriptionButton
             // 
-            this.debugButton.Location = new System.Drawing.Point(496, 25);
-            this.debugButton.Name = "debugButton";
-            this.debugButton.Size = new System.Drawing.Size(239, 41);
-            this.debugButton.TabIndex = 41;
-            this.debugButton.Text = "debug";
-            this.debugButton.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.debugButton.UseSelectable = true;
-            this.debugButton.Visible = false;
-            this.debugButton.Click += new System.EventHandler(this.debugButton_Click);
+            this.descriptionButton.FontWeight = MetroFramework.MetroButtonWeight.Regular;
+            this.descriptionButton.Location = new System.Drawing.Point(460, 25);
+            this.descriptionButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.descriptionButton.Name = "descriptionButton";
+            this.descriptionButton.Size = new System.Drawing.Size(171, 41);
+            this.descriptionButton.TabIndex = 41;
+            this.descriptionButton.Text = "Description Making";
+            this.descriptionButton.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.descriptionButton.UseSelectable = true;
+            this.descriptionButton.Visible = false;
+            this.descriptionButton.Click += new System.EventHandler(this.metroButton1_Click);
             // 
             // MainForm
             // 
@@ -683,12 +817,13 @@
             this.AutoScroll = true;
             this.AutoScrollMinSize = new System.Drawing.Size(0, 481);
             this.ClientSize = new System.Drawing.Size(971, 596);
-            this.Controls.Add(this.DownloadPanel);
             this.Controls.Add(this.changelogPanel);
             this.Controls.Add(this.loadingPanel);
+            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.descriptionButton);
+            this.Controls.Add(this.DownloadPanel);
             this.Controls.Add(this.metroButton6);
             this.Controls.Add(this.metroPanel2);
-            this.Controls.Add(this.debugButton);
             this.Controls.Add(this.OptionsButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.listBox1);
@@ -718,6 +853,9 @@
             this.linksContextMenu.ResumeLayout(false);
             this.UtilitiesContextMenu.ResumeLayout(false);
             this.OptionsContextMenu.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            this.DescriptionContextMenu.ResumeLayout(false);
             this.resizingPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.DownloadPanel.ResumeLayout(false);
@@ -772,7 +910,6 @@
         private MetroFramework.Controls.MetroPanel metroPanel5;
         private MetroFramework.Controls.MetroLabel metroLabel4;
         private MetroFramework.Controls.MetroPanel loadingPanel;
-        private MetroFramework.Controls.MetroButton debugButton;
         private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem openInModsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem configureModToolStripMenuItem;
@@ -782,5 +919,16 @@
         private System.Windows.Forms.ToolStripMenuItem installedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disabledToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem availableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem forModCreatorsToolStripMenuItem;
+        private MetroFramework.Controls.MetroButton descriptionButton;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton BoldToolButton;
+        private System.Windows.Forms.ToolStripButton ItalicToolButton;
+        private System.Windows.Forms.ToolStripButton UnderlineToolButton;
+        private System.Windows.Forms.ToolStripButton StrikeoutToolButton;
+        private System.Windows.Forms.ToolStripComboBox SizeToolButton;
+        private System.Windows.Forms.ContextMenuStrip DescriptionContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
     }
 }

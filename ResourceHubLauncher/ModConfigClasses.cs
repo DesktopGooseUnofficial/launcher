@@ -17,17 +17,56 @@ namespace ResourceHubLauncher
     class OptionValueString
     {
         public OptionValueString(string value) {
+            
             string[] spl = value.Split('"');
+            if(spl.Length>1) {
+                beforeOption = spl[0] + '"';
+                option = spl[1];
+                afterOption = '"'+ spl[2] ;
+            } else {
+                
+                if(value.StartsWith(" ")) {
+                    bool number = true;
+                    string potential = value.Remove(0, 1);
+                    foreach (char c in potential) {
+                        if (!(char.IsDigit(c) || c == '.')) {
+                            number = false;
+                            break;
+                        }
+                    }
+                    if (number) {
+                        beforeOption = " ";
+                        value = potential;
+                    }
+                }
+                
+                
+                option = value;
+            }
+
         }
-        string option;
-        string beforeOption;
-        string afterOption;
+
+        public OptionValueString(string value, OptionValueString before) {
+            beforeOption = before.beforeOption;
+            afterOption = before.afterOption;
+            option = value;
+        }
+
+        public string entireValue {
+            get {
+                return beforeOption + option + afterOption;
+            }
+        }
+
+        public string option;
+        public string beforeOption="";
+        public string afterOption="";
     }
 
     class ConfigFile
     {
         public ConfigFile(string fileLocation) {
-            options = new List<KeyValuePair<string, string>>();
+            options = new List<KeyValuePair<string, OptionValueString>>();
             fileLocationPath = fileLocation;
             if(File.Exists(fileLocationPath)) {
                 StreamReader file = new StreamReader(fileLocationPath);
@@ -37,21 +76,9 @@ namespace ResourceHubLauncher
                     int equal = line.IndexOf('=');
                     if (equal != -1) {
                         string key = line.Substring(0, equal);
-                        if(key.Last()==' ') {
-                            key= key.Remove(key.Length-1, 1);
-                        }
-                        if (key.First() == ' ') {
-                            key = key.Remove(0, 1);
-                        }
                         string value = line.Substring(equal + 1);
-                        if (value.Last() == ' ') {
-                            value = value.Remove(value.Length - 1, 1);
-                        }
-                        if (value.First() == ' ') {
-                            value = value.Remove(0, 1);
-                        }
                         value = value.Replace("\r", "");
-                        options.Add(new KeyValuePair<string, string>(key, value));
+                        options.Add(new KeyValuePair<string, OptionValueString>(key,new OptionValueString(  value)));
                     }
 
                 }
@@ -71,16 +98,21 @@ namespace ResourceHubLauncher
                         string key = line.Substring(0, equal);
                         string value = line.Substring(equal + 1);
                         value=value.Replace("\r", "");
-                        options.Add(new KeyValuePair<string, string>(key, value));
+                        options.Add(new KeyValuePair<string, OptionValueString>(key, new OptionValueString(value)));
                     }
 
                 }
             }
         }
+
+        public bool OptionExists(string optionName) {
+            return options.FindIndex((p) => { return p.Key == optionName; }) != -1;
+        }
         public string getOption(string optionName) {
             int index = options.FindIndex((p) => { return p.Key == optionName; });
+
             if(index!=-1) {
-                return options.Find((p) => { return p.Key == optionName; }).Value;
+                return options.Find((p) => { return p.Key == optionName; }).Value.option;
             } else {
                 return "";
             }
@@ -89,12 +121,12 @@ namespace ResourceHubLauncher
         public void ChangeOption(string optionName,string toWhat) {
             int index= options.FindIndex((p) => { return p.Key == optionName; });
             if(index!=-1) {
-                KeyValuePair<string, string> optionPair = options[index];
-                options.Remove(optionPair);
+                options[index].Value.option = toWhat;
+                return;
             }
             
             
-            options.Add(new KeyValuePair<string, string>(optionName, toWhat));
+            options.Add(new KeyValuePair<string, OptionValueString>(optionName, new OptionValueString( toWhat)));
 
         }
 
@@ -106,11 +138,11 @@ namespace ResourceHubLauncher
             
             StreamWriter file = new StreamWriter(fileLocationPath);
             string toWrite = "";
-            foreach(KeyValuePair<string, string> pair in options) {
-                if(pair.Value.EndsWith("\r")) {
-                    toWrite += pair.Key + '=' + pair.Value + "\n";
+            foreach(KeyValuePair<string, OptionValueString> pair in options) {
+                if(pair.Value.entireValue.EndsWith("\r")) {
+                    toWrite += pair.Key + '=' + pair.Value.entireValue + "\n";
                 } else {
-                    toWrite += pair.Key + '=' + pair.Value + "\r\n";
+                    toWrite += pair.Key + '=' + pair.Value.entireValue + "\r\n";
                 }
             }
             file.Write(toWrite);
@@ -118,7 +150,7 @@ namespace ResourceHubLauncher
         }
 
         public void ApplyFrom(string what) {
-            options = new List<KeyValuePair<string, string>>();
+            options = new List<KeyValuePair<string, OptionValueString>>();
             if(File.Exists(what)) {
                 StreamReader file = new StreamReader(what);
                 string[] lines = file.ReadToEnd().Split('\n');
@@ -129,7 +161,7 @@ namespace ResourceHubLauncher
                         string key = line.Substring(0, equal);
                         string value = line.Substring(equal + 1);
                         if (options.FindIndex((p) => { return p.Key == key; }) == -1) {
-                            options.Add(new KeyValuePair<string, string>(key, value));
+                            options.Add(new KeyValuePair<string, OptionValueString>(key, new OptionValueString( value)));
                         }
 
                     }
@@ -140,17 +172,23 @@ namespace ResourceHubLauncher
         }
 
         public string fileLocationPath;
-        public List<KeyValuePair<string, string>> options;
+        public List<KeyValuePair<string, OptionValueString>> options;
     }
     class ModConfigClasses
     {
         
+        public enum ApplyType
+        {
+            inLauncher,
+            inGoose
+        }
+
         public interface ModConfigBox
         {
             void Apply(List<KeyValuePair<string, ConfigFile>> configFiles);
             Point GetNextBoxLocation();
             void SetLocation(Point newLocation);
-            void ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles);
+            void ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles, ApplyType type);
 
             void addControlsToControl(Control c);
 
@@ -191,7 +229,7 @@ namespace ResourceHubLauncher
                 configFilePath = fileWithConfig;
             }
 
-            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
+            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles, ApplyType type) {
                 Text = configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption);
                 for (int i = 0; i < Text.Length; i++) {
                     if (Text[i] == '\n' || Text[i] == '\r') {
@@ -290,7 +328,7 @@ namespace ResourceHubLauncher
 
             }
 
-            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
+            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles, ApplyType type) {
 
             }
         }
@@ -401,7 +439,7 @@ namespace ResourceHubLauncher
             void ModConfigBox.addControlsToControl(Control c) {
             }
 
-            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
+            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles, ApplyType type) {
                 int index = configFiles.FindIndex((p) => { return p.Key == configFilePath; });
                 if(index!=-1) {
                     Checked = configFiles[index].Value.getOption(configOption).ToLower() == "true";
@@ -430,9 +468,9 @@ namespace ResourceHubLauncher
         {
             public FileBox(string showedName, OpenFileDialog FileDialog, Action<string> howToUsePath, string toFilePath) {
                 fileDialogButton.Size = new Size(23, 23);
-                fileDialogButton.Text = "\\/";
+                fileDialogButton.Text = "...";
                 fileDialogButton.FontWeight = MetroButtonWeight.Regular;
-
+                ReadOnly = true;
                 BoxName.Text = showedName + ':';
                 BoxName.AutoSize = true;
                 Size = new Size(365, 23);
@@ -459,22 +497,21 @@ namespace ResourceHubLauncher
                 c.Controls.Add(fileDialogButton);
             }
 
-            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
+            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles, ApplyType type) {
                 //Text = configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption);
-                string ModsFilesPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles",MainForm.modName,"Default");
-                if ( configFiles.First().Value.fileLocationPath.StartsWith(ModsFilesPath)) {
-                    string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-                    string forDefaultPath = ModConfigForm.getInGooseFilePath( modFilePath);
-                    string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName, "Default", forDefaultPath);
+                switch(type) {
+                    case ApplyType.inGoose:
+                        Text = modFilePath;
+                        return;
+                    case ApplyType.inLauncher:
+                        string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-                    Text = defaultPath;
-                    return;
-                }
-                
-                if (configFiles.First().Value.fileLocationPath.StartsWith(Path.GetDirectoryName((string)Config.Options["gpath"]))) {
-                    Text = modFilePath;
-                    return;
+                        string forDefaultPath = ModConfigForm.getInGooseFilePath(modFilePath);
+                        string defaultPath = Path.Combine(exePath, "ModsFiles", MainForm.modName, "Default", forDefaultPath);
+
+                        Text = defaultPath;
+                        return;
                 }
                     /*ModsFilesPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", MainForm.modName, "Used Before");
                     if (configFiles.First().Value.fileLocationPath.StartsWith(ModsFilesPath)) {
@@ -529,6 +566,72 @@ namespace ResourceHubLauncher
             public string modFilePath;
         }
 
+        public class FileBox2 : MetroTextBox, ModConfigBox
+        {
+            public FileBox2(string fileWithConfigPath, string configOptionName, string showedName, OpenFileDialog FileDialog) {
+                fileDialogButton.Size = new Size(23, 23);
+                fileDialogButton.Text = "...";
+                fileDialogButton.FontWeight = MetroButtonWeight.Regular;
+                ReadOnly = true;
+                BoxName.Text = showedName + ':';
+                BoxName.AutoSize = true;
+                Size = new Size(365, 23);
+                fileDialog = FileDialog;
+                fileDialogButton.Click += FileDialogButtonClick;
+
+                configFilePath= fileWithConfigPath;
+                configOption= configOptionName;
+
+        }
+
+            void ModConfigBox.addControlsToControl(Control c) {
+                c.Controls.Add(BoxName);
+                c.Controls.Add(fileDialogButton);
+            }
+
+            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles, ApplyType type) {
+                Text = configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption);
+                for (int i = 0; i < Text.Length; i++) {
+                    if (Text[i] == '\n' || Text[i] == '\r') {
+                        Text = Text.Remove(i, 1);
+                    }
+                }
+            }
+
+            void ModConfigBox.SetLocation(Point newLocation) {
+                BoxName.Location = newLocation;
+
+                Location = new Point(newLocation.X, newLocation.Y + BoxName.Size.Height + 3);
+                fileDialogButton.Location = new Point(Location.X + Size.Width, Location.Y);
+            }
+
+            Point ModConfigBox.GetNextBoxLocation() {
+                return new Point(Location.X, Location.Y + Size.Height + 6);
+            }
+
+            void ModConfigBox.Apply(List<KeyValuePair<string, ConfigFile>> configFiles) {
+                for (int i = 0; i < Text.Length; i++) {
+                    if (Text[i] == '\n' || Text[i] == '\r') {
+                        Text = Text.Remove(i, 1);
+                    }
+                }
+                configFiles.Find((p) => { return p.Key == configFilePath; }).Value.ChangeOption(configOption, Text);
+
+            }
+            void FileDialogButtonClick(object sender, EventArgs e) {
+                fileDialog.InitialDirectory = Text;
+                if (fileDialog.ShowDialog() == DialogResult.OK) {
+                    Text = fileDialog.FileName;
+                }
+            }
+
+            MetroLabel BoxName = new MetroLabel();
+            MetroButton fileDialogButton = new MetroButton();
+            OpenFileDialog fileDialog;
+            protected string configFilePath;
+            protected string configOption;
+        }
+
         public class ColorBox : MetroButton, ModConfigBox
         {
             public ColorBox(string fileWithConfig, string configOptionName, string showedName) {
@@ -545,7 +648,7 @@ namespace ResourceHubLauncher
             void ModConfigBox.addControlsToControl(Control c) {
             }
 
-            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
+            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles, ApplyType type) {
                 
                 SetButtonColor(ColorTranslator.FromHtml(configFiles.Find((p) => { return p.Key == configFilePath; }).Value.getOption(configOption)));
             }
@@ -591,7 +694,7 @@ namespace ResourceHubLauncher
                 MsgBox = MsgBox_;
             }
 
-            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles) {
+            void ModConfigBox.ApplyValue(List<KeyValuePair<string, ConfigFile>> configFiles, ApplyType type) {
                
             }
 

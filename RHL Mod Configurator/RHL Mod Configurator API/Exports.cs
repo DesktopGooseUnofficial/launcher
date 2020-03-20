@@ -25,13 +25,6 @@ namespace RHL_Mod_Configurator_API
             public delegate string GetModFolderFunction();
             public GetModFolderFunction getModFolder;
 
-            public delegate void OpenFileFunction(string filePath);
-            public OpenFileFunction openFile;
-
-            public delegate void ChangeFileOptionFunction(string filePath);
-            public ChangeFileOptionFunction changeFileOption;
-
-
         }
         public static Functions functions;
 
@@ -90,6 +83,10 @@ namespace RHL_Mod_Configurator_API
             //makes textbox with option to browse files and changeFile button
             public delegate void AddFileBoxFunction(string showedName, OpenFileDialog FileDialog, Action<string> howToUsePath,string toFilePath);
             public AddFileBoxFunction addFileBox;
+
+            //makes textbox with option to browse files and changeFile button
+            public delegate void AddFileBox2Function(string fileWithConfigPath, string configOptionName, string showedName, OpenFileDialog FileDialog);
+            public AddFileBox2Function addFileBox2;
 
 
             //Makes Button with Color in it
