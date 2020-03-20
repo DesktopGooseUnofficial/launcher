@@ -59,7 +59,7 @@ namespace ResourceHubLauncher
             
 
             for (int i = 0; i < actualModConfig.configGUI.Count; i++) {
-                actualModConfig.configGUI[i].ApplyValue(actualModConfig.configFiles);
+                actualModConfig.configGUI[i].ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
             }
 
             for (int i=0;i< actualModConfig.configGUI.Count;i++) {
@@ -235,8 +235,9 @@ namespace ResourceHubLauncher
         }
 
         static void MakeDefaultFiles(string modName) {
-            foreach(KeyValuePair<string, ConfigFile> pair in actualModConfig.configFiles) {
-                string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            foreach (KeyValuePair<string, ConfigFile> pair in actualModConfig.configFiles) {
+                
                 //Console.WriteLine(pair.Key);
                 string forDefaultPath = getInGooseFilePath( pair.Key);
                 string defaultPath = Path.Combine(exePath, "ModsFiles", modName, "Default", forDefaultPath);
@@ -273,7 +274,7 @@ namespace ResourceHubLauncher
 
         void UseDefaultOptions() {
             for(int i=0;i< actualModConfig.configGUI.Count;i++) {
-                actualModConfig.configGUI[i].ApplyValue(actualModConfig.defaultConfigFiles);
+                actualModConfig.configGUI[i].ApplyValue(actualModConfig.defaultConfigFiles, ModConfigClasses.ApplyType.inLauncher);
             }
         }
 
@@ -310,110 +311,141 @@ namespace ResourceHubLauncher
         }
 
         public static void AddStringBoxFunction(string fileWithConfigPath, string configOptionName, string showedName) {
-            ModConfigClasses.StringBox Box = new ModConfigClasses.StringBox(fileWithConfigPath, configOptionName, showedName);
             OpenConfigFile(fileWithConfigPath);
-            //Box.ContextMenuStrip = GUIContextMenu;
+            if(File.Exists(fileWithConfigPath)) {
+                ModConfigClasses.StringBox Box = new ModConfigClasses.StringBox(fileWithConfigPath, configOptionName, showedName);
+
+                //Box.ContextMenuStrip = GUIContextMenu;
+
+                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
+                setPosition(Box);
+                actualModConfig.configGUI.Add(Box);
+            }
             
-            ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-            setPosition(Box);
-            actualModConfig.configGUI.Add(Box);
         }
 
         public static void AddStringBoxForAllFunction(string fileWithConfigPath) {
             OpenConfigFile(fileWithConfigPath);
-            foreach(KeyValuePair<string,string> pair in actualModConfig.configFiles.Last().Value.options) {
+            foreach(KeyValuePair<string, OptionValueString> pair in actualModConfig.configFiles.Last().Value.options) {
                 ModConfigClasses.StringBox Box = new ModConfigClasses.StringBox(fileWithConfigPath, pair.Key, pair.Key);
                 //Box.ContextMenuStrip = GUIContextMenu;
-                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
+                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
                 setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
         }
 
         public static void AddIntBoxFunction(string fileWithConfigPath, string configOptionName, string showedName) {
-            ModConfigClasses.IntBox Box = new ModConfigClasses.IntBox(fileWithConfigPath, configOptionName, showedName);
-            //Box.ContextMenuStrip = GUIContextMenu;
             OpenConfigFile(fileWithConfigPath);
-            ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-            setPosition(Box);
-            actualModConfig.configGUI.Add(Box);
+            if (File.Exists(fileWithConfigPath)) {
+                ModConfigClasses.IntBox Box = new ModConfigClasses.IntBox(fileWithConfigPath, configOptionName, showedName);
+                //Box.ContextMenuStrip = GUIContextMenu;
+
+                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
+                setPosition(Box);
+                actualModConfig.configGUI.Add(Box);
+            }
         }
 
         public static void AddIntBoxForAllFunction(string fileWithConfigPath) {
             OpenConfigFile(fileWithConfigPath);
-            foreach (KeyValuePair<string, string> pair in actualModConfig.configFiles.Last().Value.options) {
+            foreach (KeyValuePair<string, OptionValueString> pair in actualModConfig.configFiles.Last().Value.options) {
                 ModConfigClasses.IntBox Box = new ModConfigClasses.IntBox(fileWithConfigPath, pair.Key, pair.Key);
                 //Box.ContextMenuStrip = GUIContextMenu;
-                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
+                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
                 setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
         }
 
         public static void AddFloatBoxFunction(string fileWithConfigPath, string configOptionName, string showedName) {
-            ModConfigClasses.FloatBox Box = new ModConfigClasses.FloatBox(fileWithConfigPath, configOptionName, showedName);
-            //Box.ContextMenuStrip = GUIContextMenu;
             OpenConfigFile(fileWithConfigPath);
-            ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-            setPosition(Box);
-            actualModConfig.configGUI.Add(Box);
+            if (File.Exists(fileWithConfigPath)) {
+                ModConfigClasses.FloatBox Box = new ModConfigClasses.FloatBox(fileWithConfigPath, configOptionName, showedName);
+                //Box.ContextMenuStrip = GUIContextMenu;
+                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
+                setPosition(Box);
+                actualModConfig.configGUI.Add(Box);
+            }
         }
 
         public static void AddFloatBoxForAllFunction(string fileWithConfigPath) {
             OpenConfigFile(fileWithConfigPath);
-            foreach (KeyValuePair<string, string> pair in actualModConfig.configFiles.Last().Value.options) {
+            foreach (KeyValuePair<string, OptionValueString> pair in actualModConfig.configFiles.Last().Value.options) {
                 ModConfigClasses.FloatBox Box = new ModConfigClasses.FloatBox(fileWithConfigPath, pair.Key, pair.Key);
                 //Box.ContextMenuStrip = GUIContextMenu;
-                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
+                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
                 setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
         }
 
         public static void AddBoolBoxFunction(string fileWithConfigPath, string configOptionName, string showedName) {
-            ModConfigClasses.BoolBox Box = new ModConfigClasses.BoolBox(fileWithConfigPath, configOptionName, showedName);
-            //Box.ContextMenuStrip = GUIContextMenu;
             OpenConfigFile(fileWithConfigPath);
-            ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-            setPosition(Box);
-            actualModConfig.configGUI.Add(Box);
+            
+            if (File.Exists(fileWithConfigPath)) {
+                ModConfigClasses.BoolBox Box = new ModConfigClasses.BoolBox(fileWithConfigPath, configOptionName, showedName);
+                //Box.ContextMenuStrip = GUIContextMenu;
+                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles,ModConfigClasses.ApplyType.inGoose);
+                setPosition(Box);
+                actualModConfig.configGUI.Add(Box);
+            } else {
+                Console.WriteLine(fileWithConfigPath);
+            }
         }
 
         public static void AddBoolBoxForAllFunction(string fileWithConfigPath) {
             OpenConfigFile(fileWithConfigPath);
-            foreach (KeyValuePair<string, string> pair in actualModConfig.configFiles.Last().Value.options) {
+            foreach (KeyValuePair<string, OptionValueString> pair in actualModConfig.configFiles.Last().Value.options) {
                 ModConfigClasses.BoolBox Box = new ModConfigClasses.BoolBox(fileWithConfigPath, pair.Key, pair.Key);
                 //Box.ContextMenuStrip = GUIContextMenu;
-                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
+                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
                 setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
         }
 
         public static void AddFileBoxFunction(string showedName, OpenFileDialog FileDialog, Action<string> howToUsePath, string toFilePath) {
-
+                
             ModConfigClasses.FileBox Box = new ModConfigClasses.FileBox(showedName, FileDialog, howToUsePath, toFilePath);
             //Box.ContextMenuStrip = GUIContextMenu;
             Box.Text = toFilePath;
             setPosition(Box);
             actualModConfig.configGUI.Add(Box);
+            
+        }
+
+        public static void AddFileBox2Function(string fileWithConfigPath, string configOptionName, string showedName, OpenFileDialog FileDialog) {
+
+            OpenConfigFile(fileWithConfigPath);
+            if (File.Exists(fileWithConfigPath)) {
+                ModConfigClasses.FileBox2 Box = new ModConfigClasses.FileBox2(fileWithConfigPath, configOptionName, showedName, FileDialog);
+
+                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
+                actualModConfig.configGUI.Add(Box);
+            }
+
+           
+
         }
 
         public static void AddColorBoxFunction(string fileWithConfigPath, string configOptionName, string showedName) {
-            ModConfigClasses.ColorBox Box = new ModConfigClasses.ColorBox(fileWithConfigPath, configOptionName, showedName);
-            //Box.ContextMenuStrip = GUIContextMenu;
             OpenConfigFile(fileWithConfigPath);
-            ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
-            setPosition(Box);
-            actualModConfig.configGUI.Add(Box);
+            if (File.Exists(fileWithConfigPath)) {
+                ModConfigClasses.ColorBox Box = new ModConfigClasses.ColorBox(fileWithConfigPath, configOptionName, showedName);
+                //Box.ContextMenuStrip = GUIContextMenu;
+                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
+                setPosition(Box);
+                actualModConfig.configGUI.Add(Box);
+            }
         }
 
         public static void AddColorBoxForAllFunction(string fileWithConfigPath) {
             OpenConfigFile(fileWithConfigPath);
-            foreach (KeyValuePair<string, string> pair in actualModConfig.configFiles.Last().Value.options) {
+            foreach (KeyValuePair<string, OptionValueString> pair in actualModConfig.configFiles.Last().Value.options) {
                 ModConfigClasses.ColorBox Box = new ModConfigClasses.ColorBox(fileWithConfigPath, pair.Key, pair.Key);
                 //Box.ContextMenuStrip = GUIContextMenu;
-                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles);
+                ((ModConfigClasses.ModConfigBox)Box).ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
                 setPosition(Box);
                 actualModConfig.configGUI.Add(Box);
             }
@@ -453,7 +485,7 @@ namespace ResourceHubLauncher
 
         private void metroButton1_Click(object sender, EventArgs e) {
             for (int i = 0; i < actualModConfig.configGUI.Count; i++) {
-                actualModConfig.configGUI[i].ApplyValue(actualModConfig.configFiles);
+                actualModConfig.configGUI[i].ApplyValue(actualModConfig.configFiles, ModConfigClasses.ApplyType.inGoose);
             }
         }
     }

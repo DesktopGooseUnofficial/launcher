@@ -22,25 +22,41 @@ namespace ResourceHubLauncher
 {
     public partial class MainForm : MetroForm
     {
+        enum HtmlTagsToAdd
+        {
+            none=0,
+            b=1,
+            i = 2,
+            u = 4,
+            s = 8,
+            m = 16,
+            big = 32,
+        }
+
 
         public IList<JToken> results = new List<JToken>();
         IList<JToken> mods = new List<JToken>();
         bool download = false;
-        string modPath = "";
+        public static string modPath = "";
         JToken mod;
         ModButton actualModButton;
         ModButtonList modsButtons = new ModButtonList();
         bool closedSpecially = false;
+        
         Action<MainForm> restartForm;
 
         RichTextHtml htmlTags = new RichTextHtml();
         public StringBuilder md5;
 
+        public static MainForm thisForm;
+
+        List<HtmlTagsToAdd> actualDescTags=new List<HtmlTagsToAdd>();
+
         public MainForm() {
             InitializeComponent();
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
-
+            thisForm = this;
         }
 
         public MainForm(Action<MainForm> restartForm_) {
@@ -48,6 +64,7 @@ namespace ResourceHubLauncher
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
             restartForm = restartForm_;
+            thisForm = this;
         }
 
         private DialogResult MsgBox(object text, string title = "ResourceHub Launcher", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) {
@@ -156,6 +173,7 @@ namespace ResourceHubLauncher
             }
             Config.Theme(this);
             modsButtons.ThemeChanged((int)Config.Options["theme"] == 1);
+            UpdateTheme((int)Config.Options["theme"] == 1);
 
             pictureBox2.Image = Properties.Resources.RHLTSmall;
 
@@ -177,9 +195,111 @@ namespace ResourceHubLauncher
         }
 
 
+        private void UpdateTheme(bool lightTheme) {
 
+            if(lightTheme) {
+                toolStripMenuItem2.BackColor=Color.FromArgb(255,255,255);
+                toolStripMenuItem2.ForeColor = Color.FromArgb(17, 17, 17);
 
+                toolStripMenuItem3.BackColor = Color.FromArgb(255, 255, 255);
+                toolStripMenuItem3.ForeColor = Color.FromArgb(17, 17, 17);
 
+                toolStripMenuItem7.BackColor = Color.FromArgb(255, 255, 255);
+                toolStripMenuItem7.ForeColor = Color.FromArgb(17, 17, 17);
+
+                toolStripMenuItem8.BackColor = Color.FromArgb(255, 255, 255);
+                toolStripMenuItem8.ForeColor = Color.FromArgb(17, 17, 17);
+
+                githubToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+                githubToolStripMenuItem.ForeColor = Color.FromArgb(17, 17, 17);
+
+                discordToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+                discordToolStripMenuItem.ForeColor = Color.FromArgb(17, 17, 17);
+
+                installedToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+                disabledToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+                availableToolStripMenuItem.BackColor = Color.FromArgb(255, 255, 255);
+            } else {
+                toolStripMenuItem2.BackColor = Color.FromArgb(17, 17, 17);
+                toolStripMenuItem2.ForeColor = Color.FromArgb(170, 170, 170);
+
+                toolStripMenuItem3.BackColor = Color.FromArgb(17, 17, 17);
+                toolStripMenuItem3.ForeColor = Color.FromArgb(170, 170, 170);
+
+                toolStripMenuItem7.BackColor = Color.FromArgb(17, 17, 17);
+                toolStripMenuItem7.ForeColor = Color.FromArgb(170, 170, 170);
+
+                toolStripMenuItem8.BackColor = Color.FromArgb(17, 17, 17);
+                toolStripMenuItem8.ForeColor = Color.FromArgb(170, 170, 170);
+
+                githubToolStripMenuItem.BackColor = Color.FromArgb(17, 17, 17);
+                githubToolStripMenuItem.ForeColor = Color.FromArgb(170, 170, 170);
+
+                discordToolStripMenuItem.BackColor = Color.FromArgb(17, 17, 17);
+                discordToolStripMenuItem.ForeColor = Color.FromArgb(170, 170, 170);
+
+                installedToolStripMenuItem.BackColor = Color.FromArgb(17, 17, 17);
+                disabledToolStripMenuItem.BackColor = Color.FromArgb(17, 17, 17);
+                availableToolStripMenuItem.BackColor = Color.FromArgb(17, 17, 17);
+            }
+            //toolStripMenuItem2;
+            //toolStripMenuItem3;
+            //toolStripMenuItem7;
+            //toolStripMenuItem8;
+            //githubToolStripMenuItem;
+            //discordToolStripMenuItem;
+
+            //installedToolStripMenuItem;
+            //disabledToolStripMenuItem;
+            //availableToolStripMenuItem;
+        }
+
+        private void UpdateDescTagList() {
+            if(actualDescTags.Count<label3.Text.Length) {
+                for(int i=0;i< label3.Text.Length- actualDescTags.Count;i++) {
+                    actualDescTags.Add(HtmlTagsToAdd.none);
+                }
+            }
+        }
+
+        private void ApplyTagToDesc(HtmlTagsToAdd tagg, int start,int end) {
+            for(int i=start;i< end+1;i++) {
+                actualDescTags[i] = actualDescTags[i] | tagg;
+            }
+        }
+
+        private void RemoveTagToDesc(HtmlTagsToAdd tagg, int start, int end) {
+            for (int i = start; i < end + 1; i++) {
+                actualDescTags[i] = actualDescTags[i] & ~tagg;
+            }
+        }
+
+        public static void OpenDescriptionPreview() {
+            thisForm.resizingPanel.Show();
+            thisForm.OptionsButton.Hide();
+            thisForm.descriptionButton.Show();
+            thisForm.toolStrip1.Show();
+            thisForm.label3.ReadOnly = false;
+            thisForm.label3.Text = "<big>"+ModCreatorForm.thisForm.NameTextBox.Text+ "<\big> Version: 1.0 \nAuthor: You\n\n";
+            thisForm.htmlTags.Apply(ref thisForm.label3);
+            thisForm.label3.SelectAll();
+            thisForm.label3.SelectionProtected = true;
+            thisForm.label3.Select(0, 0);
+        }
+
+         void CloseDescriptionPreview() {
+            resizingPanel.Hide();
+            OptionsButton.Show();
+            descriptionButton.Hide();
+            toolStrip1.Hide();
+            label3.ReadOnly = true;
+            label3.SelectAll();
+            label3.SelectionProtected = false;
+            label3.Select(0, 0);
+            label3.Text = "<m>Hover or click on the mod buttons (in list on the left) to see mod descriptions.</m>\n\n<m>Click (on mod button) to see options! </m>";
+            htmlTags.Apply(ref label3);
+            
+        }
 
         private void changeModDescription() {
             try {
@@ -285,7 +405,7 @@ namespace ResourceHubLauncher
         public static string modName = "";
 
         public static string GetGooseFolder() {
-            return (string)Config.Options["gpath"];
+            return Path.GetDirectoryName( (string)Config.Options["gpath"]);
         }
 
         public static string GetModFolder() {
@@ -334,6 +454,7 @@ namespace ResourceHubLauncher
             GUI.addColorBox = new ConfiguratorAPI.GUIFunctions.AddColorBoxFunction(ModConfigForm.AddColorBoxFunction);
             GUI.addColorBoxForAll = new ConfiguratorAPI.GUIFunctions.AddColorBoxForAllFunction(ModConfigForm.AddColorBoxForAllFunction);
             GUI.addFileBox = new ConfiguratorAPI.GUIFunctions.AddFileBoxFunction(ModConfigForm.AddFileBoxFunction);
+            GUI.addFileBox2 = new ConfiguratorAPI.GUIFunctions.AddFileBox2Function(ModConfigForm.AddFileBox2Function);
             GUI.addFloatBox = new ConfiguratorAPI.GUIFunctions.AddFloatBoxFunction(ModConfigForm.AddFloatBoxFunction);
             GUI.addFloatBoxForAll = new ConfiguratorAPI.GUIFunctions.AddFloatBoxForAllFunction(ModConfigForm.AddFloatBoxForAllFunction);
             GUI.addIntBox = new ConfiguratorAPI.GUIFunctions.AddIntBoxFunction(ModConfigForm.AddIntBoxFunction);
@@ -429,6 +550,7 @@ namespace ResourceHubLauncher
                     }
                     download = false;
                     installing = false;
+                    UpdateButtons();
                     ContinueInstalling();
                 });
             } 
@@ -453,6 +575,7 @@ namespace ResourceHubLauncher
                 }
                 download = false;
                 installing = false;
+                UpdateButtons();
                 ContinueInstalling();
             }
         }
@@ -505,6 +628,7 @@ namespace ResourceHubLauncher
                         }
                         download = false;
                         installing = false;
+                        UpdateButtons();
                         ContinueInstalling();
                     });
                 } 
@@ -548,6 +672,7 @@ namespace ResourceHubLauncher
 
                     download = false;
                     installing = false;
+                    UpdateButtons();
                     ContinueInstalling();
                 }
             });
@@ -734,7 +859,7 @@ namespace ResourceHubLauncher
                         installToolStripMenuItem.Text = "Install";
                         actualModButton.Refresh();
                     }
-                    
+                    UpdateButtons();
                 } catch (Exception ex) {
                     MsgBox($"Error while uninstalling {modd}.\r\nPlease make sure you have Desktop Goose closed.\r\nError: {ex.Message}", "Uninstall error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -758,6 +883,7 @@ namespace ResourceHubLauncher
                     actualModButton.InstalledMod = true;
                     disableToolStripMenuItem1.Text = "Disable";
                     actualModButton.Refresh();
+                    UpdateButtons();
                 } catch (Exception ex) {
                     MsgBox($"Error while enabling {modd}.\r\nError: {ex.Message}", "Error while enabling mod.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -783,6 +909,7 @@ namespace ResourceHubLauncher
                     actualModButton.DisabledMod = true;
                     disableToolStripMenuItem1.Text = "Enable";
                     actualModButton.Refresh();
+                    UpdateButtons();
                 } catch (Exception ex) {
                     MsgBox($"Error while disabling {modd}.\r\nError: {ex.Message}", "Disable error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -910,7 +1037,7 @@ namespace ResourceHubLauncher
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
             styleExtender.Style = (MetroColorStyle)(int)Config.Options["color"];
             modsButtons.ThemeChanged((int)Config.Options["theme"] == 1);
-            Console.WriteLine((int)Config.Options["theme"] == 1);
+            UpdateTheme((int)Config.Options["theme"] == 1);
             Show();
         }
 
@@ -978,43 +1105,156 @@ namespace ResourceHubLauncher
             }
         }
 
-        private void toolStripMenuItem1_Click_1(object sender, EventArgs e) {
+        private void UpdateButtonsChanged() {
+
             metroPanel2.VerticalScroll.Value = 0;
+            modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
+
+
+        }
+
+        private void UpdateButtons() {
+            if(!(installedToolStripMenuItem.Checked&& disabledToolStripMenuItem.Checked&& availableToolStripMenuItem.Checked)) {
+                UpdateButtonsChanged();
+            }
+        }
+
+        
+
+        private void toolStripMenuItem1_Click_1(object sender, EventArgs e) {
+            
             if (installedToolStripMenuItem.Checked) {
                 installedToolStripMenuItem.ForeColor = Color.FromArgb(0, 170, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod&& installedToolStripMenuItem.Checked) || (B.DisabledMod&& disabledToolStripMenuItem.Checked) ||(B.AvailableMod && availableToolStripMenuItem.Checked); });
             } 
             else {
                 installedToolStripMenuItem.ForeColor = Color.FromArgb(170, 0, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
             }
+            UpdateButtonsChanged();
         }
 
         private void disabledToolStripMenuItem_Click(object sender, EventArgs e) {
-            metroPanel2.VerticalScroll.Value = 0;
             if (disabledToolStripMenuItem.Checked) {
                 disabledToolStripMenuItem.ForeColor = Color.FromArgb(0, 170, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
             } else {
                 disabledToolStripMenuItem.ForeColor = Color.FromArgb(170, 0, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
             }
+            UpdateButtonsChanged();
         }
 
         private void availableToolStripMenuItem_Click(object sender, EventArgs e) {
-            metroPanel2.VerticalScroll.Value = 0;
             if (availableToolStripMenuItem.Checked) {
                 availableToolStripMenuItem.ForeColor = Color.FromArgb(0, 170, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
             } else {
                 availableToolStripMenuItem.ForeColor = Color.FromArgb(170, 0, 0);
-                modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
             }
+            UpdateButtonsChanged();
         }
 
         private void ShowedModsMenuStrip_Closing(object sender, ToolStripDropDownClosingEventArgs e) {
             if (e.CloseReason == ToolStripDropDownCloseReason.ItemClicked)
                 e.Cancel = true;
+        }
+
+        private void forModCreatorsToolStripMenuItem_Click(object sender, EventArgs e) {
+            Hide();
+            new ModCreatorForm().ShowDialog();
+            Show();
+        }
+
+        private void toolStripComboBox1_Click(object sender, EventArgs e) {
+            switch(SizeToolButton.Text) {
+                case "Normal Size":
+                    label3.SelectionFont = new Font(label3.SelectionFont.FontFamily, 11, label3.SelectionFont.Style);
+                    
+                    break;
+                case "Medium Size":
+                    label3.SelectionFont = new Font(label3.SelectionFont.FontFamily, 15, label3.SelectionFont.Style);
+                    break;
+                case "Big Size":
+                    label3.SelectionFont = new Font(label3.SelectionFont.FontFamily, 18, label3.SelectionFont.Style);
+                    break;
+            }
+        }
+
+        private void BoldToolButton_Click(object sender, EventArgs e) {
+            UpdateDescTagList();
+            if(label3.SelectionLength>0) {
+                if (BoldToolButton.Checked) {
+                    ApplyTagToDesc(HtmlTagsToAdd.b, label3.SelectionStart, label3.SelectionStart+label3.SelectionLength);
+                    label3.SelectionFont = new Font(label3.SelectionFont, FontStyle.Bold | label3.SelectionFont.Style);
+                } else {
+                    label3.SelectionFont = new Font(label3.SelectionFont, ~FontStyle.Bold & label3.SelectionFont.Style);
+                    RemoveTagToDesc(HtmlTagsToAdd.b, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                }
+            }
+            
+        }
+
+        private void ItalicToolButton_Click(object sender, EventArgs e) {
+
+            UpdateDescTagList();
+            if (label3.SelectionLength > 0) {
+                if (ItalicToolButton.Checked) {
+                    ApplyTagToDesc(HtmlTagsToAdd.i, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                    label3.SelectionFont = new Font(label3.SelectionFont, FontStyle.Italic | label3.SelectionFont.Style);
+                } else {
+                    ApplyTagToDesc(HtmlTagsToAdd.i, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                    label3.SelectionFont = new Font(label3.SelectionFont, ~FontStyle.Italic & label3.SelectionFont.Style);
+                }
+            }
+            
+        }
+
+        private void UnderlineToolButton_Click(object sender, EventArgs e) {
+            if (UnderlineToolButton.Checked) {
+                label3.SelectionFont = new Font(label3.SelectionFont, FontStyle.Underline | label3.SelectionFont.Style);
+            } else {
+                label3.SelectionFont = new Font(label3.SelectionFont, ~FontStyle.Underline & label3.SelectionFont.Style);
+            }
+        }
+
+        private void StrikeoutToolButton_Click(object sender, EventArgs e) {
+            if (StrikeoutToolButton.Checked) {
+                label3.SelectionFont = new Font(label3.SelectionFont, FontStyle.Strikeout | label3.SelectionFont.Style);
+            } else {
+                label3.SelectionFont = new Font(label3.SelectionFont, ~FontStyle.Strikeout & label3.SelectionFont.Style);
+            }
+        }
+
+        private void toolStripMenuItem1_Click_2(object sender, EventArgs e) {
+            Stream myStream;
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+            saveFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            saveFileDialog1.FilterIndex = 2;
+            saveFileDialog1.RestoreDirectory = true;
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
+                if ((myStream = saveFileDialog1.OpenFile()) != null) {
+                    byte[] bytes = Encoding.ASCII.GetBytes(label3.Text.Substring((ModCreatorForm.thisForm.NameTextBox.Text+ " Version: 1.0\nAuthor: You\n\n").Length));
+                    myStream.Write(bytes, 0, bytes.Length);
+                    // Code to write the stream goes here.
+                    myStream.Close();
+                }
+            }
+        }
+
+        private void metroButton1_Click(object sender, EventArgs e) {
+            OptionsContextMenu.Show(Cursor.Position);
+        }
+
+        private void label3_SelectionChanged(object sender, EventArgs e) {
+            BoldToolButton.Checked = label3.SelectionFont.Bold;
+            ItalicToolButton.Checked = label3.SelectionFont.Italic;
+            UnderlineToolButton.Checked = label3.SelectionFont.Underline;
+            StrikeoutToolButton.Checked = label3.SelectionFont.Strikeout;
+        }
+
+        private void toolStripMenuItem4_Click_1(object sender, EventArgs e) {
+            Hide();
+            CloseDescriptionPreview();
+            new ModCreatorForm().ShowDialog();
+            Show();
         }
     }
 }
