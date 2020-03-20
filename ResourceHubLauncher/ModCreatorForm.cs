@@ -316,16 +316,16 @@ namespace ResourceHubLauncher
             // 
             // InstallerFileDialog
             // 
-            this.InstallerFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            this.InstallerFileDialog.Filter = "dll files (*.dll)|*.dll";
             this.InstallerFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.InstallerFileDialog_FileOk);
             // 
             // ZipFileDialog
             // 
-            this.ZipFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            this.ZipFileDialog.Filter = "zip files (*.zip)|*.zip";
             // 
             // ConfiguratorFileDialog
             // 
-            this.ConfiguratorFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            this.ConfiguratorFileDialog.Filter = "dll files (*.dll)|*.dll";
             // 
             // ModCreatorForm
             // 
