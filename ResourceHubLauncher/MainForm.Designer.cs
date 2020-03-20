@@ -65,7 +65,6 @@
             this.ItalicToolButton = new System.Windows.Forms.ToolStripButton();
             this.UnderlineToolButton = new System.Windows.Forms.ToolStripButton();
             this.StrikeoutToolButton = new System.Windows.Forms.ToolStripButton();
-            this.SizeToolButton = new System.Windows.Forms.ToolStripComboBox();
             this.DescriptionContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,6 +84,12 @@
             this.metroPanel5 = new MetroFramework.Controls.MetroPanel();
             this.loadingPanel = new MetroFramework.Controls.MetroPanel();
             this.descriptionButton = new MetroFramework.Controls.MetroButton();
+            this.ActualTextSizeButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.TextSizeMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.NormalSizeStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MediumSizeStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bigSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modListContextMenu.SuspendLayout();
             this.ShowedModsMenuStrip.SuspendLayout();
             this.linksContextMenu.SuspendLayout();
@@ -98,6 +103,7 @@
             this.changelogPanel.SuspendLayout();
             this.metroPanel4.SuspendLayout();
             this.metroPanel5.SuspendLayout();
+            this.TextSizeMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // modListContextMenu
@@ -183,7 +189,6 @@
             this.availableToolStripMenuItem});
             this.ShowedModsMenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.ShowedModsMenuStrip.Name = "modListContextMenu";
-            this.ShowedModsMenuStrip.OwnerItem = this.showModsToolStripMenuItem;
             this.ShowedModsMenuStrip.ShowImageMargin = false;
             this.ShowedModsMenuStrip.Size = new System.Drawing.Size(197, 82);
             this.ShowedModsMenuStrip.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.ShowedModsMenuStrip_Closing);
@@ -261,7 +266,6 @@
             this.futureOfTheLauncherToolStripMenuItem});
             this.linksContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.linksContextMenu.Name = "modListContextMenu";
-            this.linksContextMenu.OwnerItem = this.toolStripMenuItem8;
             this.linksContextMenu.ShowImageMargin = false;
             this.linksContextMenu.Size = new System.Drawing.Size(182, 100);
             // 
@@ -348,7 +352,6 @@
             this.toolStripMenuItem3});
             this.UtilitiesContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.UtilitiesContextMenu.Name = "modListContextMenu";
-            this.UtilitiesContextMenu.OwnerItem = this.gooseToolStripMenuItem;
             this.UtilitiesContextMenu.ShowImageMargin = false;
             this.UtilitiesContextMenu.Size = new System.Drawing.Size(85, 52);
             // 
@@ -460,10 +463,10 @@
             this.ItalicToolButton,
             this.UnderlineToolButton,
             this.StrikeoutToolButton,
-            this.SizeToolButton});
+            this.ActualTextSizeButton});
             this.toolStrip1.Location = new System.Drawing.Point(663, 30);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(281, 28);
+            this.toolStrip1.Size = new System.Drawing.Size(223, 27);
             this.toolStrip1.TabIndex = 42;
             this.toolStrip1.Text = "toolStrip1";
             this.toolStrip1.Visible = false;
@@ -476,7 +479,7 @@
             this.BoldToolButton.Image = ((System.Drawing.Image)(resources.GetObject("BoldToolButton.Image")));
             this.BoldToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BoldToolButton.Name = "BoldToolButton";
-            this.BoldToolButton.Size = new System.Drawing.Size(29, 25);
+            this.BoldToolButton.Size = new System.Drawing.Size(29, 24);
             this.BoldToolButton.Text = "B";
             this.BoldToolButton.ToolTipText = "Bold";
             this.BoldToolButton.Click += new System.EventHandler(this.BoldToolButton_Click);
@@ -489,7 +492,7 @@
             this.ItalicToolButton.Image = ((System.Drawing.Image)(resources.GetObject("ItalicToolButton.Image")));
             this.ItalicToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ItalicToolButton.Name = "ItalicToolButton";
-            this.ItalicToolButton.Size = new System.Drawing.Size(29, 25);
+            this.ItalicToolButton.Size = new System.Drawing.Size(29, 24);
             this.ItalicToolButton.Text = "I";
             this.ItalicToolButton.ToolTipText = "Italic";
             this.ItalicToolButton.Click += new System.EventHandler(this.ItalicToolButton_Click);
@@ -502,7 +505,7 @@
             this.UnderlineToolButton.Image = ((System.Drawing.Image)(resources.GetObject("UnderlineToolButton.Image")));
             this.UnderlineToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.UnderlineToolButton.Name = "UnderlineToolButton";
-            this.UnderlineToolButton.Size = new System.Drawing.Size(29, 25);
+            this.UnderlineToolButton.Size = new System.Drawing.Size(29, 24);
             this.UnderlineToolButton.Text = "U";
             this.UnderlineToolButton.ToolTipText = "Underline";
             this.UnderlineToolButton.Click += new System.EventHandler(this.UnderlineToolButton_Click);
@@ -515,22 +518,10 @@
             this.StrikeoutToolButton.Image = ((System.Drawing.Image)(resources.GetObject("StrikeoutToolButton.Image")));
             this.StrikeoutToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.StrikeoutToolButton.Name = "StrikeoutToolButton";
-            this.StrikeoutToolButton.Size = new System.Drawing.Size(29, 25);
+            this.StrikeoutToolButton.Size = new System.Drawing.Size(29, 24);
             this.StrikeoutToolButton.Text = "S";
             this.StrikeoutToolButton.ToolTipText = "Strikeout";
             this.StrikeoutToolButton.Click += new System.EventHandler(this.StrikeoutToolButton_Click);
-            // 
-            // SizeToolButton
-            // 
-            this.SizeToolButton.Items.AddRange(new object[] {
-            "Normal Size",
-            "Medium Size",
-            "Big Size"});
-            this.SizeToolButton.Name = "SizeToolButton";
-            this.SizeToolButton.Size = new System.Drawing.Size(121, 28);
-            this.SizeToolButton.Text = "Normal Size";
-            this.SizeToolButton.ToolTipText = "Text Size";
-            this.SizeToolButton.Click += new System.EventHandler(this.toolStripComboBox1_Click);
             // 
             // DescriptionContextMenu
             // 
@@ -540,11 +531,12 @@
             this.DescriptionContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.DescriptionContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
+            this.loadToolStripMenuItem,
             this.toolStripMenuItem4});
             this.DescriptionContextMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.DescriptionContextMenu.Name = "modListContextMenu";
             this.DescriptionContextMenu.ShowImageMargin = false;
-            this.DescriptionContextMenu.Size = new System.Drawing.Size(98, 52);
+            this.DescriptionContextMenu.Size = new System.Drawing.Size(186, 104);
             // 
             // toolStripMenuItem1
             // 
@@ -810,6 +802,59 @@
             this.descriptionButton.Visible = false;
             this.descriptionButton.Click += new System.EventHandler(this.metroButton1_Click);
             // 
+            // ActualTextSizeButton
+            // 
+            this.ActualTextSizeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ActualTextSizeButton.DropDown = this.TextSizeMenuStrip;
+            this.ActualTextSizeButton.Image = ((System.Drawing.Image)(resources.GetObject("ActualTextSizeButton.Image")));
+            this.ActualTextSizeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ActualTextSizeButton.Name = "ActualTextSizeButton";
+            this.ActualTextSizeButton.Size = new System.Drawing.Size(104, 24);
+            this.ActualTextSizeButton.Text = "Normal Size";
+            // 
+            // TextSizeMenuStrip
+            // 
+            this.styleExtender.SetApplyMetroTheme(this.TextSizeMenuStrip, true);
+            this.TextSizeMenuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.TextSizeMenuStrip.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
+            this.TextSizeMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.TextSizeMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NormalSizeStripMenuItem,
+            this.MediumSizeStripMenuItem,
+            this.bigSizeToolStripMenuItem});
+            this.TextSizeMenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
+            this.TextSizeMenuStrip.Name = "modListContextMenu";
+            this.TextSizeMenuStrip.ShowImageMargin = false;
+            this.TextSizeMenuStrip.Size = new System.Drawing.Size(140, 76);
+            // 
+            // NormalSizeStripMenuItem
+            // 
+            this.NormalSizeStripMenuItem.Name = "NormalSizeStripMenuItem";
+            this.NormalSizeStripMenuItem.Size = new System.Drawing.Size(185, 24);
+            this.NormalSizeStripMenuItem.Text = "Normal Size";
+            this.NormalSizeStripMenuItem.Click += new System.EventHandler(this.NormalSizeStripMenuItem_Click);
+            // 
+            // MediumSizeStripMenuItem
+            // 
+            this.MediumSizeStripMenuItem.Name = "MediumSizeStripMenuItem";
+            this.MediumSizeStripMenuItem.Size = new System.Drawing.Size(185, 24);
+            this.MediumSizeStripMenuItem.Text = "Medium Size";
+            this.MediumSizeStripMenuItem.Click += new System.EventHandler(this.MediumSizeStripMenuItem_Click);
+            // 
+            // bigSizeToolStripMenuItem
+            // 
+            this.bigSizeToolStripMenuItem.Name = "bigSizeToolStripMenuItem";
+            this.bigSizeToolStripMenuItem.Size = new System.Drawing.Size(185, 24);
+            this.bigSizeToolStripMenuItem.Text = "Big Size";
+            this.bigSizeToolStripMenuItem.Click += new System.EventHandler(this.bigSizeToolStripMenuItem_Click);
+            // 
+            // loadToolStripMenuItem
+            // 
+            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(185, 24);
+            this.loadToolStripMenuItem.Text = "Load";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -865,6 +910,7 @@
             this.metroPanel4.ResumeLayout(false);
             this.metroPanel4.PerformLayout();
             this.metroPanel5.ResumeLayout(false);
+            this.TextSizeMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -926,9 +972,14 @@
         private System.Windows.Forms.ToolStripButton ItalicToolButton;
         private System.Windows.Forms.ToolStripButton UnderlineToolButton;
         private System.Windows.Forms.ToolStripButton StrikeoutToolButton;
-        private System.Windows.Forms.ToolStripComboBox SizeToolButton;
         private System.Windows.Forms.ContextMenuStrip DescriptionContextMenu;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripDropDownButton ActualTextSizeButton;
+        private System.Windows.Forms.ContextMenuStrip TextSizeMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem NormalSizeStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MediumSizeStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bigSizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
     }
 }
