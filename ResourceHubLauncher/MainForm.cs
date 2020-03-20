@@ -256,20 +256,21 @@ namespace ResourceHubLauncher
 
         private void UpdateDescTagList() {
             if(actualDescTags.Count<label3.Text.Length) {
-                for(int i=0;i< label3.Text.Length- actualDescTags.Count;i++) {
+                int howMuch = label3.Text.Length - actualDescTags.Count;
+                for (int i=0;i< howMuch; i++) {
                     actualDescTags.Add(HtmlTagsToAdd.none);
                 }
             }
         }
 
         private void ApplyTagToDesc(HtmlTagsToAdd tagg, int start,int end) {
-            for(int i=start;i< end+1;i++) {
+            for (int i=start;i< end;i++) {
                 actualDescTags[i] = actualDescTags[i] | tagg;
             }
         }
 
         private void RemoveTagToDesc(HtmlTagsToAdd tagg, int start, int end) {
-            for (int i = start; i < end + 1; i++) {
+            for (int i = start; i < end; i++) {
                 actualDescTags[i] = actualDescTags[i] & ~tagg;
             }
         }
@@ -280,7 +281,7 @@ namespace ResourceHubLauncher
             thisForm.descriptionButton.Show();
             thisForm.toolStrip1.Show();
             thisForm.label3.ReadOnly = false;
-            thisForm.label3.Text = "<big>"+ModCreatorForm.thisForm.NameTextBox.Text+ "<\big> Version: 1.0 \nAuthor: You\n\n";
+            thisForm.label3.Text = "<big>"+ModCreatorForm.thisForm.NameTextBox.Text+ "</big> Version: 1.0 \nAuthor: You\n\n";
             thisForm.htmlTags.Apply(ref thisForm.label3);
             thisForm.label3.SelectAll();
             thisForm.label3.SelectionProtected = true;
@@ -1161,19 +1162,48 @@ namespace ResourceHubLauncher
             Show();
         }
 
-        private void toolStripComboBox1_Click(object sender, EventArgs e) {
-            switch(SizeToolButton.Text) {
-                case "Normal Size":
-                    label3.SelectionFont = new Font(label3.SelectionFont.FontFamily, 11, label3.SelectionFont.Style);
-                    
-                    break;
-                case "Medium Size":
-                    label3.SelectionFont = new Font(label3.SelectionFont.FontFamily, 15, label3.SelectionFont.Style);
-                    break;
-                case "Big Size":
-                    label3.SelectionFont = new Font(label3.SelectionFont.FontFamily, 18, label3.SelectionFont.Style);
-                    break;
+        private void AddToFontStyleDesc(FontStyle styleToAdd,int start,int end) {
+            List<int> starts = new List<int>();
+            List<int> ends = new List<int>();
+
+            HtmlTagsToAdd latest = actualDescTags.First();
+            starts.Add(start);
+            for (int i = start + 1; i < end; i++) {
+                if (actualDescTags[i] != latest) {
+                    ends.Add(i - starts.Last());
+                    starts.Add(i);
+
+                }
+                latest = actualDescTags[i];
             }
+            ends.Add(end - starts.Last());
+            for (int i = 0; i < starts.Count; i++) {
+                label3.Select(starts[i], ends[i]);
+                label3.SelectionFont = new Font(label3.SelectionFont.FontFamily, label3.SelectionFont.Size, styleToAdd | label3.SelectionFont.Style);
+            }
+            label3.Select(start, end - start);
+        }
+
+        private void RemoveFontStyleDesc(FontStyle styleToAdd, int start, int end) {
+            List<int> starts = new List<int>();
+            List<int> ends = new List<int>();
+
+            HtmlTagsToAdd latest = actualDescTags.First();
+            starts.Add(start);
+            for (int i = start + 1; i < end; i++) {
+                if (actualDescTags[i] != latest) {
+                    ends.Add(i- starts.Last());
+                    starts.Add(i);
+
+                }
+                latest = actualDescTags[i];
+            }
+            ends.Add(end - starts.Last());
+            for (int i = 0; i < starts.Count; i++) {
+                label3.Select(starts[i], ends[i]);
+                label3.SelectionFont = new Font(label3.SelectionFont.FontFamily, label3.SelectionFont.Size, ~styleToAdd & label3.SelectionFont.Style);
+            }
+            label3.Select(start, end-start);
         }
 
         private void BoldToolButton_Click(object sender, EventArgs e) {
@@ -1181,9 +1211,9 @@ namespace ResourceHubLauncher
             if(label3.SelectionLength>0) {
                 if (BoldToolButton.Checked) {
                     ApplyTagToDesc(HtmlTagsToAdd.b, label3.SelectionStart, label3.SelectionStart+label3.SelectionLength);
-                    label3.SelectionFont = new Font(label3.SelectionFont, FontStyle.Bold | label3.SelectionFont.Style);
+                    AddToFontStyleDesc(FontStyle.Bold, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
                 } else {
-                    label3.SelectionFont = new Font(label3.SelectionFont, ~FontStyle.Bold & label3.SelectionFont.Style);
+                    RemoveFontStyleDesc(FontStyle.Bold, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
                     RemoveTagToDesc(HtmlTagsToAdd.b, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
                 }
             }
@@ -1196,29 +1226,85 @@ namespace ResourceHubLauncher
             if (label3.SelectionLength > 0) {
                 if (ItalicToolButton.Checked) {
                     ApplyTagToDesc(HtmlTagsToAdd.i, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
-                    label3.SelectionFont = new Font(label3.SelectionFont, FontStyle.Italic | label3.SelectionFont.Style);
+                    AddToFontStyleDesc(FontStyle.Italic, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
                 } else {
-                    ApplyTagToDesc(HtmlTagsToAdd.i, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
-                    label3.SelectionFont = new Font(label3.SelectionFont, ~FontStyle.Italic & label3.SelectionFont.Style);
+                    RemoveTagToDesc(HtmlTagsToAdd.i, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                    RemoveFontStyleDesc(FontStyle.Italic, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
                 }
             }
             
         }
 
         private void UnderlineToolButton_Click(object sender, EventArgs e) {
-            if (UnderlineToolButton.Checked) {
-                label3.SelectionFont = new Font(label3.SelectionFont, FontStyle.Underline | label3.SelectionFont.Style);
-            } else {
-                label3.SelectionFont = new Font(label3.SelectionFont, ~FontStyle.Underline & label3.SelectionFont.Style);
+            UpdateDescTagList();
+            if (label3.SelectionLength > 0) {
+                if (UnderlineToolButton.Checked) {
+                    ApplyTagToDesc(HtmlTagsToAdd.u, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                    AddToFontStyleDesc(FontStyle.Underline, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                } else {
+                    RemoveTagToDesc(HtmlTagsToAdd.u, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                    RemoveFontStyleDesc(FontStyle.Underline, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                }
             }
         }
 
         private void StrikeoutToolButton_Click(object sender, EventArgs e) {
-            if (StrikeoutToolButton.Checked) {
-                label3.SelectionFont = new Font(label3.SelectionFont, FontStyle.Strikeout | label3.SelectionFont.Style);
-            } else {
-                label3.SelectionFont = new Font(label3.SelectionFont, ~FontStyle.Strikeout & label3.SelectionFont.Style);
+            UpdateDescTagList();
+            if (label3.SelectionLength > 0) {
+                if (StrikeoutToolButton.Checked) {
+                    ApplyTagToDesc(HtmlTagsToAdd.s, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                    AddToFontStyleDesc(FontStyle.Strikeout, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                } else {
+                    RemoveTagToDesc(HtmlTagsToAdd.s, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                    RemoveFontStyleDesc(FontStyle.Strikeout, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                }
             }
+        }
+
+        private string getHtmlStart(HtmlTagsToAdd tagsToAdd) {
+            string toR = "";
+            if((~HtmlTagsToAdd.b & tagsToAdd)!= tagsToAdd) {
+                toR += "<b>";
+            }
+            if ((~HtmlTagsToAdd.i & tagsToAdd) != tagsToAdd) {
+                toR += "<i>";
+            }
+            if ((~HtmlTagsToAdd.u & tagsToAdd) != tagsToAdd) {
+                toR += "<u>";
+            }
+            if ((~HtmlTagsToAdd.s & tagsToAdd) != tagsToAdd) {
+                toR += "<s>";
+            }
+            if ((~HtmlTagsToAdd.m & tagsToAdd) != tagsToAdd) {
+                toR += "<m>";
+            }
+            if ((~HtmlTagsToAdd.big & tagsToAdd) != tagsToAdd) {
+                toR += "<big>";
+            }
+            return toR;
+        }
+
+        private string getHtmlEnd(HtmlTagsToAdd tagsToAdd) {
+            string toR = "";
+            if ((~HtmlTagsToAdd.b & tagsToAdd) != tagsToAdd) {
+                toR += "</b>";
+            }
+            if ((~HtmlTagsToAdd.i & tagsToAdd) != tagsToAdd) {
+                toR += "</i>";
+            }
+            if ((~HtmlTagsToAdd.u & tagsToAdd) != tagsToAdd) {
+                toR += "</u>";
+            }
+            if ((~HtmlTagsToAdd.s & tagsToAdd) != tagsToAdd) {
+                toR += "</s>";
+            }
+            if ((~HtmlTagsToAdd.m & tagsToAdd) != tagsToAdd) {
+                toR += "</m>";
+            }
+            if ((~HtmlTagsToAdd.big & tagsToAdd) != tagsToAdd) {
+                toR += "</big>";
+            }
+            return toR;
         }
 
         private void toolStripMenuItem1_Click_2(object sender, EventArgs e) {
@@ -1231,9 +1317,32 @@ namespace ResourceHubLauncher
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
                 if ((myStream = saveFileDialog1.OpenFile()) != null) {
-                    byte[] bytes = Encoding.ASCII.GetBytes(label3.Text.Substring((ModCreatorForm.thisForm.NameTextBox.Text+ " Version: 1.0\nAuthor: You\n\n").Length));
+                    string beforeDesc = ModCreatorForm.thisForm.NameTextBox.Text + " Version: 1.0\nAuthor: You\n\n";
+                    string description = label3.Text;
+                    int addedSize = 0;
+
+                    string toAdd = "";
+                    toAdd = getHtmlStart(actualDescTags.First());
+                    addedSize += toAdd.Length;
+                    description.Insert(0, toAdd);
+                    HtmlTagsToAdd latest = actualDescTags.First();
+                    for(int i=1;i< actualDescTags.Count-1;i++) {
+                        
+                        if(actualDescTags[i]!= latest) {
+                            toAdd = getHtmlEnd(latest);
+                            toAdd += getHtmlStart(actualDescTags[i]);
+                        }
+                        
+                        description.Insert(i + addedSize, toAdd);
+                        addedSize += toAdd.Length;
+                        latest = actualDescTags[i];
+                        toAdd = "";
+                    }
+                    toAdd = getHtmlEnd(actualDescTags.Last());
+                    description += toAdd;
+
+                    byte[] bytes = Encoding.ASCII.GetBytes(description.Substring(beforeDesc.Length));
                     myStream.Write(bytes, 0, bytes.Length);
-                    // Code to write the stream goes here.
                     myStream.Close();
                 }
             }
@@ -1248,6 +1357,18 @@ namespace ResourceHubLauncher
             ItalicToolButton.Checked = label3.SelectionFont.Italic;
             UnderlineToolButton.Checked = label3.SelectionFont.Underline;
             StrikeoutToolButton.Checked = label3.SelectionFont.Strikeout;
+            switch(label3.SelectionFont.Size) {
+                
+                case 15:
+                    ActualTextSizeButton.Text = "Medium Size";
+                    break;
+                case 18:
+                    ActualTextSizeButton.Text = "Big Size";
+                    break;
+                default:
+                    ActualTextSizeButton.Text = "Normal Size";
+                    break;
+            }
         }
 
         private void toolStripMenuItem4_Click_1(object sender, EventArgs e) {
@@ -1255,6 +1376,118 @@ namespace ResourceHubLauncher
             CloseDescriptionPreview();
             new ModCreatorForm().ShowDialog();
             Show();
+        }
+
+        private void SetFontSizeDesc(float size, int start, int end) {
+            List<int> starts = new List<int>();
+            List<int> ends = new List<int>();
+
+            HtmlTagsToAdd latest = actualDescTags.First();
+            starts.Add(start);
+            for (int i = start + 1; i < end; i++) {
+                if (actualDescTags[i] != latest) {
+                    ends.Add(i - starts.Last());
+                    starts.Add(i);
+
+                }
+                latest = actualDescTags[i];
+            }
+            ends.Add(end - starts.Last());
+            for (int i = 0; i < starts.Count; i++) {
+                label3.Select(starts[i], ends[i]);
+                label3.SelectionFont = new Font(label3.SelectionFont.FontFamily, size, label3.SelectionFont.Style);
+            }
+            label3.Select(start, end-start);
+        }
+
+        private void NormalSizeStripMenuItem_Click(object sender, EventArgs e) {
+            UpdateDescTagList();
+            if (label3.SelectionLength > 0) {
+                ActualTextSizeButton.Text = "Normal Size";
+                SetFontSizeDesc(11, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                RemoveTagToDesc(HtmlTagsToAdd.m, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                RemoveTagToDesc(HtmlTagsToAdd.big, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+            }
+        }
+
+        private void MediumSizeStripMenuItem_Click(object sender, EventArgs e) {
+            UpdateDescTagList();
+            if (label3.SelectionLength > 0) {
+                ActualTextSizeButton.Text = "Medium Size";
+                SetFontSizeDesc(15, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                ApplyTagToDesc(HtmlTagsToAdd.m, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                RemoveTagToDesc(HtmlTagsToAdd.big, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+            }
+        }
+
+        private void bigSizeToolStripMenuItem_Click(object sender, EventArgs e) {
+            UpdateDescTagList();
+            if (label3.SelectionLength > 0) {
+                ActualTextSizeButton.Text = "Big Size";
+                SetFontSizeDesc(18, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                ApplyTagToDesc(HtmlTagsToAdd.big, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+                RemoveTagToDesc(HtmlTagsToAdd.m, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
+            }
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e) {
+            OpenFileDialog saveFileDialog1 = new OpenFileDialog();
+
+            saveFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            saveFileDialog1.FilterIndex = 2;
+            saveFileDialog1.RestoreDirectory = true;
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
+                string fileData = File.ReadAllText(saveFileDialog1.FileName);
+                thisForm.label3.SelectAll();
+                thisForm.label3.SelectionProtected = false;
+                thisForm.label3.Select(0, 0);
+                thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> Version: 1.0 \nAuthor: You\n\n{fileData}";
+                thisForm.htmlTags.Apply(ref label3);
+
+                int emptySize = $"{ModCreatorForm.thisForm.NameTextBox.Text} Version: 1.0 \nAuthor: You\n\n".Length;
+                for (int i = 0; i < emptySize; i++) {
+                    actualDescTags.Add(HtmlTagsToAdd.none);
+                }
+                thisForm.label3.Select(0, emptySize);
+                thisForm.label3.SelectionProtected = true;
+
+
+                for (int i=0;i< thisForm.label3.Text.Length;i++) {
+                    thisForm.label3.Select(i, 1);
+                    
+                    HtmlTagsToAdd b= HtmlTagsToAdd.none;
+                    HtmlTagsToAdd ii = HtmlTagsToAdd.none;
+                    HtmlTagsToAdd u = HtmlTagsToAdd.none;
+                    HtmlTagsToAdd s = HtmlTagsToAdd.none;
+                    HtmlTagsToAdd m = HtmlTagsToAdd.none;
+                    HtmlTagsToAdd big = HtmlTagsToAdd.none;
+
+                    if(thisForm.label3.SelectionFont.Bold) {
+                        b = HtmlTagsToAdd.b;
+                    }
+                    if (thisForm.label3.SelectionFont.Italic) {
+                        ii = HtmlTagsToAdd.i;
+                    }
+                    if (thisForm.label3.SelectionFont.Underline) {
+                        u = HtmlTagsToAdd.u;
+                    }
+                    if (thisForm.label3.SelectionFont.Strikeout) {
+                        s = HtmlTagsToAdd.s;
+                    }
+                    
+                    switch(thisForm.label3.SelectionFont.Size) {
+                        case 15:
+                            m = HtmlTagsToAdd.m;
+                            break;
+                        case 18:
+                            big = HtmlTagsToAdd.big;
+                            break;
+                    }
+
+                    actualDescTags.Add(b | ii | u | s | m | big);
+                }
+            }
         }
     }
 }
