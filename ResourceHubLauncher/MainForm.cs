@@ -77,7 +77,7 @@ namespace ResourceHubLauncher
             InitializeInstallerAPI();
             InitializeConfiguratorAPI();
 
-            loadingPanel.Location = new Point(0, 0);
+            //loadingPanel.Location = new Point(0, 0);
             htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
             htmlTags.Add("i", "Segoe UI Light", 0, FontStyle.Italic);
             htmlTags.Add("u", "Segoe UI Light", 0, FontStyle.Underline);
@@ -191,7 +191,7 @@ namespace ResourceHubLauncher
 
 
 
-            loadingPanel.Hide();
+            //loadingPanel.Hide();
         }
 
 
@@ -1349,7 +1349,7 @@ namespace ResourceHubLauncher
         }
 
         private void metroButton1_Click(object sender, EventArgs e) {
-            OptionsContextMenu.Show(Cursor.Position);
+            DescriptionContextMenu.Show(Cursor.Position);
         }
 
         private void label3_SelectionChanged(object sender, EventArgs e) {
