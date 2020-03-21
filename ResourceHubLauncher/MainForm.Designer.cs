@@ -349,7 +349,6 @@
             this.listBox1.Size = new System.Drawing.Size(685, 480);
             this.listBox1.TabIndex = 29;
             this.listBox1.TabStop = false;
-            this.listBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseUp);
             // 
             // UtilitiesContextMenu
             // 
@@ -681,7 +680,6 @@
             this.metroPanel2.VerticalScrollbarBarColor = false;
             this.metroPanel2.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel2.VerticalScrollbarSize = 7;
-            this.metroPanel2.SizeChanged += new System.EventHandler(this.metroPanel2_SizeChanged);
             // 
             // resizingPanel
             // 
@@ -881,10 +879,6 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
-            this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
-            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseUp);
-            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.modListContextMenu.ResumeLayout(false);
             this.ShowedModsMenuStrip.ResumeLayout(false);
             this.linksContextMenu.ResumeLayout(false);
