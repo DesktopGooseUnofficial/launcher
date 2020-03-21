@@ -281,7 +281,7 @@ namespace ResourceHubLauncher
             thisForm.descriptionButton.Show();
             thisForm.toolStrip1.Show();
             thisForm.label3.ReadOnly = false;
-            thisForm.label3.Text = "<big>"+ModCreatorForm.thisForm.NameTextBox.Text+ "</big> Version: 1.0 \nAuthor: You\n\n";
+            thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> 1.0 \nAuthor: You\n\n";
             thisForm.htmlTags.Apply(ref thisForm.label3);
             thisForm.label3.SelectAll();
             thisForm.label3.SelectionProtected = true;
@@ -954,34 +954,6 @@ namespace ResourceHubLauncher
                 Process.Start("https://twitter.com/dg_resource");
             }
         }
-
-        //to remove
-        private void MainForm_Resize(object sender, EventArgs e) {
-
-
-        }
-        //to remove
-        private void metroPanel2_SizeChanged(object sender, EventArgs e) {
-
-        }
-        //to remove
-        private void MainForm_SizeChanged(object sender, EventArgs e) {
-
-        }
-        //to remove
-        private void listBox1_MouseUp(object sender, MouseEventArgs e) {
-
-        }
-        //to remove
-        private void MainForm_MouseUp(object sender, MouseEventArgs e) {
-
-
-        }
-        //to remove
-        private void MainForm_DragDrop(object sender, DragEventArgs e) {
-
-        }
-
         private void MainForm_ResizeBegin(object sender, EventArgs e) {
             resizingPanel.Show();
 
@@ -1317,7 +1289,7 @@ namespace ResourceHubLauncher
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
                 if ((myStream = saveFileDialog1.OpenFile()) != null) {
-                    string beforeDesc = ModCreatorForm.thisForm.NameTextBox.Text + " Version: 1.0\nAuthor: You\n\n";
+                    string beforeDesc = $"{ModCreatorForm.thisForm.NameTextBox.Text} 1.0\nAuthor: You\n\n";
                     string description = label3.Text;
                     int addedSize = 0;
 
@@ -1442,10 +1414,10 @@ namespace ResourceHubLauncher
                 thisForm.label3.SelectAll();
                 thisForm.label3.SelectionProtected = false;
                 thisForm.label3.Select(0, 0);
-                thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> Version: 1.0 \nAuthor: You\n\n{fileData}";
+                thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> 1.0 \nAuthor: You\n\n{fileData}";
                 thisForm.htmlTags.Apply(ref label3);
 
-                int emptySize = $"{ModCreatorForm.thisForm.NameTextBox.Text} Version: 1.0 \nAuthor: You\n\n".Length;
+                int emptySize = $"{ModCreatorForm.thisForm.NameTextBox.Text} 1.0 \nAuthor: You\n\n".Length;
                 for (int i = 0; i < emptySize; i++) {
                     actualDescTags.Add(HtmlTagsToAdd.none);
                 }
