@@ -1,4 +1,4 @@
-﻿ using MetroFramework;
+﻿using MetroFramework;
 using MetroFramework.Forms;
 using Newtonsoft.Json.Linq;
 using System;
@@ -1055,7 +1055,7 @@ namespace ResourceHubLauncher
         }
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (MsgBox("This will open a link where you will be taken to a README for the Launcher. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+            if (MsgBox("This will open a link where you will be taken to the README for the Launcher. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher#readme");
             }
         }
