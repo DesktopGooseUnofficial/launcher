@@ -281,7 +281,7 @@ namespace ResourceHubLauncher
             thisForm.descriptionButton.Show();
             thisForm.toolStrip1.Show();
             thisForm.label3.ReadOnly = false;
-            thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> 1.0 \nAuthor: You\n\n";
+            thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> 1.0 \nCreated by You\n\n";
             thisForm.htmlTags.Apply(ref thisForm.label3);
             thisForm.label3.SelectAll();
             thisForm.label3.SelectionProtected = true;
@@ -308,7 +308,7 @@ namespace ResourceHubLauncher
                 if(mod["description-debug"] != null) {
                     description = (string)mod["description-debug"];
                 }
-                label3.Text = $"<big>{(string)mod["name"]}</big> {(string)mod["mod-version"]} (Goose {(string)mod["goose-version"]}) \r\nAuthor: {(string)mod["author"]} \r\n\r\n{description}";
+                label3.Text = $"<big>{(string)mod["name"]}</big> {(string)mod["mod-version"]} (Goose {(string)mod["goose-version"]}) \r\nCreated by {(string)mod["author"]} \r\n\r\n{description}";
                 htmlTags.Apply(ref label3);
 
             } catch (Exception) {
@@ -1291,7 +1291,7 @@ namespace ResourceHubLauncher
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
                 if ((myStream = saveFileDialog1.OpenFile()) != null) {
-                    string beforeDesc = $"{ModCreatorForm.thisForm.NameTextBox.Text} 1.0\nAuthor: You\n\n";
+                    string beforeDesc = $"{ModCreatorForm.thisForm.NameTextBox.Text} 1.0\nCreated by You\n\n";
                     string description = label3.Text;
                     int addedSize = 0;
 
@@ -1416,10 +1416,10 @@ namespace ResourceHubLauncher
                 thisForm.label3.SelectAll();
                 thisForm.label3.SelectionProtected = false;
                 thisForm.label3.Select(0, 0);
-                thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> 1.0 \nAuthor: You\n\n{fileData}";
+                thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> 1.0 \nCreated by You\n\n{fileData}";
                 thisForm.htmlTags.Apply(ref label3);
 
-                int emptySize = $"{ModCreatorForm.thisForm.NameTextBox.Text} 1.0 \nAuthor: You\n\n".Length;
+                int emptySize = $"{ModCreatorForm.thisForm.NameTextBox.Text} 1.0 \nCreated by You\n\n".Length;
                 for (int i = 0; i < emptySize; i++) {
                     actualDescTags.Add(HtmlTagsToAdd.none);
                 }
