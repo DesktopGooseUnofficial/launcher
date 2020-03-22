@@ -875,8 +875,8 @@ namespace ResourceHubLauncher
             string path = Path.Combine(modPath, modd);
             path = Path.Combine(path, modd + ".dll.RHLdisabled");
             string newPath = path.Substring(0, path.Length - 12);
-            Console.WriteLine($"Now enabling {modd}, new path will be {newPath}");
             if (MsgBox($"Are you sure you want to enable {modd}? This will restart goose if disabled!", "Enabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Console.WriteLine($"Now enabling {modd}, new path will be {newPath}");
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
                 toolStripMenuItem3_Click(sender, e);
                 try {
@@ -886,6 +886,7 @@ namespace ResourceHubLauncher
                     actualModButton.Refresh();
                     UpdateButtons();
                 } catch (Exception ex) {
+                    Console.WriteLine($"Failed to enable mod: {ex.Message}");
                     MsgBox($"Error while enabling {modd}.\r\nError: {ex.Message}", "Error while enabling mod.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 for (int i = 0; i < geese; i++) {
@@ -900,8 +901,8 @@ namespace ResourceHubLauncher
 
             path = Path.Combine(path, modd + ".dll");
             string newPath = path + ".RHLdisabled";
-            Console.WriteLine($"Now disabling {modd}, new path will be {newPath}");
             if (MsgBox($"Are you sure you want to disable {modd}? This will restart the goose if it is running!", "Disabler", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
+                Console.WriteLine($"Now disabling {modd}, new path will be {newPath}");
                 int geese = Process.GetProcessesByName("GooseDesktop").Count();
                 toolStripMenuItem3_Click(sender, e);
                 metroButton4_Click(sender, e);
@@ -912,6 +913,7 @@ namespace ResourceHubLauncher
                     actualModButton.Refresh();
                     UpdateButtons();
                 } catch (Exception ex) {
+                    Console.WriteLine($"Failed to disable mod: {ex.Message}");
                     MsgBox($"Error while disabling {modd}.\r\nError: {ex.Message}", "Disable error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 for (int i = 0; i < geese; i++) {
