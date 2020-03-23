@@ -471,10 +471,10 @@ namespace ResourceHubLauncher
                 string downloadingWhat = "";
                 switch (what) {
                     case downloadWhat.modConfigurator:
-                        downloadingWhat = "Configurator for";
+                        downloadingWhat = "Configurator for ";
                         break;
                     case downloadWhat.modInstaller:
-                        downloadingWhat = "Installer for";
+                        downloadingWhat = "Installer for ";
                         break;
                     case downloadWhat.modFile:
                         break;
@@ -483,7 +483,7 @@ namespace ResourceHubLauncher
                 try {
                     Uri uri = new Uri(url);
 
-                    string format = $"Downloading {downloadingWhat} {0} ({1}/{2})";
+                    string format = "Downloading "+downloadingWhat+"{0} ({1}/{2})";
 
                     metroLabel1.Text = $"Preparing to download {downloadingWhat} {(string)mod["name"]}";
                     CenterDownloadText();
@@ -491,6 +491,7 @@ namespace ResourceHubLauncher
                     metroProgressBar1.Value = 0;
 
                     wc.DownloadFileAsync(uri, filePath);
+                    Console.WriteLine(filePath);
 
                     wc.DownloadProgressChanged += (object _sender, DownloadProgressChangedEventArgs args) => {
 
@@ -610,6 +611,20 @@ namespace ResourceHubLauncher
 
                     f = Path.Combine(filePath, "Configurator.dll");
                     downloadFile(urlC, downloadWhat.modConfigurator, f, (string)mod["name"], (object _sender3, AsyncCompletedEventArgs args3) => {
+                        Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Installer.dll"));
+
+                        actualModPath = Path.Combine(modPath, actualModButton.modName);
+
+                        foreach (Type type in installer.GetTypes()) {
+                            if (type.GetInterface("InstallerBasic") != null) {
+                                InstallerBasic installerIns = (InstallerBasic)Activator.CreateInstance(type);
+
+                                installerIns.Install();
+
+
+                            }
+                        }
+
                         DownloadPanel.Hide();
                         if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
