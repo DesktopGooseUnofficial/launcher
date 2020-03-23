@@ -52,6 +52,8 @@ namespace ResourceHubLauncher
 
         List<HtmlTagsToAdd> actualDescTags=new List<HtmlTagsToAdd>();
 
+        bool descriptionMaking = false;
+
         public MainForm() {
             InitializeComponent();
             styleExtender.Theme = (MetroThemeStyle)(int)Config.Options["theme"];
@@ -166,10 +168,6 @@ namespace ResourceHubLauncher
                         newMod.hasConfigurator = true;
                     }
                 }
-
-                
-
-
             }
             Config.Theme(this);
             modsButtons.ThemeChanged((int)Config.Options["theme"] == 1);
@@ -182,15 +180,7 @@ namespace ResourceHubLauncher
                 gooseToolStripMenuItem.Text = "Geese";
             }
 
-
-
-
             htmlTags.Apply(ref label3);
-            
-
-
-
-
             //loadingPanel.Hide();
         }
 
@@ -198,7 +188,7 @@ namespace ResourceHubLauncher
         private void UpdateTheme(bool lightTheme) {
 
             if(lightTheme) {
-                toolStripMenuItem2.BackColor=Color.FromArgb(255,255,255);
+                toolStripMenuItem2.BackColor = Color.FromArgb(255,255,255);
                 toolStripMenuItem2.ForeColor = Color.FromArgb(17, 17, 17);
 
                 toolStripMenuItem3.BackColor = Color.FromArgb(255, 255, 255);
@@ -286,6 +276,7 @@ namespace ResourceHubLauncher
             thisForm.label3.SelectAll();
             thisForm.label3.SelectionProtected = true;
             thisForm.label3.Select(0, 0);
+            thisForm.descriptionMaking = true;
         }
 
          void CloseDescriptionPreview() {
@@ -299,7 +290,7 @@ namespace ResourceHubLauncher
             label3.Select(0, 0);
             label3.Text = "<m>Hover or click on the mod buttons (in list on the left) to see mod descriptions.</m>\n\n<m>Click (on mod button) to see options! </m>";
             htmlTags.Apply(ref label3);
-            
+            descriptionMaking = false;
         }
 
         private void changeModDescription() {
@@ -323,9 +314,6 @@ namespace ResourceHubLauncher
             actualModButton = modsButtons.Find(actualMod);
             changeModDescription();
             AfterInstallUpdate();
-
-
-
         }
 
         private void AfterInstallUpdate() {
@@ -470,18 +458,37 @@ namespace ResourceHubLauncher
         ModButton installModButton;//actualModButton = modsButtons.Find((string)mod["name"]);
         bool installing = false;
 
-        void downloadFile(string url, string folderPath, string filePath, string modName, AsyncCompletedEventHandler afterDownload) {
+        enum downloadWhat
+        {
+            modFile,
+            modInstaller,
+            modConfigurator
+        }
+
+        void downloadFile(string url, downloadWhat what, string filePath, string modName, AsyncCompletedEventHandler afterDownload) {
             using (WebClient wc = new WebClient()) {
+
+                string downloadingWhat = "";
+                switch (what) {
+                    case downloadWhat.modConfigurator:
+                        downloadingWhat = "Configurator for";
+                        break;
+                    case downloadWhat.modInstaller:
+                        downloadingWhat = "Installer for";
+                        break;
+                    case downloadWhat.modFile:
+                        break;
+                }
+
                 try {
                     Uri uri = new Uri(url);
-                    string format = "Installing {0} ({1}/{2})";
 
-                    metroLabel1.Text = $"Preparing to install {(string)mod["name"]}";
+                    string format = $"Downloading {downloadingWhat} {0} ({1}/{2})";
+
+                    metroLabel1.Text = $"Preparing to download {downloadingWhat} {(string)mod["name"]}";
                     CenterDownloadText();
                     DownloadPanel.Show();
-
                     metroProgressBar1.Value = 0;
-
 
                     wc.DownloadFileAsync(uri, filePath);
 
@@ -496,7 +503,7 @@ namespace ResourceHubLauncher
                     wc.DownloadFileCompleted += afterDownload;
 
                 } catch (Exception ex) {
-                    Console.WriteLine($"Could not download {(string)mod["name"]}: {ex.Message}");
+                    Console.WriteLine($"Could not download {downloadingWhat} {(string)mod["name"]}: {ex.Message}");
                     download = false;
                     MsgBox("The download for this mod is not available or invalid.", "Download error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     DownloadPanel.Hide();
@@ -510,32 +517,36 @@ namespace ResourceHubLauncher
                 string urlC = (string)mod["config-url"];
                 string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
                 string f = Path.Combine(filePath, "Configurator.dll");
-                downloadFile(urlC, modPath, f, (string)mod["name"], (object _sender3, AsyncCompletedEventArgs args3) => {
+                downloadFile(urlC, downloadWhat.modConfigurator, f, (string)mod["name"], (object _sender3, AsyncCompletedEventArgs args3) => {
                     DownloadPanel.Hide();
                     if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+                    if(File.Exists(f)) {
+                        string launcherModPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
+                        if (Directory.Exists(Path.Combine(launcherModPath, "Default"))) {
+                            Directory.Delete(Path.Combine(launcherModPath, "Default"), true);
+                        }
+                        if (Directory.Exists(Path.Combine(launcherModPath, "Used Before"))) {
+                            Assembly configurator = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Configurator.dll"));
+                            ConfiguratorBasic configuratorIns;
+                            foreach (Type type in configurator.GetTypes()) {
+                                if (type.GetInterface("ConfiguratorBasic") != null) {
+                                    configuratorIns = (ConfiguratorBasic)Activator.CreateInstance(type);
+                                    ModConfigForm.OpenMod((string)mod["name"], configuratorIns);
 
-                    string launcherModPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
-                    if (Directory.Exists(Path.Combine(launcherModPath, "Default"))) {
-                        Directory.Delete(Path.Combine(launcherModPath, "Default"), true);
-                    }
-                    if (Directory.Exists(Path.Combine(launcherModPath, "Used Before"))) {
-                        Assembly configurator = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Configurator.dll"));
-                        ConfiguratorBasic configuratorIns;
-                        foreach (Type type in configurator.GetTypes()) {
-                            if (type.GetInterface("ConfiguratorBasic") != null) {
-                                configuratorIns = (ConfiguratorBasic)Activator.CreateInstance(type);
-                                ModConfigForm.OpenMod((string)mod["name"], configuratorIns);
 
-
-                                ModConfigForm.UseSafetyCopy((string)mod["name"]);
+                                    ModConfigForm.UseSafetyCopy((string)mod["name"]);
+                                }
                             }
+
                         }
 
+                        actualModButton.hasConfigurator = true;
                     }
+                    
 
                     string dataPath = Path.Combine( modPath, (string)mod["name"]);
                     actualModButton.InstalledMod = true;
-                    actualModButton.hasConfigurator = true;
+                    
                     AfterInstallUpdate();
                     actualModButton.Refresh();
                     
@@ -558,7 +569,6 @@ namespace ResourceHubLauncher
             else {
                 DownloadPanel.Hide();
                 if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
-
 
                 string dataPath = Path.Combine(modPath, (string)mod["name"]);
                 actualModButton.InstalledMod = true;
@@ -586,37 +596,50 @@ namespace ResourceHubLauncher
             string urlI = (string)mod["install-url"];
             string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
             string f = Path.Combine(filePath, "Installer.dll");
-            downloadFile(urlI, modPath, f, (string)mod["name"], (object _sender2, AsyncCompletedEventArgs args2) => {
+            downloadFile(urlI, downloadWhat.modInstaller, f, (string)mod["name"], (object _sender2, AsyncCompletedEventArgs args2) => {
+                if(!File.Exists(f)) {
+                    Console.WriteLine("Installer doesn't exist.");
+                    MsgBox($"Installer for mod cannot be opened, try installing mod again", "Installation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    download = false;
+                    installing = false;
+                    ContinueInstalling();
+                    return;
+                }
                 if ((string)mod["config-url"] != null) {
                     string urlC = (string)mod["config-url"];
 
                     f = Path.Combine(filePath, "Configurator.dll");
-                    downloadFile(urlC, modPath, f, (string)mod["name"], (object _sender3, AsyncCompletedEventArgs args3) => {
+                    downloadFile(urlC, downloadWhat.modConfigurator, f, (string)mod["name"], (object _sender3, AsyncCompletedEventArgs args3) => {
                         DownloadPanel.Hide();
                         if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
-                        string dataPath = Path.Combine(modPath, (string)mod["name"]);
-                        string launcherModPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
-                        if (Directory.Exists(Path.Combine(launcherModPath, "Default"))) {
-                            Directory.Delete(Path.Combine(launcherModPath, "Default"), true);
-                        }
-                        if (Directory.Exists(Path.Combine(launcherModPath, "Used Before"))) {
-                            Assembly configurator = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Configurator.dll"));
-                            ConfiguratorBasic configuratorIns;
-                            foreach (Type type in configurator.GetTypes()) {
-                                if (type.GetInterface("ConfiguratorBasic") != null) {
-                                    configuratorIns = (ConfiguratorBasic)Activator.CreateInstance(type);
-                                    ModConfigForm.OpenMod((string)mod["name"], configuratorIns);
-
-
-                                    ModConfigForm.UseSafetyCopy((string)mod["name"]);
-                                }
+                        if(File.Exists(f)) {
+                            string launcherModPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
+                            if (Directory.Exists(Path.Combine(launcherModPath, "Default"))) {
+                                Directory.Delete(Path.Combine(launcherModPath, "Default"), true);
                             }
-                            
+                            if (Directory.Exists(Path.Combine(launcherModPath, "Used Before"))) {
+                                Assembly configurator = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Configurator.dll"));
+                                ConfiguratorBasic configuratorIns;
+                                foreach (Type type in configurator.GetTypes()) {
+                                    if (type.GetInterface("ConfiguratorBasic") != null) {
+                                        configuratorIns = (ConfiguratorBasic)Activator.CreateInstance(type);
+                                        ModConfigForm.OpenMod((string)mod["name"], configuratorIns);
+
+
+                                        ModConfigForm.UseSafetyCopy((string)mod["name"]);
+                                    }
+                                }
+
+                            }
+                            actualModButton.hasConfigurator = true;
                         }
+
+                        string dataPath = Path.Combine(modPath, (string)mod["name"]);
+
                         dataPath = Path.Combine(dataPath, "RHLInfo.json");
                         actualModButton.InstalledMod = true;
-                        actualModButton.hasConfigurator = true;
+                        
                         AfterInstallUpdate();
                         actualModButton.Refresh();
                         
@@ -625,6 +648,7 @@ namespace ResourceHubLauncher
                             if (!File.Exists(dataPath)) File.Create(dataPath).Close();
                             File.WriteAllText(dataPath, mod.ToString());
                         } catch (IOException ex) {
+                            Console.WriteLine($"Couldn't write to RHLInfo.json because of {ex.Message}");
                             MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         download = false;
@@ -634,12 +658,9 @@ namespace ResourceHubLauncher
                     });
                 } 
                 else {
-
                     Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Installer.dll"));
 
                     actualModPath = Path.Combine(modPath, actualModButton.modName);
-
-
 
                     foreach (Type type in installer.GetTypes()) {
                         if (type.GetInterface("InstallerBasic") != null) {
@@ -666,11 +687,9 @@ namespace ResourceHubLauncher
                         if (!File.Exists(dataPath)) File.Create(dataPath).Close();
                         File.WriteAllText(dataPath, mod.ToString());
                     } catch (IOException ex) {
+                        Console.WriteLine($"Couldn't write to RHLInfo.json because of {ex.Message}");
                         MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-
-                    
-
                     download = false;
                     installing = false;
                     UpdateButtons();
@@ -693,7 +712,6 @@ namespace ResourceHubLauncher
                 
                 install(t, installModButton);
             }
-            
         }
 
         void ContinueInstalling() {
@@ -715,6 +733,7 @@ namespace ResourceHubLauncher
             actualModPath = Path.Combine(modPath, actualModButton.modName);
             if (l > 0) {
                 if (!(bool)Config.Options["unsfe"] && Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.")) {
+                    Console.WriteLine("User has \"Allow Unsafe Mods\" disabled. Will not install.");
                     MsgBox($"This mod is rated as {r2s(l)} and will not be installed for your safety.\r\nIf you want to ignore this go into Settings and enable \"Allow Unsafe Mods\".", "Uh oh!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 } else if (Log($"Mod is rated {r2s(l)}. Awaiting user confirmation.") && MsgBox($"This mod is rated as {r2s(l)}.\r\nAre you sure you want to install it? Installing it may cause problems.", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) {
@@ -750,17 +769,13 @@ namespace ResourceHubLauncher
 
             if (!download) {
                 download = true;
-                downloadFile(url, modPath, f, m, (object _sender, AsyncCompletedEventArgs args) => {
+                downloadFile(url, downloadWhat.modFile, f, m, (object _sender, AsyncCompletedEventArgs args) => {
                     if (!d) {
                         NoDllDownloadEnd(_sender, args,mod,actualModButton);
 
                     } else {
                         DllDownloadEnd(_sender, args, mod, actualModButton);
                     }
-
-
-
-
                 });
 
             } else {
@@ -771,21 +786,14 @@ namespace ResourceHubLauncher
         }
 
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
-
-           if( actualModButton.InstalledMod || actualModButton.DisabledMod) {
+           if (actualModButton.InstalledMod || actualModButton.DisabledMod) {
                 toolStripMenuItem1_Click(sender, e);
-            } else {
+           } else {
                 AddToInstallQueue(mod);
-            }
-            
-
-            
-
-
+           }
         }
 
         private void resourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
-
             try {
                 Process.Start(mod["resourcehub"].ToString());
             } catch (Exception) {
@@ -798,12 +806,6 @@ namespace ResourceHubLauncher
                 e.Cancel = MsgBox("Are you sure you want to close the Launcher?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes;
             }
 
-        }
-
-        private void ResourceHubPage_Click(object sender, EventArgs e) {
-            if (MsgBox("Are you sure you want to open the ResourceHub website?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
-                Process.Start("https://desktopgooseunofficial.github.io/ResourceHub/");
-            }
         }
 
         private void RunGoose_Click(object sender, EventArgs e) {
@@ -828,13 +830,7 @@ namespace ResourceHubLauncher
         }
 
         private void otherMods_SelectedIndexChanged(object sender, EventArgs e) {
-
-
-
-
             label3.Text = (string)mod["description"];
-
-
         }
 
         private void modListContextMenu_Opening(object sender, CancelEventArgs e) {
@@ -923,23 +919,6 @@ namespace ResourceHubLauncher
 
         }
 
-        private void installedModsContextMenu_Opening(object sender, CancelEventArgs e) {
-            //if (enabledMods.SelectedIndex == -1) e.Cancel = true;
-        }
-        //to remove
-        private void metroLabel3_Click(object sender, EventArgs e) {
-
-        }
-        //to remove
-        private void metroButton1_Click_1(object sender, EventArgs e) {
-
-        }
-
-        private void metroButton2_Click_1(object sender, EventArgs e) {
-            linksContextMenu.Show(Cursor.Position);
-
-        }
-
         private void discordToolStripMenuItem_Click_1(object sender, EventArgs e) {
             if (MsgBox("This will open a link to the ResourceHub Discord server. Do you want to proceed?", "Hold up!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes) {
                 Process.Start("https://discock.gg/rhl");
@@ -958,16 +937,12 @@ namespace ResourceHubLauncher
         }
         private void MainForm_ResizeBegin(object sender, EventArgs e) {
             resizingPanel.Show();
-
         }
 
         private void MainForm_ResizeEnd(object sender, EventArgs e) {
-            resizingPanel.Hide();
-
-        }
-
-        private void metroButton3_Click(object sender, EventArgs e) {
-            UtilitiesContextMenu.Show(Cursor.Position);
+            if(!descriptionMaking) {
+                resizingPanel.Hide();
+            }
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e) {
@@ -988,14 +963,6 @@ namespace ResourceHubLauncher
             string modd = (string)mod["name"];
             string path = Path.Combine(modPath, modd);
             Process.Start("explorer.exe", path);
-        }
-
-        private void toolStripMenuItem4_Click(object sender, EventArgs e) {
-            toolStripMenuItem1_Click(sender, e);
-        }
-
-        private void toolStripMenuItem6_Click(object sender, EventArgs e) {
-            disableToolStripMenuItem_Click(sender, e);
         }
 
         private void OptionsButton_Click(object sender, EventArgs e) {
@@ -1038,20 +1005,6 @@ namespace ResourceHubLauncher
             changelogPanel.Hide();
         }
 
-        private void label3_TextChanged(object sender, EventArgs e) {
-
-        }
-
-        
-
-        private void debugButton_Click(object sender, EventArgs e) {
-            Hide();
-
-            
-            new ModConfigForm().ShowDialog();
-            Show();
-        }
-
         private void disableToolStripMenuItem1_Click(object sender, EventArgs e) {
             if(actualModButton.InstalledMod) {
                 openInModsToolStripMenuItem_Click(sender, e);
@@ -1081,11 +1034,8 @@ namespace ResourceHubLauncher
         }
 
         private void UpdateButtonsChanged() {
-
             metroPanel2.VerticalScroll.Value = 0;
             modsButtons.ShowOnly((B) => { return (B.InstalledMod && installedToolStripMenuItem.Checked) || (B.DisabledMod && disabledToolStripMenuItem.Checked) || (B.AvailableMod && availableToolStripMenuItem.Checked); });
-
-
         }
 
         private void UpdateButtons() {
@@ -1282,6 +1232,8 @@ namespace ResourceHubLauncher
         }
 
         private void toolStripMenuItem1_Click_2(object sender, EventArgs e) {
+            UpdateDescTagList();
+
             Stream myStream;
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
@@ -1291,6 +1243,7 @@ namespace ResourceHubLauncher
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
                 if ((myStream = saveFileDialog1.OpenFile()) != null) {
+                    myStream.Position = 0;
                     string beforeDesc = $"{ModCreatorForm.thisForm.NameTextBox.Text} 1.0\nCreated by You\n\n";
                     string description = label3.Text;
                     int addedSize = 0;
@@ -1298,16 +1251,14 @@ namespace ResourceHubLauncher
                     string toAdd = "";
                     toAdd = getHtmlStart(actualDescTags.First());
                     addedSize += toAdd.Length;
-                    description.Insert(0, toAdd);
+                    description= description.Insert(0, toAdd);
                     HtmlTagsToAdd latest = actualDescTags.First();
                     for(int i=1;i< actualDescTags.Count-1;i++) {
-                        
                         if(actualDescTags[i]!= latest) {
                             toAdd = getHtmlEnd(latest);
                             toAdd += getHtmlStart(actualDescTags[i]);
                         }
-                        
-                        description.Insert(i + addedSize, toAdd);
+                        description= description.Insert(i + addedSize, toAdd);
                         addedSize += toAdd.Length;
                         latest = actualDescTags[i];
                         toAdd = "";
@@ -1315,7 +1266,7 @@ namespace ResourceHubLauncher
                     toAdd = getHtmlEnd(actualDescTags.Last());
                     description += toAdd;
 
-                    byte[] bytes = Encoding.ASCII.GetBytes(description.Substring(beforeDesc.Length));
+                    byte[] bytes = Encoding.ASCII.GetBytes(description.Substring(beforeDesc.Length+1).Replace("\n","\\"+"n"));
                     myStream.Write(bytes, 0, bytes.Length);
                     myStream.Close();
                 }
@@ -1416,10 +1367,11 @@ namespace ResourceHubLauncher
                 thisForm.label3.SelectAll();
                 thisForm.label3.SelectionProtected = false;
                 thisForm.label3.Select(0, 0);
-                thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> 1.0 \nCreated by You\n\n{fileData}";
+                thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> 1.0 \nCreated by You\n\n{fileData.Replace("\\"+"n","\n")}";
                 thisForm.htmlTags.Apply(ref label3);
 
                 int emptySize = $"{ModCreatorForm.thisForm.NameTextBox.Text} 1.0 \nCreated by You\n\n".Length;
+                actualDescTags.Clear();
                 for (int i = 0; i < emptySize; i++) {
                     actualDescTags.Add(HtmlTagsToAdd.none);
                 }

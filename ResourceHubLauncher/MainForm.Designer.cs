@@ -656,7 +656,6 @@
             this.metroLabel3.TabIndex = 27;
             this.metroLabel3.Text = "Launcher version 2.0 (BETA)";
             this.metroLabel3.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroLabel3.Click += new System.EventHandler(this.metroLabel3_Click);
             // 
             // metroPanel2
             // 
