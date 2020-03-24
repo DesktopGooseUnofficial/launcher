@@ -76,8 +76,11 @@ namespace ResourceHubLauncher
 
         private void MainForm_Load(object sender, EventArgs e) {
 
+            Console.WriteLine($"Loading MainForm");
             InitializeInstallerAPI();
+            Console.WriteLine($"Installer API Loaded");
             InitializeConfiguratorAPI();
+            Console.WriteLine($"API's Loaded");
 
             //loadingPanel.Location = new Point(0, 0);
             htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
@@ -86,6 +89,8 @@ namespace ResourceHubLauncher
             htmlTags.Add("s", "Segoe UI Light", 0, FontStyle.Strikeout);
             htmlTags.Add("m", "Segoe UI Light", 15f);
             htmlTags.Add("big", "Segoe UI Light", 18f);
+
+            Console.WriteLine($"Html tags Loaded");
 
             if ((string)Config.Options["latestU"] != md5.ToString()) {
                 Console.WriteLine($"User appears to have updated.\nDisplaying changelog...");
@@ -180,6 +185,7 @@ namespace ResourceHubLauncher
                 gooseToolStripMenuItem.Text = "Geese";
             }
 
+            
             htmlTags.Apply(ref label3);
             //loadingPanel.Hide();
         }
@@ -1249,6 +1255,48 @@ namespace ResourceHubLauncher
         private void toolStripMenuItem1_Click_2(object sender, EventArgs e) {
             UpdateDescTagList();
 
+            int emptySize = $"{ModCreatorForm.thisForm.NameTextBox.Text} 1.0 \nCreated by You\n\n".Length;
+
+            actualDescTags.Clear();
+            for (int i = 0; i < emptySize; i++) {
+                actualDescTags.Add(HtmlTagsToAdd.none);
+            }
+
+            for (int i = emptySize; i < thisForm.label3.Text.Length; i++) {
+                thisForm.label3.Select(i, 1);
+
+                HtmlTagsToAdd b = HtmlTagsToAdd.none;
+                HtmlTagsToAdd ii = HtmlTagsToAdd.none;
+                HtmlTagsToAdd u = HtmlTagsToAdd.none;
+                HtmlTagsToAdd s = HtmlTagsToAdd.none;
+                HtmlTagsToAdd m = HtmlTagsToAdd.none;
+                HtmlTagsToAdd big = HtmlTagsToAdd.none;
+
+                if (thisForm.label3.SelectionFont.Bold) {
+                    b = HtmlTagsToAdd.b;
+                }
+                if (thisForm.label3.SelectionFont.Italic) {
+                    ii = HtmlTagsToAdd.i;
+                }
+                if (thisForm.label3.SelectionFont.Underline) {
+                    u = HtmlTagsToAdd.u;
+                }
+                if (thisForm.label3.SelectionFont.Strikeout) {
+                    s = HtmlTagsToAdd.s;
+                }
+
+                switch (thisForm.label3.SelectionFont.Size) {
+                    case 15:
+                        m = HtmlTagsToAdd.m;
+                        break;
+                    case 18:
+                        big = HtmlTagsToAdd.big;
+                        break;
+                }
+
+                actualDescTags.Add(b | ii | u | s | m | big);
+            }
+
             Stream myStream;
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
@@ -1268,7 +1316,7 @@ namespace ResourceHubLauncher
                     addedSize += toAdd.Length;
                     description= description.Insert(0, toAdd);
                     HtmlTagsToAdd latest = actualDescTags.First();
-                    for(int i=1;i< actualDescTags.Count-1;i++) {
+                    for (int i=1;i< actualDescTags.Count-1;i++) {
                         if(actualDescTags[i]!= latest) {
                             toAdd = getHtmlEnd(latest);
                             toAdd += getHtmlStart(actualDescTags[i]);
@@ -1394,7 +1442,7 @@ namespace ResourceHubLauncher
                 thisForm.label3.SelectionProtected = true;
 
 
-                for (int i=0;i< thisForm.label3.Text.Length;i++) {
+                for (int i= emptySize; i< thisForm.label3.Text.Length;i++) {
                     thisForm.label3.Select(i, 1);
                     
                     HtmlTagsToAdd b= HtmlTagsToAdd.none;
