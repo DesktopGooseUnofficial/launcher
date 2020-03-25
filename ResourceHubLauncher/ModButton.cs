@@ -226,6 +226,7 @@ namespace ResourceHubLauncher {
 
     class ModButtonList {
         public List<ModButton> list;
+        List<int> elementsRemoved=new List<int>();
         Point latestAddedPos = new Point(0, -88);
         public ModButtonList() {
             list = new List<ModButton>();
@@ -240,21 +241,13 @@ namespace ResourceHubLauncher {
 
         public void Remove(string modName) {
             int index = list.FindIndex(mod => mod.modName == modName);
-            list.RemoveAt(index);
-            latestAddedPos = new Point(latestAddedPos.X, latestAddedPos.Y - 88);
-            for (int i= index;i< list.Count;i++) {
-                
-                    list[i].setLocation(new Point(latestAddedPos.X,88*i));
-                
-                
-            }
-            
+            elementsRemoved.Add(index);
         }
 
         public void ShowOnly(Func<ModButton,bool> how) {
             int actualMemberListN = 0;
             for(int i=0;i< list.Count;i++) {
-                if(how(list[i])) {
+                if(how(list[i])&& elementsRemoved.FindIndex((m) => { return m == i; })==-1) {
                     list[i].Visible = true;
                     list[i].setLocation(new Point(latestAddedPos.X, 88 * actualMemberListN));
                     actualMemberListN++;
