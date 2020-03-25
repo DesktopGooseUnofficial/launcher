@@ -167,6 +167,7 @@ namespace ResourceHubLauncher
                     metroPanel2.Controls.Add(newMod);
                     modsButtons.Add(newMod);
                     newMod.Parent = metroPanel2;
+                    newMod.changeContextMenu(modListContextMenu);
                     if (statee == ModButtonStates.Installed) {
                         disableToolStripMenuItem1.Enabled = true;
                     } else {
@@ -333,11 +334,16 @@ namespace ResourceHubLauncher
             } else {
                 installToolStripMenuItem.Enabled = true;
             }
-            if((string)mod["resourcehub"] != null) {
-                resourceHubToolStripMenuItem.Enabled = true;
+            if(mod!=null) {
+                if ((string)mod["resourcehub"] != null) {
+                    resourceHubToolStripMenuItem.Enabled = true;
+                } else {
+                    resourceHubToolStripMenuItem.Enabled = false;
+                }
             } else {
                 resourceHubToolStripMenuItem.Enabled = false;
             }
+            
             if (actualModButton.InstalledMod || actualModButton.DisabledMod) {
                 installToolStripMenuItem.Text = "Uninstall";
                 disableToolStripMenuItem1.Enabled = true;
@@ -989,7 +995,7 @@ namespace ResourceHubLauncher
         }
 
         private void disableToolStripMenuItem_Click(object sender, EventArgs e) {
-            string modd = (string)mod["name"];
+            string modd = actualModButton.modName;
             string path = Path.Combine(modPath, modd);
             Process.Start("explorer.exe", path);
         }
@@ -1068,9 +1074,7 @@ namespace ResourceHubLauncher
         }
 
         private void UpdateButtons() {
-            if(!(installedToolStripMenuItem.Checked&& disabledToolStripMenuItem.Checked&& availableToolStripMenuItem.Checked)) {
-                UpdateButtonsChanged();
-            }
+            UpdateButtonsChanged();
         }
 
         
@@ -1486,5 +1490,6 @@ namespace ResourceHubLauncher
                 }
             }
         }
+
     }
 }
