@@ -78,9 +78,10 @@ namespace ResourceHubLauncher
 
             Console.WriteLine($"Loading MainForm");
             InitializeInstallerAPI();
-            Console.WriteLine($"Installer API Loaded");
+            Console.WriteLine($"Installer API loaded");
             InitializeConfiguratorAPI();
-            Console.WriteLine($"API's Loaded");
+            Console.WriteLine($"Configuration API loaded");
+            Console.WriteLine($"All APIs loaded");
 
             //loadingPanel.Location = new Point(0, 0);
             htmlTags.Add("b", "Segoe UI Light", 0, FontStyle.Bold);
@@ -308,8 +309,9 @@ namespace ResourceHubLauncher
                 label3.Text = $"<big>{(string)mod["name"]}</big> {(string)mod["mod-version"]} (Goose {(string)mod["goose-version"]}) \r\nCreated by {(string)mod["author"]} \r\n\r\n{description}";
                 htmlTags.Apply(ref label3);
 
-            } catch (Exception) {
+            } catch (Exception ex) {
                 label3.Text = "Mod description cannot be found";
+                Console.WriteLine($"Mod description cannot be found: {ex.Message}");
             }
         }
 
@@ -370,7 +372,7 @@ namespace ResourceHubLauncher
         }
 
         private void metroButton6_Click(object sender, EventArgs e) {
-            Console.WriteLine("Restarting Form...");
+            Console.WriteLine("Restarting form...");
             closedSpecially = true;
             restartForm(this);
         }
@@ -483,13 +485,14 @@ namespace ResourceHubLauncher
                         downloadingWhat = "Installer for ";
                         break;
                     case downloadWhat.modFile:
+                        downloadingWhat = "main files for ";
                         break;
                 }
 
                 try {
                     Uri uri = new Uri(url);
 
-                    string format = "Downloading "+downloadingWhat+"{0} ({1}/{2})";
+                    string format = "Downloading " + downloadingWhat + "{0} ({1}/{2})";
 
                     metroLabel1.Text = $"Preparing to download {downloadingWhat} {(string)mod["name"]}";
                     CenterDownloadText();
@@ -565,7 +568,8 @@ namespace ResourceHubLauncher
                         if (!File.Exists(dataPath)) File.Create(dataPath).Close();
                         File.WriteAllText(dataPath, mod.ToString());
                     } catch (IOException ex) {
-                        MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Console.WriteLine($"Failed to write to {dataPath}\r\n{ex.Message}");
+                        MsgBox($"Failed to write to RHLInfo.json", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     download = false;
                     installing = false;
@@ -589,7 +593,8 @@ namespace ResourceHubLauncher
                     if (!File.Exists(dataPath)) File.Create(dataPath).Close();
                     File.WriteAllText(dataPath, mod.ToString());
                 } catch (IOException ex) {
-                    MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Console.WriteLine($"Failed to write to RHLInfo.json because of {ex.Message}");
+                    MsgBox($"Failed to write to RHLInfo.json", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 download = false;
                 installing = false;
@@ -670,7 +675,7 @@ namespace ResourceHubLauncher
                             File.WriteAllText(dataPath, mod.ToString());
                         } catch (IOException ex) {
                             Console.WriteLine($"Couldn't write to RHLInfo.json because of {ex.Message}");
-                            MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MsgBox($"Failed to write to RHLInfo.json", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         download = false;
                         installing = false;
@@ -709,7 +714,7 @@ namespace ResourceHubLauncher
                         File.WriteAllText(dataPath, mod.ToString());
                     } catch (IOException ex) {
                         Console.WriteLine($"Couldn't write to RHLInfo.json because of {ex.Message}");
-                        MsgBox($"Failed to write to RHLInfo.json\r\nError: {ex.Message}", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MsgBox($"Failed to write to RHLInfo.json", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     download = false;
                     installing = false;
@@ -931,7 +936,7 @@ namespace ResourceHubLauncher
                     UpdateButtons();
                 } catch (Exception ex) {
                     Console.WriteLine($"Failed to disable mod: {ex.Message}");
-                    MsgBox($"Error while disabling {modd}.\r\nError: {ex.Message}", "Disable error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MsgBox($"Error while disabling {modd}.", "Disable error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 for (int i = 0; i < geese; i++) {
                     RunGoose_Click(sender, e);
