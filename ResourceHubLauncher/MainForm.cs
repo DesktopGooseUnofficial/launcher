@@ -131,18 +131,22 @@ namespace ResourceHubLauncher
             foreach (string pMod in Directory.GetDirectories(modPath)) {
                 string modName = pMod.Substring(modPath.Length + 1);
                 string datPath = Path.Combine(modPath, modName, "RHLInfo.json");
-                mod = mods.ToList().Find(m => (string)m["name"] == modName);
-                actualModButton = modsButtons.Find((string)mod["name"]);
-                if (File.Exists(datPath)) {
-                    JObject data = JObject.Parse(File.ReadAllText(datPath));
-                    if ((string)data["mod-version"] != (string)mod["mod-version"]) {
-                        if (MsgBox($"{data["name"]} is outdated.\r\nWould you like to update?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
-                            
-                            AddToInstallQueue(mod);
+                int index = mods.ToList().FindIndex(m => (string)m["name"] == modName);
+                if (index != -1) {
+                    mod = mods.ToList().Find(m => (string)m["name"] == modName);
+                    actualModButton = modsButtons.Find((string)mod["name"]);
+                    if (File.Exists(datPath)) {
+                        JObject data = JObject.Parse(File.ReadAllText(datPath));
+                        if ((string)data["mod-version"] != (string)mod["mod-version"]) {
+                            if (MsgBox($"{data["name"]} is outdated.\r\nWould you like to update?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+
+                                AddToInstallQueue(mod);
+                            }
+                            continue;
                         }
-                        continue;
                     }
                 }
+
                 ModButton foundObj = modsButtons.Find(modName);
                 if (foundObj != null) {
                     Console.WriteLine($"The mod \"{modName}\" was successfully found in the list!");
@@ -153,12 +157,11 @@ namespace ResourceHubLauncher
                         foundObj.InstalledMod = true;
                         disableToolStripMenuItem1.Text = "Disable";
                     }
-                    if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Configurator.dll"))) {
+                    if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", modName, "Configurator.dll"))) {
                         foundObj.hasConfigurator = true;
                     }
 
-                } 
-                else {
+                } else {
                     ModButtonStates statee = File.Exists(Path.Combine(pMod, modName + ".dll.RHLdisabled")) ? ModButtonStates.Disabled : ModButtonStates.Installed;
                     ModButton newMod = new ModButton(modName, 0, statee, ModClick, ModHover);
                     metroPanel2.Controls.Add(newMod);
@@ -170,7 +173,7 @@ namespace ResourceHubLauncher
                         disableToolStripMenuItem1.Enabled = false;
                     }
                     newMod.fromOutside = true;
-                    if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Configurator.dll"))) {
+                    if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", modName, "Configurator.dll"))) {
                         newMod.hasConfigurator = true;
                     }
                 }
