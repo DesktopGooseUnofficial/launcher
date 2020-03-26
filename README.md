@@ -19,7 +19,7 @@ Looking for the backend? Check [this github repo](https://github.com/desktopgoos
 
 ### When is 2.0 coming out?
 
-Soon™️! Meanwhile, you can [try our nightly builds](https://github.com/DesktopGooseUnofficial/launcher-nightly/releases/latest) or [our beta builds](https://github.com/Wuzado/launcher/releases/latest). Don't forget to report the bugs you may encounter to [our bug tracker](https://github.com/DesktopGooseUnofficial/launcher/issues), so they can be quickly fixed!
+Soon™️! Meanwhile, you can [try our nightly builds](https://github.com/DesktopGooseUnofficial/launcher-nightly/releases/latest) or [our beta builds](https://github.com/DesktopGooseUnofficial/launcher/releases). Don't forget to report the bugs you may encounter to [our bug tracker](https://github.com/DesktopGooseUnofficial/launcher/issues), so they can be quickly fixed!
 
 ### I have downloaded mods, but it doesn't work! Help!
 
