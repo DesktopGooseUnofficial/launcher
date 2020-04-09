@@ -49,7 +49,7 @@ namespace ResourceHubLauncher {
 
         private void metroButton6_Click(object sender, EventArgs e) {
             metroButton6.Enabled = false;
-            WebRequest request = WebRequest.Create("http://rhl.my.to/data");
+            WebRequest request = WebRequest.Create("https://raw.githubusercontent.com/DesktopGooseUnofficial/launcher-backend/master/data.json");
             WebResponse response = request.GetResponse();
             Stream stream = response.GetResponseStream();
             string html = "";
