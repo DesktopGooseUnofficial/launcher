@@ -27,7 +27,7 @@ namespace ResourceHubLauncher
 
         public static bool CheckForInternetConnection() {
             try {
-                new WebClient().OpenRead("http://rhl.my.to/");
+                new WebClient().OpenRead("https://example.com");
                 return true;
             } catch {
                 return false;
@@ -43,7 +43,7 @@ namespace ResourceHubLauncher
         }
 
         public static void Start(Loading loading, string[] args) {
-            Uri dat = new Uri("http://rhl.my.to/data");
+            Uri dat = new Uri("https://raw.githubusercontent.com/DesktopGooseUnofficial/launcher-backend/master/data.json");
             using (WebClient wc = new WebClient()) {
 
                 wc.DownloadStringAsync(dat);

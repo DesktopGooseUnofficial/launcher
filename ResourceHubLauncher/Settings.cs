@@ -135,7 +135,7 @@ namespace ResourceHubLauncher {
 
         public static bool CheckForInternetConnection() {
             try {
-                new WebClient().OpenRead("http://rhl.my.to/");
+                new WebClient().OpenRead("https://example.com");
                 return true;
             } catch {
                 return false;
