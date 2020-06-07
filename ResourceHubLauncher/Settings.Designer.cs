@@ -41,7 +41,6 @@
             this.allowUnsafe = new MetroFramework.Controls.MetroCheckBox();
             this.Launcher = new System.Windows.Forms.TabPage();
             this.metroPanel4 = new MetroFramework.Controls.MetroPanel();
-            this.metroCheckBox2 = new MetroFramework.Controls.MetroCheckBox();
             this.metroCheckBox1 = new MetroFramework.Controls.MetroCheckBox();
             this.PStyle = new System.Windows.Forms.TabPage();
             this.metroPanel2 = new MetroFramework.Controls.MetroPanel();
@@ -210,7 +209,7 @@
             this.metroTabControl1.Location = new System.Drawing.Point(27, 74);
             this.metroTabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 0;
+            this.metroTabControl1.SelectedIndex = 2;
             this.metroTabControl1.Size = new System.Drawing.Size(871, 441);
             this.metroTabControl1.TabIndex = 21;
             this.metroTabControl1.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -299,7 +298,6 @@
             // 
             // metroPanel4
             // 
-            this.metroPanel4.Controls.Add(this.metroCheckBox2);
             this.metroPanel4.Controls.Add(this.metroCheckBox1);
             this.metroPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroPanel4.HorizontalScrollbarBarColor = true;
@@ -314,19 +312,6 @@
             this.metroPanel4.VerticalScrollbarBarColor = true;
             this.metroPanel4.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel4.VerticalScrollbarSize = 13;
-            // 
-            // metroCheckBox2
-            // 
-            this.metroCheckBox2.AutoSize = true;
-            this.metroCheckBox2.Location = new System.Drawing.Point(13, 38);
-            this.metroCheckBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.metroCheckBox2.Name = "metroCheckBox2";
-            this.metroCheckBox2.Size = new System.Drawing.Size(319, 17);
-            this.metroCheckBox2.TabIndex = 4;
-            this.metroCheckBox2.Text = "Beta Version (A restart of the Launcher is required)";
-            this.metroCheckBox2.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroCheckBox2.UseSelectable = true;
-            this.metroCheckBox2.CheckedChanged += new System.EventHandler(this.metroCheckBox2_CheckedChanged_1);
             // 
             // metroCheckBox1
             // 
@@ -633,7 +618,6 @@
         private MetroFramework.Controls.MetroButton metroButton1;
         private System.Windows.Forms.TabPage Launcher;
         private MetroFramework.Controls.MetroPanel metroPanel4;
-        private MetroFramework.Controls.MetroCheckBox metroCheckBox2;
         private MetroFramework.Controls.MetroCheckBox metroCheckBox1;
     }
 }
