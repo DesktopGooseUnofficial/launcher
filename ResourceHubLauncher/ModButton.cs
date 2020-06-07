@@ -19,7 +19,6 @@ namespace ResourceHubLauncher {
         Color modSafetyColor;
         string modState;
         Color modStateColor;
-        public bool hasConfigurator = false;
         public bool fromOutside = false;
         public ModButtonStates State;
 

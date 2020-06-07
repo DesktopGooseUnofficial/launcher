@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
 using RHL_Mod_Installer_API;
-using RHL_Mod_Configurator_API;
 
 namespace ResourceHubLauncher
 {
@@ -21,10 +20,6 @@ namespace ResourceHubLauncher
         public MetroTextBox NameTextBox;
         private MetroLabel metroLabel2;
         private MetroButton metroButton1;
-        private MetroButton metroButton2;
-        private MetroLabel metroLabel3;
-        private MetroButton configuratorPathButton;
-        private MetroTextBox metroTextBox2;
         private MetroButton metroButton4;
         private MetroLabel metroLabel1;
         private MetroLabel metroLabel4;
@@ -43,10 +38,6 @@ namespace ResourceHubLauncher
             this.NameTextBox = new MetroFramework.Controls.MetroTextBox();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
-            this.metroButton2 = new MetroFramework.Controls.MetroButton();
-            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
-            this.configuratorPathButton = new MetroFramework.Controls.MetroButton();
-            this.metroTextBox2 = new MetroFramework.Controls.MetroTextBox();
             this.metroButton4 = new MetroFramework.Controls.MetroButton();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.zipPathButton = new MetroFramework.Controls.MetroButton();
@@ -172,81 +163,10 @@ namespace ResourceHubLauncher
             this.metroButton1.UseSelectable = true;
             this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click);
             // 
-            // metroButton2
-            // 
-            this.metroButton2.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.metroButton2.Location = new System.Drawing.Point(24, 285);
-            this.metroButton2.Margin = new System.Windows.Forms.Padding(4);
-            this.metroButton2.Name = "metroButton2";
-            this.metroButton2.Size = new System.Drawing.Size(343, 28);
-            this.metroButton2.TabIndex = 28;
-            this.metroButton2.Text = "Test Configurator";
-            this.metroButton2.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroButton2.UseSelectable = true;
-            this.metroButton2.Click += new System.EventHandler(this.metroButton2_Click);
-            // 
-            // metroLabel3
-            // 
-            this.metroLabel3.AutoSize = true;
-            this.metroLabel3.Location = new System.Drawing.Point(24, 225);
-            this.metroLabel3.Name = "metroLabel3";
-            this.metroLabel3.Size = new System.Drawing.Size(151, 20);
-            this.metroLabel3.TabIndex = 27;
-            this.metroLabel3.Text = "Mod Configurator Path:";
-            this.metroLabel3.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // configuratorPathButton
-            // 
-            this.configuratorPathButton.Location = new System.Drawing.Point(334, 249);
-            this.configuratorPathButton.Margin = new System.Windows.Forms.Padding(4);
-            this.configuratorPathButton.Name = "configuratorPathButton";
-            this.configuratorPathButton.Size = new System.Drawing.Size(32, 28);
-            this.configuratorPathButton.TabIndex = 26;
-            this.configuratorPathButton.Text = "...";
-            this.configuratorPathButton.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.configuratorPathButton.UseSelectable = true;
-            this.configuratorPathButton.Click += new System.EventHandler(this.metroButton3_Click);
-            // 
-            // metroTextBox2
-            // 
-            // 
-            // 
-            // 
-            this.metroTextBox2.CustomButton.Image = null;
-            this.metroTextBox2.CustomButton.Location = new System.Drawing.Point(281, 2);
-            this.metroTextBox2.CustomButton.Margin = new System.Windows.Forms.Padding(5);
-            this.metroTextBox2.CustomButton.Name = "";
-            this.metroTextBox2.CustomButton.Size = new System.Drawing.Size(23, 23);
-            this.metroTextBox2.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
-            this.metroTextBox2.CustomButton.TabIndex = 1;
-            this.metroTextBox2.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.metroTextBox2.CustomButton.UseSelectable = true;
-            this.metroTextBox2.CustomButton.Visible = false;
-            this.metroTextBox2.Lines = new string[0];
-            this.metroTextBox2.Location = new System.Drawing.Point(25, 249);
-            this.metroTextBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.metroTextBox2.MaxLength = 32767;
-            this.metroTextBox2.Name = "metroTextBox2";
-            this.metroTextBox2.PasswordChar = '\0';
-            this.metroTextBox2.PromptText = "Mod Configurator Path";
-            this.metroTextBox2.ReadOnly = true;
-            this.metroTextBox2.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.metroTextBox2.SelectedText = "";
-            this.metroTextBox2.SelectionLength = 0;
-            this.metroTextBox2.SelectionStart = 0;
-            this.metroTextBox2.ShortcutsEnabled = true;
-            this.metroTextBox2.Size = new System.Drawing.Size(307, 28);
-            this.metroTextBox2.TabIndex = 25;
-            this.metroTextBox2.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroTextBox2.UseSelectable = true;
-            this.metroTextBox2.WaterMark = "Mod Configurator Path";
-            this.metroTextBox2.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
-            this.metroTextBox2.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
-            // 
             // metroButton4
             // 
             this.metroButton4.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.metroButton4.Location = new System.Drawing.Point(25, 321);
+            this.metroButton4.Location = new System.Drawing.Point(26, 229);
             this.metroButton4.Margin = new System.Windows.Forms.Padding(4);
             this.metroButton4.Name = "metroButton4";
             this.metroButton4.Size = new System.Drawing.Size(341, 28);
@@ -329,15 +249,11 @@ namespace ResourceHubLauncher
             // 
             // ModCreatorForm
             // 
-            this.ClientSize = new System.Drawing.Size(391, 378);
+            this.ClientSize = new System.Drawing.Size(391, 283);
             this.Controls.Add(this.metroLabel4);
             this.Controls.Add(this.zipPathButton);
             this.Controls.Add(this.zipTextBox);
             this.Controls.Add(this.metroButton4);
-            this.Controls.Add(this.metroButton2);
-            this.Controls.Add(this.metroLabel3);
-            this.Controls.Add(this.configuratorPathButton);
-            this.Controls.Add(this.metroTextBox2);
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.metroLabel2);
             this.Controls.Add(this.NameTextBox);
@@ -424,37 +340,6 @@ namespace ResourceHubLauncher
             }
             
 
-        }
-
-        private void metroButton2_Click(object sender, EventArgs e) {
-
-            if (metroTextBox2.Text == "") {
-                MsgBox("Mod Configurator Path cannot be empty!", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (NameTextBox.Text == "") {
-                MsgBox("Mod Name cannot be empty!", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            try {
-                Assembly configurator = Assembly.LoadFile(metroTextBox2.Text);
-
-                foreach (Type type in configurator.GetTypes()) {
-                    if (type.GetInterface("ConfiguratorBasic") != null) {
-                        ConfiguratorBasic configuratorIns = (ConfiguratorBasic)Activator.CreateInstance(type);
-                        MainForm.modName = NameTextBox.Text;
-                        MainForm.actualModPath = Path.Combine(MainForm.modPath, NameTextBox.Text);
-                        Hide();
-                        new ModConfigForm(configuratorIns).ShowDialog();
-                        Show();
-
-                    }
-                }
-            } catch (Exception ex) {
-                MsgBox(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void metroButton4_Click(object sender, EventArgs e) {
