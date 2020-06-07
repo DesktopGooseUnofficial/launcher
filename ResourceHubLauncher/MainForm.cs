@@ -15,7 +15,6 @@ using System.Threading;
 using System.Reflection;
 using RHL_Mod_Installer_API;
 //using System.IO.Compression;
-using RHL_Mod_Configurator_API;
 using Ionic.Zip;
 
 namespace ResourceHubLauncher
@@ -79,8 +78,6 @@ namespace ResourceHubLauncher
             Console.WriteLine($"Loading MainForm");
             InitializeInstallerAPI();
             Console.WriteLine($"Installer API loaded");
-            InitializeConfiguratorAPI();
-            Console.WriteLine($"Configuration API loaded");
             Console.WriteLine($"All APIs loaded");
 
             //loadingPanel.Location = new Point(0, 0);
@@ -157,9 +154,6 @@ namespace ResourceHubLauncher
                         foundObj.InstalledMod = true;
                         disableToolStripMenuItem1.Text = "Disable";
                     }
-                    if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", modName, "Configurator.dll"))) {
-                        foundObj.hasConfigurator = true;
-                    }
 
                 } else {
                     ModButtonStates statee = File.Exists(Path.Combine(pMod, modName + ".dll.RHLdisabled")) ? ModButtonStates.Disabled : ModButtonStates.Installed;
@@ -174,9 +168,6 @@ namespace ResourceHubLauncher
                         disableToolStripMenuItem1.Enabled = false;
                     }
                     newMod.fromOutside = true;
-                    if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", modName, "Configurator.dll"))) {
-                        newMod.hasConfigurator = true;
-                    }
                 }
             }
             Config.Theme(this);
@@ -359,17 +350,11 @@ namespace ResourceHubLauncher
                 } else {
                     resourceHubToolStripMenuItem.Enabled = true;
                 }
-                if (actualModButton.hasConfigurator) {
-                    configureModToolStripMenuItem.Enabled = true;
-                } else {
-                    configureModToolStripMenuItem.Enabled = false;
-                }
 
             } else {
                 installToolStripMenuItem.Text = "Install";
                 disableToolStripMenuItem1.Enabled = false;
                 openInModsToolStripMenuItem1.Enabled = false;
-                configureModToolStripMenuItem.Enabled = false;
                 resourceHubToolStripMenuItem.Enabled = true;
             }
         }
@@ -447,30 +432,6 @@ namespace ResourceHubLauncher
             InstallerAPI.functions = functions;
         }
 
-        private void InitializeConfiguratorAPI() {
-            ConfiguratorAPI.Functions functions = new ConfiguratorAPI.Functions();
-            functions.getGooseFolder= new ConfiguratorAPI.Functions.GetGooseFolderFunction(GetGooseFolder);
-            functions.getModFolder = new ConfiguratorAPI.Functions.GetModFolderFunction(GetModFolder);
-            ConfiguratorAPI.functions = functions;
-
-            ConfiguratorAPI.GUIFunctions GUI = new ConfiguratorAPI.GUIFunctions();
-            GUI.addComment = new ConfiguratorAPI.GUIFunctions.AddCommentFunction(ModConfigForm.AddCommentFunction);
-            GUI.addBoolBox = new ConfiguratorAPI.GUIFunctions.AddBoolBoxFunction(ModConfigForm.AddBoolBoxFunction);
-            GUI.addBoolBoxForAll = new ConfiguratorAPI.GUIFunctions.AddBoolBoxForAllFunction(ModConfigForm.AddBoolBoxForAllFunction);
-            GUI.addColorBox = new ConfiguratorAPI.GUIFunctions.AddColorBoxFunction(ModConfigForm.AddColorBoxFunction);
-            GUI.addColorBoxForAll = new ConfiguratorAPI.GUIFunctions.AddColorBoxForAllFunction(ModConfigForm.AddColorBoxForAllFunction);
-            GUI.addFileBox = new ConfiguratorAPI.GUIFunctions.AddFileBoxFunction(ModConfigForm.AddFileBoxFunction);
-            GUI.addFileBox2 = new ConfiguratorAPI.GUIFunctions.AddFileBox2Function(ModConfigForm.AddFileBox2Function);
-            GUI.addFloatBox = new ConfiguratorAPI.GUIFunctions.AddFloatBoxFunction(ModConfigForm.AddFloatBoxFunction);
-            GUI.addFloatBoxForAll = new ConfiguratorAPI.GUIFunctions.AddFloatBoxForAllFunction(ModConfigForm.AddFloatBoxForAllFunction);
-            GUI.addIntBox = new ConfiguratorAPI.GUIFunctions.AddIntBoxFunction(ModConfigForm.AddIntBoxFunction);
-            GUI.addIntBoxForAll = new ConfiguratorAPI.GUIFunctions.AddIntBoxForAllFunction(ModConfigForm.AddIntBoxForAllFunction);
-            GUI.addLinkButton = new ConfiguratorAPI.GUIFunctions.AddLinkButtonFunction(ModConfigForm.AddLinkButtonFunction);
-            GUI.addStringBox = new ConfiguratorAPI.GUIFunctions.AddStringBoxFunction(ModConfigForm.AddStringBoxFunction);
-            GUI.addStringBoxForAll = new ConfiguratorAPI.GUIFunctions.AddStringBoxForAllFunction(ModConfigForm.AddStringBoxForAllFunction);
-            ConfiguratorAPI.GUI = GUI;
-        }
-
         List<JToken> queue=new List<JToken>();
         ModButton installModButton;//actualModButton = modsButtons.Find((string)mod["name"]);
         bool installing = false;
@@ -532,61 +493,7 @@ namespace ResourceHubLauncher
         }
 
         void DllDownloadEnd(object _sender, AsyncCompletedEventArgs args, JToken mod, ModButton actualModButton) {
-            if ((string)mod["config-url"] != null) {
-                string urlC = (string)mod["config-url"];
-                string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
-                string f = Path.Combine(filePath, "Configurator.dll");
-                downloadFile(urlC, downloadWhat.modConfigurator, f, (string)mod["name"], (object _sender3, AsyncCompletedEventArgs args3) => {
-                    DownloadPanel.Hide();
-                    if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
-                    if(File.Exists(f)) {
-                        string launcherModPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
-                        if (Directory.Exists(Path.Combine(launcherModPath, "Default"))) {
-                            Directory.Delete(Path.Combine(launcherModPath, "Default"), true);
-                        }
-                        if (Directory.Exists(Path.Combine(launcherModPath, "Used Before"))) {
-                            Assembly configurator = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Configurator.dll"));
-                            ConfiguratorBasic configuratorIns;
-                            foreach (Type type in configurator.GetTypes()) {
-                                if (type.GetInterface("ConfiguratorBasic") != null) {
-                                    configuratorIns = (ConfiguratorBasic)Activator.CreateInstance(type);
-                                    ModConfigForm.OpenMod((string)mod["name"], configuratorIns);
 
-
-                                    ModConfigForm.UseSafetyCopy((string)mod["name"]);
-                                }
-                            }
-
-                        }
-
-                        actualModButton.hasConfigurator = true;
-                    }
-                    
-
-                    string dataPath = Path.Combine( modPath, (string)mod["name"]);
-                    actualModButton.InstalledMod = true;
-                    
-                    AfterInstallUpdate();
-                    actualModButton.Refresh();
-                    
-                    
-                    dataPath = Path.Combine(dataPath, "RHLInfo.json");
-
-                    try {
-                        if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
-                        if (!File.Exists(dataPath)) File.Create(dataPath).Close();
-                        File.WriteAllText(dataPath, mod.ToString());
-                    } catch (IOException ex) {
-                        Console.WriteLine($"Failed to write to {dataPath}\r\n{ex.Message}");
-                        MsgBox($"Failed to write to RHLInfo.json", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    download = false;
-                    installing = false;
-                    UpdateButtons();
-                    ContinueInstalling();
-                });
-            } 
-            else {
                 DownloadPanel.Hide();
                 if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
@@ -609,7 +516,7 @@ namespace ResourceHubLauncher
                 installing = false;
                 UpdateButtons();
                 ContinueInstalling();
-            }
+            
         }
 
         void NoDllDownloadEnd(object _sender, AsyncCompletedEventArgs args, JToken mod, ModButton actualModButton) {
@@ -653,21 +560,7 @@ namespace ResourceHubLauncher
                             if (Directory.Exists(Path.Combine(launcherModPath, "Default"))) {
                                 Directory.Delete(Path.Combine(launcherModPath, "Default"), true);
                             }
-                            if (Directory.Exists(Path.Combine(launcherModPath, "Used Before"))) {
-                                Assembly configurator = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Configurator.dll"));
-                                ConfiguratorBasic configuratorIns;
-                                foreach (Type type in configurator.GetTypes()) {
-                                    if (type.GetInterface("ConfiguratorBasic") != null) {
-                                        configuratorIns = (ConfiguratorBasic)Activator.CreateInstance(type);
-                                        ModConfigForm.OpenMod((string)mod["name"], configuratorIns);
 
-
-                                        ModConfigForm.UseSafetyCopy((string)mod["name"]);
-                                    }
-                                }
-
-                            }
-                            actualModButton.hasConfigurator = true;
                         }
 
                         string dataPath = Path.Combine(modPath, (string)mod["name"]);
@@ -1050,22 +943,6 @@ namespace ResourceHubLauncher
 
         private void openInModsToolStripMenuItem1_Click(object sender, EventArgs e) {
             disableToolStripMenuItem_Click(sender, e);
-        }
-
-        private void configureModToolStripMenuItem_Click(object sender, EventArgs e) {
-            Assembly configurator = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Configurator.dll"));
-            
-            foreach (Type type in configurator.GetTypes()) {
-                if (type.GetInterface("ConfiguratorBasic") != null) {
-                    ConfiguratorBasic configuratorIns = (ConfiguratorBasic)Activator.CreateInstance(type);
-                    modName = (string)mod["name"];
-                    actualModPath = Path.Combine(modPath, actualModButton.modName);
-                    Hide();
-                    new ModConfigForm(configuratorIns).ShowDialog();
-                    Show();
-
-                }
-            }
         }
 
         private void UpdateButtonsChanged() {

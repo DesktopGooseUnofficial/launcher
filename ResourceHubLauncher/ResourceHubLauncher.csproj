@@ -91,10 +91,6 @@
     <Compile Include="ModButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ModConfigClasses.cs" />
-    <Compile Include="ModConfigForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="ModCreatorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,9 +109,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ModConfigForm.resx">
-      <DependentUpon>ModConfigForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ModCreatorForm.resx">
       <DependentUpon>ModCreatorForm.cs</DependentUpon>
@@ -164,10 +157,6 @@
     <Content Include="RHLTSmall.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RHL Mod Configurator\RHL Mod Configurator API\RHL Mod Configurator API.csproj">
-      <Project>{e29d5eed-bb35-4672-bbbc-f10a100c29aa}</Project>
-      <Name>RHL Mod Configurator API</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RHL Mod Installer\RHL Mod Installer API\RHL Mod Installer API.csproj">
       <Project>{cf94a18a-2139-4c76-9116-c77b0f98d75c}</Project>
       <Name>RHL Mod Installer API</Name>

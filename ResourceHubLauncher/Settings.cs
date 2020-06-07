@@ -128,10 +128,6 @@ namespace ResourceHubLauncher {
             Config.Save();
         }
 
-        private void metroCheckBox2_CheckedChanged_1(object sender, EventArgs e) {
-            Config.Options["beta"] = metroCheckBox2.Checked;
-            Config.Save();
-        }
 
         public static bool CheckForInternetConnection() {
             try {
