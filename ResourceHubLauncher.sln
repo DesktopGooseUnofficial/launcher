@@ -1,14 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29806.167
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceHubLauncher", "ResourceHubLauncher\ResourceHubLauncher.csproj", "{DD58B920-2FAC-4208-9EB0-38A1E067DBFE}"
-	ProjectSection(ProjectDependencies) = postProject
-		{CF94A18A-2139-4C76-9116-C77B0F98D75C} = {CF94A18A-2139-4C76-9116-C77B0F98D75C}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RHL Mod Installer API", "RHL Mod Installer\RHL Mod Installer API\RHL Mod Installer API.csproj", "{CF94A18A-2139-4C76-9116-C77B0F98D75C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,10 +15,6 @@ Global
 		{DD58B920-2FAC-4208-9EB0-38A1E067DBFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD58B920-2FAC-4208-9EB0-38A1E067DBFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD58B920-2FAC-4208-9EB0-38A1E067DBFE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF94A18A-2139-4C76-9116-C77B0F98D75C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF94A18A-2139-4C76-9116-C77B0F98D75C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF94A18A-2139-4C76-9116-C77B0F98D75C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF94A18A-2139-4C76-9116-C77B0F98D75C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
