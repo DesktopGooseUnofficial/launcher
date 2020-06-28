@@ -273,14 +273,15 @@ namespace ResourceHubLauncher {
             label3.SelectAll();
             label3.SelectionProtected = false;
             label3.Select(0, 0);
-            label3.Text = "<m>Hover or click on the mod buttons (in list on the left) to see mod descriptions.</m>\n\n<m>Click (on mod button) to see options! </m>";
+            label3.Text = "<big>Hover or click on the mod buttons (in list on the left) to see mod descriptions.</big>\n\n<big>Click (on mod button) to see options! </big>";
             htmlTags.Apply(ref label3);
             descriptionMaking = false;
         }
 
         private void changeModDescription() {
             if(mod == null) {
-                label3.Text = "This mod is could not be found in the database.";
+                label3.Text = $"<big>{actualModButton.modName}</big> ? (Probably Goose 0.3)\nCreated by Unknown\n\nThis mod is could not be found in the database.";
+                htmlTags.Apply(ref label3);
             } else {
                 try {
                     string description = (string)mod["description"];
@@ -346,7 +347,7 @@ namespace ResourceHubLauncher {
 
         private void ModHover(string actualMod) {
             mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
-            //actualModButton = modsButtons.Find(actualMod);
+            actualModButton = modsButtons.Find(actualMod);
             changeModDescription();
         }
 
