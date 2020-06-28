@@ -279,17 +279,20 @@ namespace ResourceHubLauncher {
         }
 
         private void changeModDescription() {
-            try {
-                string description = (string)mod["description"];
-                if (mod["description-debug"] != null) {
-                    description = (string)mod["description-debug"];
+            if(mod == null) {
+                label3.Text = "This mod is could not be found in the database.";
+            } else {
+                try {
+                    string description = (string)mod["description"];
+                    if (mod["description-debug"] != null) {
+                        description = (string)mod["description-debug"];
+                    }
+                    label3.Text = $"<big>{(string)mod["name"]}</big> {(string)mod["mod-version"]} (Goose {(string)mod["goose-version"]}) \r\nCreated by {(string)mod["author"]} \r\n\r\n{description}";
+                    htmlTags.Apply(ref label3);
+                } catch (Exception ex) {
+                    label3.Text = "Mod description cannot be found";
+                    Console.WriteLine($"Mod description cannot be found: {ex.Message}");
                 }
-                label3.Text = $"<big>{(string)mod["name"]}</big> {(string)mod["mod-version"]} (Goose {(string)mod["goose-version"]}) \r\nCreated by {(string)mod["author"]} \r\n\r\n{description}";
-                htmlTags.Apply(ref label3);
-
-            } catch (Exception ex) {
-                label3.Text = "Mod description cannot be found";
-                Console.WriteLine($"Mod description cannot be found: {ex.Message}");
             }
         }
 
