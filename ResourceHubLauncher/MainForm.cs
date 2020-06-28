@@ -11,27 +11,21 @@ using System.Net;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Text;
-using System.Threading;
 using System.Reflection;
 using RHL_Mod_Installer_API;
-//using System.IO.Compression;
 using Ionic.Zip;
 
-namespace ResourceHubLauncher
-{
-    public partial class MainForm : MetroForm
-    {
-        enum HtmlTagsToAdd
-        {
-            none=0,
-            b=1,
+namespace ResourceHubLauncher {
+    public partial class MainForm : MetroForm {
+        enum HtmlTagsToAdd {
+            none = 0,
+            b = 1,
             i = 2,
             u = 4,
             s = 8,
             m = 16,
             big = 32,
         }
-
 
         public IList<JToken> results = new List<JToken>();
         IList<JToken> mods = new List<JToken>();
@@ -41,7 +35,7 @@ namespace ResourceHubLauncher
         ModButton actualModButton;
         ModButtonList modsButtons = new ModButtonList();
         bool closedSpecially = false;
-        
+
         Action<MainForm> restartForm;
 
         RichTextHtml htmlTags = new RichTextHtml();
@@ -49,7 +43,7 @@ namespace ResourceHubLauncher
 
         public static MainForm thisForm;
 
-        List<HtmlTagsToAdd> actualDescTags=new List<HtmlTagsToAdd>();
+        List<HtmlTagsToAdd> actualDescTags = new List<HtmlTagsToAdd>();
 
         bool descriptionMaking = false;
 
@@ -71,7 +65,6 @@ namespace ResourceHubLauncher
         private DialogResult MsgBox(object text, string title = "ResourceHub Launcher", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) {
             return MetroMessageBox.Show(this, text.ToString(), title, buttons, icon, defaultButton);
         }
-
 
         private void MainForm_Load(object sender, EventArgs e) {
 
@@ -99,9 +92,6 @@ namespace ResourceHubLauncher
                 Config.Save();
             }
 
-            resizingPanel.BringToFront();
-            resizingPanel.Hide();
-
             modPath = Path.Combine(Config.getModPath(), "Assets", "Mods");
 
             Icon = Icon.FromHandle(Properties.Resources.RHLTSmall.GetHicon());
@@ -118,6 +108,7 @@ namespace ResourceHubLauncher
                     modB.Parent = metroPanel2;
                     modB.changeContextMenu(modListContextMenu);
 
+                    modB.ThemeChanged((int)Config.Options["theme"] == 1);
 
                     modB.Visible = true;
                 }
@@ -174,23 +165,17 @@ namespace ResourceHubLauncher
             modsButtons.ThemeChanged((int)Config.Options["theme"] == 1);
             UpdateTheme((int)Config.Options["theme"] == 1);
 
-            pictureBox2.Image = Properties.Resources.RHLTSmall;
-
-
             if (Process.GetProcessesByName("GooseDesktop").Count() > 0) {
                 gooseToolStripMenuItem.Text = "Geese";
             }
 
-            
             htmlTags.Apply(ref label3);
-            //loadingPanel.Hide();
         }
-
 
         private void UpdateTheme(bool lightTheme) {
 
-            if(lightTheme) {
-                toolStripMenuItem2.BackColor = Color.FromArgb(255,255,255);
+            if (lightTheme) {
+                toolStripMenuItem2.BackColor = Color.FromArgb(255, 255, 255);
                 toolStripMenuItem2.ForeColor = Color.FromArgb(17, 17, 17);
 
                 toolStripMenuItem3.BackColor = Color.FromArgb(255, 255, 255);
@@ -247,16 +232,16 @@ namespace ResourceHubLauncher
         }
 
         private void UpdateDescTagList() {
-            if(actualDescTags.Count<label3.Text.Length) {
+            if (actualDescTags.Count < label3.Text.Length) {
                 int howMuch = label3.Text.Length - actualDescTags.Count;
-                for (int i=0;i< howMuch; i++) {
+                for (int i = 0; i < howMuch; i++) {
                     actualDescTags.Add(HtmlTagsToAdd.none);
                 }
             }
         }
 
-        private void ApplyTagToDesc(HtmlTagsToAdd tagg, int start,int end) {
-            for (int i=start;i< end;i++) {
+        private void ApplyTagToDesc(HtmlTagsToAdd tagg, int start, int end) {
+            for (int i = start; i < end; i++) {
                 actualDescTags[i] = actualDescTags[i] | tagg;
             }
         }
@@ -268,7 +253,6 @@ namespace ResourceHubLauncher
         }
 
         public static void OpenDescriptionPreview() {
-            thisForm.resizingPanel.Show();
             thisForm.OptionsButton.Hide();
             thisForm.descriptionButton.Show();
             thisForm.toolStrip1.Show();
@@ -281,8 +265,7 @@ namespace ResourceHubLauncher
             thisForm.descriptionMaking = true;
         }
 
-         void CloseDescriptionPreview() {
-            resizingPanel.Hide();
+        void CloseDescriptionPreview() {
             OptionsButton.Show();
             descriptionButton.Hide();
             toolStrip1.Hide();
@@ -298,7 +281,7 @@ namespace ResourceHubLauncher
         private void changeModDescription() {
             try {
                 string description = (string)mod["description"];
-                if(mod["description-debug"] != null) {
+                if (mod["description-debug"] != null) {
                     description = (string)mod["description-debug"];
                 }
                 label3.Text = $"<big>{(string)mod["name"]}</big> {(string)mod["mod-version"]} (Goose {(string)mod["goose-version"]}) \r\nCreated by {(string)mod["author"]} \r\n\r\n{description}";
@@ -309,7 +292,6 @@ namespace ResourceHubLauncher
                 Console.WriteLine($"Mod description cannot be found: {ex.Message}");
             }
         }
-
 
         private void ModClick(string actualMod) {
             mod = mods.ToList().Find(modd => (string)modd["name"] == actualMod);
@@ -325,7 +307,7 @@ namespace ResourceHubLauncher
             } else {
                 installToolStripMenuItem.Enabled = true;
             }
-            if(mod!=null) {
+            if (mod != null) {
                 if ((string)mod["resourcehub"] != null) {
                     resourceHubToolStripMenuItem.Enabled = true;
                 } else {
@@ -334,7 +316,7 @@ namespace ResourceHubLauncher
             } else {
                 resourceHubToolStripMenuItem.Enabled = false;
             }
-            
+
             if (actualModButton.InstalledMod || actualModButton.DisabledMod) {
                 installToolStripMenuItem.Text = "Uninstall";
                 disableToolStripMenuItem1.Enabled = true;
@@ -396,7 +378,7 @@ namespace ResourceHubLauncher
         public static string modName = "";
 
         public static string GetGooseFolder() {
-            return Path.GetDirectoryName( (string)Config.Options["gpath"]);
+            return Path.GetDirectoryName((string)Config.Options["gpath"]);
         }
 
         public static string GetModFolder() {
@@ -404,8 +386,8 @@ namespace ResourceHubLauncher
         }
 
         public static void UnpackZip(string where) {
-            if(where ==Path.GetDirectoryName(actualModPath)) {
-                if(Directory.Exists(actualModPath)) {
+            if (where == Path.GetDirectoryName(actualModPath)) {
+                if (Directory.Exists(actualModPath)) {
                     Directory.Delete(actualModPath, true);
                 }
             } else {
@@ -414,12 +396,16 @@ namespace ResourceHubLauncher
                 }
             }
 
-            using (ZipFile zip1 = ZipFile.Read(actualZipFilePath)) {
-                // here, we extract every entry, but we could extract conditionally
-                // based on entry name, size, date, checkbox status, etc.  
-                foreach (ZipEntry e in zip1) {
-                    e.Extract(where, ExtractExistingFileAction.OverwriteSilently);
+            try {
+                using (ZipFile zip1 = ZipFile.Read(actualZipFilePath)) {
+                    // here, we extract every entry, but we could extract conditionally
+                    // based on entry name, size, date, checkbox status, etc.  
+                    foreach (ZipEntry e in zip1) {
+                        e.Extract(where, ExtractExistingFileAction.OverwriteSilently);
+                    }
                 }
+            } catch (Exception ex) {
+                Console.WriteLine("Eror unpacking \"" + Path.GetFileName(where) + "\":\n" + ex.Message);
             }
 
         }
@@ -432,12 +418,11 @@ namespace ResourceHubLauncher
             InstallerAPI.functions = functions;
         }
 
-        List<JToken> queue=new List<JToken>();
+        List<JToken> queue = new List<JToken>();
         ModButton installModButton;//actualModButton = modsButtons.Find((string)mod["name"]);
         bool installing = false;
 
-        enum downloadWhat
-        {
+        enum downloadWhat {
             modFile,
             modInstaller,
             modConfigurator
@@ -494,29 +479,28 @@ namespace ResourceHubLauncher
 
         void DllDownloadEnd(object _sender, AsyncCompletedEventArgs args, JToken mod, ModButton actualModButton) {
 
-                DownloadPanel.Hide();
-                if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
+            DownloadPanel.Hide();
+            if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
-                string dataPath = Path.Combine(modPath, (string)mod["name"]);
-                actualModButton.InstalledMod = true;
-                AfterInstallUpdate();
-                actualModButton.Refresh();
+            string dataPath = Path.Combine(modPath, (string)mod["name"]);
+            actualModButton.InstalledMod = true;
+            AfterInstallUpdate();
+            actualModButton.Refresh();
 
-                dataPath = Path.Combine(dataPath, "RHLInfo.json");
+            dataPath = Path.Combine(dataPath, "RHLInfo.json");
 
-                try {
-                    if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
-                    if (!File.Exists(dataPath)) File.Create(dataPath).Close();
-                    File.WriteAllText(dataPath, mod.ToString());
-                } catch (IOException ex) {
-                    Console.WriteLine($"Failed to write to RHLInfo.json because of {ex.Message}");
-                    MsgBox($"Failed to write to RHLInfo.json", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                download = false;
-                installing = false;
-                UpdateButtons();
-                ContinueInstalling();
-            
+            try {
+                if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
+                if (!File.Exists(dataPath)) File.Create(dataPath).Close();
+                File.WriteAllText(dataPath, mod.ToString());
+            } catch (IOException ex) {
+                Console.WriteLine($"Failed to write to RHLInfo.json because of {ex.Message}");
+                MsgBox($"Failed to write to RHLInfo.json", "RHLInfo.json error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            download = false;
+            installing = false;
+            UpdateButtons();
+            ContinueInstalling();
         }
 
         void NoDllDownloadEnd(object _sender, AsyncCompletedEventArgs args, JToken mod, ModButton actualModButton) {
@@ -525,7 +509,7 @@ namespace ResourceHubLauncher
             string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
             string f = Path.Combine(filePath, "Installer.dll");
             downloadFile(urlI, downloadWhat.modInstaller, f, (string)mod["name"], (object _sender2, AsyncCompletedEventArgs args2) => {
-                if(!File.Exists(f)) {
+                if (!File.Exists(f)) {
                     Console.WriteLine("Installer doesn't exist.");
                     MsgBox($"Installer for mod cannot be opened, try installing mod again", "Installation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     download = false;
@@ -548,14 +532,13 @@ namespace ResourceHubLauncher
 
                                 installerIns.Install();
 
-
                             }
                         }
 
                         DownloadPanel.Hide();
                         if (!actualModButton.InstalledMod && Directory.Exists(modPath)) actualModButton.InstalledMod = true;
 
-                        if(File.Exists(f)) {
+                        if (File.Exists(f)) {
                             string launcherModPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"]);
                             if (Directory.Exists(Path.Combine(launcherModPath, "Default"))) {
                                 Directory.Delete(Path.Combine(launcherModPath, "Default"), true);
@@ -567,10 +550,10 @@ namespace ResourceHubLauncher
 
                         dataPath = Path.Combine(dataPath, "RHLInfo.json");
                         actualModButton.InstalledMod = true;
-                        
+
                         AfterInstallUpdate();
                         actualModButton.Refresh();
-                        
+
                         try {
                             if (!Directory.Exists(Path.GetDirectoryName(dataPath))) Directory.CreateDirectory(Path.GetDirectoryName(dataPath));
                             if (!File.Exists(dataPath)) File.Create(dataPath).Close();
@@ -584,8 +567,7 @@ namespace ResourceHubLauncher
                         UpdateButtons();
                         ContinueInstalling();
                     });
-                } 
-                else {
+                } else {
                     Assembly installer = Assembly.LoadFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ModsFiles", (string)mod["name"], "Installer.dll"));
 
                     actualModPath = Path.Combine(modPath, actualModButton.modName);
@@ -593,9 +575,8 @@ namespace ResourceHubLauncher
                     foreach (Type type in installer.GetTypes()) {
                         if (type.GetInterface("InstallerBasic") != null) {
                             InstallerBasic installerIns = (InstallerBasic)Activator.CreateInstance(type);
-                            
-                            installerIns.Install();
 
+                            installerIns.Install();
 
                         }
                     }
@@ -626,8 +607,6 @@ namespace ResourceHubLauncher
             });
         }
 
-
-
         void AddToInstallQueue(JToken mod) {
             queue.Add(mod.DeepClone());
             modsButtons.Find((string)queue.First()["name"]).InQueue = true;
@@ -637,13 +616,13 @@ namespace ResourceHubLauncher
                 JToken t = queue.First().DeepClone();
                 queue.RemoveAt(0);
                 installModButton = modsButtons.Find((string)t["name"]);
-                
+
                 install(t, installModButton);
             }
         }
 
         void ContinueInstalling() {
-            if(queue.Count>0) {
+            if (queue.Count > 0) {
                 JToken t = queue.First().DeepClone();
                 queue.RemoveAt(0);
                 installModButton = modsButtons.Find((string)t["name"]);
@@ -699,7 +678,7 @@ namespace ResourceHubLauncher
                 download = true;
                 downloadFile(url, downloadWhat.modFile, f, m, (object _sender, AsyncCompletedEventArgs args) => {
                     if (!d) {
-                        NoDllDownloadEnd(_sender, args,mod,actualModButton);
+                        NoDllDownloadEnd(_sender, args, mod, actualModButton);
 
                     } else {
                         DllDownloadEnd(_sender, args, mod, actualModButton);
@@ -714,11 +693,11 @@ namespace ResourceHubLauncher
         }
 
         private void installToolStripMenuItem_Click(object sender, EventArgs e) {
-           if (actualModButton.InstalledMod || actualModButton.DisabledMod) {
+            if (actualModButton.InstalledMod || actualModButton.DisabledMod) {
                 toolStripMenuItem1_Click(sender, e);
-           } else {
+            } else {
                 AddToInstallQueue(mod);
-           }
+            }
         }
 
         private void resourceHubToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -777,7 +756,7 @@ namespace ResourceHubLauncher
                 toolStripMenuItem3_Click(sender, e);
                 try {
                     if (Directory.Exists(path)) Directory.Delete(path, true);
-                    if(actualModButton.fromOutside) {
+                    if (actualModButton.fromOutside) {
                         modsButtons.Remove(actualModButton.modName);
                     } else {
                         actualModButton.InstalledMod = false;
@@ -863,15 +842,6 @@ namespace ResourceHubLauncher
                 Process.Start("https://twitter.com/dg_resource");
             }
         }
-        private void MainForm_ResizeBegin(object sender, EventArgs e) {
-            resizingPanel.Show();
-        }
-
-        private void MainForm_ResizeEnd(object sender, EventArgs e) {
-            if(!descriptionMaking) {
-                resizingPanel.Hide();
-            }
-        }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e) {
             gooseToolStripMenuItem.Text = "Geese";
@@ -934,7 +904,7 @@ namespace ResourceHubLauncher
         }
 
         private void disableToolStripMenuItem1_Click(object sender, EventArgs e) {
-            if(actualModButton.InstalledMod) {
+            if (actualModButton.InstalledMod) {
                 openInModsToolStripMenuItem_Click(sender, e);
             } else {
                 toolStripMenuItem5_Click(sender, e);
@@ -954,14 +924,11 @@ namespace ResourceHubLauncher
             UpdateButtonsChanged();
         }
 
-        
-
         private void toolStripMenuItem1_Click_1(object sender, EventArgs e) {
-            
+
             if (installedToolStripMenuItem.Checked) {
                 installedToolStripMenuItem.ForeColor = Color.FromArgb(0, 170, 0);
-            } 
-            else {
+            } else {
                 installedToolStripMenuItem.ForeColor = Color.FromArgb(170, 0, 0);
             }
             UpdateButtonsChanged();
@@ -996,7 +963,7 @@ namespace ResourceHubLauncher
             Show();
         }
 
-        private void AddToFontStyleDesc(FontStyle styleToAdd,int start,int end) {
+        private void AddToFontStyleDesc(FontStyle styleToAdd, int start, int end) {
             List<int> starts = new List<int>();
             List<int> ends = new List<int>();
 
@@ -1026,7 +993,7 @@ namespace ResourceHubLauncher
             starts.Add(start);
             for (int i = start + 1; i < end; i++) {
                 if (actualDescTags[i] != latest) {
-                    ends.Add(i- starts.Last());
+                    ends.Add(i - starts.Last());
                     starts.Add(i);
 
                 }
@@ -1037,21 +1004,21 @@ namespace ResourceHubLauncher
                 label3.Select(starts[i], ends[i]);
                 label3.SelectionFont = new Font(label3.SelectionFont.FontFamily, label3.SelectionFont.Size, ~styleToAdd & label3.SelectionFont.Style);
             }
-            label3.Select(start, end-start);
+            label3.Select(start, end - start);
         }
 
         private void BoldToolButton_Click(object sender, EventArgs e) {
             UpdateDescTagList();
-            if(label3.SelectionLength>0) {
+            if (label3.SelectionLength > 0) {
                 if (BoldToolButton.Checked) {
-                    ApplyTagToDesc(HtmlTagsToAdd.b, label3.SelectionStart, label3.SelectionStart+label3.SelectionLength);
+                    ApplyTagToDesc(HtmlTagsToAdd.b, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
                     AddToFontStyleDesc(FontStyle.Bold, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
                 } else {
                     RemoveFontStyleDesc(FontStyle.Bold, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
                     RemoveTagToDesc(HtmlTagsToAdd.b, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
                 }
             }
-            
+
         }
 
         private void ItalicToolButton_Click(object sender, EventArgs e) {
@@ -1066,7 +1033,7 @@ namespace ResourceHubLauncher
                     RemoveFontStyleDesc(FontStyle.Italic, label3.SelectionStart, label3.SelectionStart + label3.SelectionLength);
                 }
             }
-            
+
         }
 
         private void UnderlineToolButton_Click(object sender, EventArgs e) {
@@ -1097,7 +1064,7 @@ namespace ResourceHubLauncher
 
         private string getHtmlStart(HtmlTagsToAdd tagsToAdd) {
             string toR = "";
-            if((~HtmlTagsToAdd.b & tagsToAdd)!= tagsToAdd) {
+            if ((~HtmlTagsToAdd.b & tagsToAdd) != tagsToAdd) {
                 toR += "<b>";
             }
             if ((~HtmlTagsToAdd.i & tagsToAdd) != tagsToAdd) {
@@ -1203,14 +1170,14 @@ namespace ResourceHubLauncher
                     string toAdd = "";
                     toAdd = getHtmlStart(actualDescTags.First());
                     addedSize += toAdd.Length;
-                    description= description.Insert(0, toAdd);
+                    description = description.Insert(0, toAdd);
                     HtmlTagsToAdd latest = actualDescTags.First();
-                    for (int i=1;i< actualDescTags.Count-1;i++) {
-                        if(actualDescTags[i]!= latest) {
+                    for (int i = 1; i < actualDescTags.Count - 1; i++) {
+                        if (actualDescTags[i] != latest) {
                             toAdd = getHtmlEnd(latest);
                             toAdd += getHtmlStart(actualDescTags[i]);
                         }
-                        description= description.Insert(i + addedSize, toAdd);
+                        description = description.Insert(i + addedSize, toAdd);
                         addedSize += toAdd.Length;
                         latest = actualDescTags[i];
                         toAdd = "";
@@ -1218,7 +1185,7 @@ namespace ResourceHubLauncher
                     toAdd = getHtmlEnd(actualDescTags.Last());
                     description += toAdd;
 
-                    byte[] bytes = Encoding.ASCII.GetBytes(description.Substring(beforeDesc.Length+1).Replace("\n","\\"+"n"));
+                    byte[] bytes = Encoding.ASCII.GetBytes(description.Substring(beforeDesc.Length + 1).Replace("\n", "\\" + "n"));
                     myStream.Write(bytes, 0, bytes.Length);
                     myStream.Close();
                 }
@@ -1234,8 +1201,8 @@ namespace ResourceHubLauncher
             ItalicToolButton.Checked = label3.SelectionFont.Italic;
             UnderlineToolButton.Checked = label3.SelectionFont.Underline;
             StrikeoutToolButton.Checked = label3.SelectionFont.Strikeout;
-            switch(label3.SelectionFont.Size) {
-                
+            switch (label3.SelectionFont.Size) {
+
                 case 15:
                     ActualTextSizeButton.Text = "Medium Size";
                     break;
@@ -1274,7 +1241,7 @@ namespace ResourceHubLauncher
                 label3.Select(starts[i], ends[i]);
                 label3.SelectionFont = new Font(label3.SelectionFont.FontFamily, size, label3.SelectionFont.Style);
             }
-            label3.Select(start, end-start);
+            label3.Select(start, end - start);
         }
 
         private void NormalSizeStripMenuItem_Click(object sender, EventArgs e) {
@@ -1319,7 +1286,7 @@ namespace ResourceHubLauncher
                 thisForm.label3.SelectAll();
                 thisForm.label3.SelectionProtected = false;
                 thisForm.label3.Select(0, 0);
-                thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> 1.0 \nCreated by You\n\n{fileData.Replace("\\"+"n","\n")}";
+                thisForm.label3.Text = $"<big>{ModCreatorForm.thisForm.NameTextBox.Text}</big> 1.0 \nCreated by You\n\n{fileData.Replace("\\" + "n", "\n")}";
                 thisForm.htmlTags.Apply(ref label3);
 
                 int emptySize = $"{ModCreatorForm.thisForm.NameTextBox.Text} 1.0 \nCreated by You\n\n".Length;
@@ -1330,18 +1297,17 @@ namespace ResourceHubLauncher
                 thisForm.label3.Select(0, emptySize);
                 thisForm.label3.SelectionProtected = true;
 
-
-                for (int i= emptySize; i< thisForm.label3.Text.Length;i++) {
+                for (int i = emptySize; i < thisForm.label3.Text.Length; i++) {
                     thisForm.label3.Select(i, 1);
-                    
-                    HtmlTagsToAdd b= HtmlTagsToAdd.none;
+
+                    HtmlTagsToAdd b = HtmlTagsToAdd.none;
                     HtmlTagsToAdd ii = HtmlTagsToAdd.none;
                     HtmlTagsToAdd u = HtmlTagsToAdd.none;
                     HtmlTagsToAdd s = HtmlTagsToAdd.none;
                     HtmlTagsToAdd m = HtmlTagsToAdd.none;
                     HtmlTagsToAdd big = HtmlTagsToAdd.none;
 
-                    if(thisForm.label3.SelectionFont.Bold) {
+                    if (thisForm.label3.SelectionFont.Bold) {
                         b = HtmlTagsToAdd.b;
                     }
                     if (thisForm.label3.SelectionFont.Italic) {
@@ -1353,8 +1319,8 @@ namespace ResourceHubLauncher
                     if (thisForm.label3.SelectionFont.Strikeout) {
                         s = HtmlTagsToAdd.s;
                     }
-                    
-                    switch(thisForm.label3.SelectionFont.Size) {
+
+                    switch (thisForm.label3.SelectionFont.Size) {
                         case 15:
                             m = HtmlTagsToAdd.m;
                             break;

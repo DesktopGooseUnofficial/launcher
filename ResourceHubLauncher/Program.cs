@@ -13,10 +13,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ResourceHubLauncher
-{
-    static class Program
-    {
+namespace ResourceHubLauncher {
+    static class Program {
         [DllImport("kernel32.dll")]
         static extern IntPtr GetConsoleWindow();
 
@@ -66,7 +64,7 @@ namespace ResourceHubLauncher
 
                     MainForm form = new MainForm(RestartForm);
 
-                    
+
 
 
 
@@ -96,34 +94,33 @@ namespace ResourceHubLauncher
                     loading.Visible = false;
                     loading.Close();
                     form.md5 = md5;
-                    
+
                     if (latest != md5.ToString() && !_G.dev && _G.update) {
                         try {
                             Process.Start("RHLUpdater.exe");
                             Environment.Exit(0);
                         } catch (Exception) {
-                            if (MetroMessageBox.Show(form, "Oh no! The ResourceHub Launcher couldn't find RHLUpdater.exe\n\nTry reinstalling the Launcher.\nDownload page will be opened after clicking \"Ok\"", "Auto-Updater", MessageBoxButtons.OK, MessageBoxIcon.Error)==DialogResult.OK) {
+                            if (MetroMessageBox.Show(form, "Oh no! The ResourceHub Launcher couldn't find RHLUpdater.exe\n\nTry reinstalling the Launcher.\nDownload page will be opened after clicking \"Ok\"", "Auto-Updater", MessageBoxButtons.OK, MessageBoxIcon.Error) == DialogResult.OK) {
                                 Process.Start("https://github.com/DesktopGooseUnofficial/launcher/releases");
                                 Environment.Exit(0);
                             }
                         }
-                            
+
                     } else {
-                        if(_G.dev || !_G.update) {
+                        if (_G.dev || !_G.update) {
                             Console.WriteLine("Looks like the user doesn't want updates.");
                         } else {
                             Console.WriteLine("Launcher is up to date!");
                         }
                     }
-                    
+
                     if (_G.dev && MetroMessageBox.Show(form, "Copy Version MD5 to clipboard?", "Developer Mode", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         Clipboard.SetText(md5.ToString());
 
-                    if((string)Config.Options["gpath"] == "" && File.Exists(Path.Combine( System.Reflection.Assembly.GetEntryAssembly().Location, "GooseDesktop.exe")))
-                    {
+                    if ((string)Config.Options["gpath"] == "" && File.Exists(Path.Combine(System.Reflection.Assembly.GetEntryAssembly().Location, "GooseDesktop.exe"))) {
                         Config.Options["gpath"] = Path.Combine(System.Reflection.Assembly.GetEntryAssembly().Location, "GooseDesktop.exe");
-                    }
-                    else if ((string)Config.Options["gpath"] == "" || !File.Exists((string)Config.Options["gpath"])) {
+                        Config.Options["cpath"] = Path.Combine(System.Reflection.Assembly.GetEntryAssembly().Location, "config.ini");
+                    } else if ((string)Config.Options["gpath"] == "" || !File.Exists((string)Config.Options["gpath"])) {
                         if (MetroMessageBox.Show(form, "To start using the Launcher, you need to select the GooseDesktop.exe file. Press OK to do so now.", "Is it your first time using the Launcher?", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK) {
                             using (OpenFileDialog oFileDialog = new OpenFileDialog()) {
                                 oFileDialog.InitialDirectory = @"C:\";
@@ -133,6 +130,7 @@ namespace ResourceHubLauncher
                                 oFileDialog.FileOk += (object sender, CancelEventArgs e) => {
                                     if (e.Cancel) { return; }
                                     Config.Options["gpath"] = oFileDialog.FileName;
+                                    Config.Options["cpath"] = Path.Combine(oFileDialog.FileName.Substring(0, oFileDialog.FileName.Length - Path.GetFileName(oFileDialog.FileName).Length), "config.ini");
                                 };
                                 oFileDialog.ShowDialog();
                             }

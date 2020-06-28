@@ -28,7 +28,6 @@ namespace ResourceHubLauncher {
         Action<string> hoverR;
 
         public ModButton(string _modName, int _modSafety, ModButtonStates _modState, Action<string> clickResult, Action<string> hoverResult) {
-
             modNameColor = Color.FromArgb(170, 170, 170);
             Size = new Size(177, 88);
             modName = _modName;
@@ -53,7 +52,7 @@ namespace ResourceHubLauncher {
             switch (_modSafety) {
                 case -1:
                     modSafety = "Inapplicable";
-                    modSafetyColor = Color.FromArgb(170,170,170);
+                    modSafetyColor = Color.FromArgb(170, 170, 170);
                     break;
                 case 0:
                     modSafety = "Safe";
@@ -76,7 +75,7 @@ namespace ResourceHubLauncher {
                     modSafetyColor = Color.FromArgb(170, 170, 170);
                     break;
             }
-            
+
             setLocation(new Point(0, 0));
             BringToFront();
 
@@ -85,35 +84,44 @@ namespace ResourceHubLauncher {
 
             MouseDown += button1_Click;
             MouseHover += MouseHover_;
-            //BackColorChanged += ColorChanged;
+
             State = _modState;
+
+            DoubleBuffered = true;
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
-        
+
 
         public void setLocation(Point newLocation) {
             Location = newLocation;
-
         }
 
+        override protected void OnPaintBackground(PaintEventArgs e) { }
+
         override protected void OnPaint(PaintEventArgs e) {
-            Graphics graph = e.Graphics;
-            base.OnPaint(e);
-            SolidBrush brush = new SolidBrush(modNameColor);
-            graph.DrawString(modName, font, brush, new Point(10, 9));
-            brush = new SolidBrush(modStateColor);
-            graph.DrawString(modState, font, brush, new Point(10, 59));
-            brush = new SolidBrush(modSafetyColor);
-            SizeF safetySize = graph.MeasureString(modSafety, font);
-            graph.DrawString(modSafety, font, brush, new Point(Size.Width- ((int)safetySize.Width)-11, 59));
-            GC.Collect();
+            using (Bitmap bmp = new Bitmap(Width, Height)) {
+                using (Graphics g = Graphics.FromImage(bmp)) {
+                    g.Clear(BackColor);
+                    SolidBrush brush = new SolidBrush(modNameColor);
+                    g.DrawString(modName, font, brush, new Point(10, 9));
+                    brush = new SolidBrush(modStateColor);
+                    g.DrawString(modState, font, brush, new Point(10, 59));
+                    brush = new SolidBrush(modSafetyColor);
+                    SizeF safetySize = g.MeasureString(modSafety, font);
+                    g.DrawString(modSafety, font, brush, new Point(Size.Width - ((int)safetySize.Width) - 11, 59));
+                    brush.Dispose();
+                }
+                e.Graphics.DrawImage(bmp, new Point(0, 0));
+            }
         }
 
         public bool InQueue {
-            set { if (value) {
+            set {
+                if (value) {
                     modState = "In Queue";
                 } else {
-                    switch(State) {
+                    switch (State) {
                         case ModButtonStates.Available:
                             modState = "Available";
                             break;
@@ -185,19 +193,8 @@ namespace ResourceHubLauncher {
             hoverR(modName);
         }
 
-        /*private void ColorChanged(object sender, EventArgs e) {
-            if(modSafety== "Inapplicable" || modSafety == "N/A") {
-                Console.WriteLine(BackColor);
-                if (BackColor == Color.FromArgb(17, 17, 17)) {
-                    modSafetyColor = Color.FromArgb(170, 170, 170);
-                } else {
-                    modSafetyColor = Color.FromArgb(17, 17, 17);
-                }
-            }
-        }*/
-
-            public void ThemeChanged(bool lightTheme) {
-            if(modSafetyColor == Color.FromArgb(17, 17, 17) || modSafetyColor == Color.FromArgb(170, 170, 170)) {
+        public void ThemeChanged(bool lightTheme) {
+            if (modSafetyColor == Color.FromArgb(17, 17, 17) || modSafetyColor == Color.FromArgb(170, 170, 170)) {
                 if (lightTheme) {
                     modSafetyColor = Color.FromArgb(17, 17, 17);
                 } else {
@@ -205,27 +202,26 @@ namespace ResourceHubLauncher {
 
                 }
             }
-                
+
 
             if (lightTheme) {
-                
                 modNameColor = Color.FromArgb(17, 17, 17);
             } else {
-                
+
                 modNameColor = Color.FromArgb(170, 170, 170);
             }
         }
 
 
-        
+
         public void changeContextMenu(ContextMenuStrip cMS) {
             ContextMenuStrip = cMS;
-        }        
+        }
     }
 
     class ModButtonList {
         public List<ModButton> list;
-        List<int> elementsRemoved=new List<int>();
+        List<int> elementsRemoved = new List<int>();
         Point latestAddedPos = new Point(0, -88);
         public ModButtonList() {
             list = new List<ModButton>();
@@ -243,18 +239,18 @@ namespace ResourceHubLauncher {
             elementsRemoved.Add(index);
         }
 
-        public void ShowOnly(Func<ModButton,bool> how) {
+        public void ShowOnly(Func<ModButton, bool> how) {
             int actualMemberListN = 0;
-            for(int i=0;i< list.Count;i++) {
-                if(how(list[i])&& elementsRemoved.FindIndex((m) => { return m == i; })==-1) {
+            for (int i = 0; i < list.Count; i++) {
+                if (how(list[i]) && elementsRemoved.FindIndex((m) => { return m == i; }) == -1) {
                     list[i].Visible = true;
                     list[i].setLocation(new Point(latestAddedPos.X, 88 * actualMemberListN));
                     actualMemberListN++;
                 } else {
-                    list[i].Visible=false;
+                    list[i].Visible = false;
                 }
             }
-            latestAddedPos = new Point(latestAddedPos.X, 0 - 88+ actualMemberListN*88);
+            latestAddedPos = new Point(latestAddedPos.X, 0 - 88 + actualMemberListN * 88);
         }
 
         public void Clear() {
@@ -265,7 +261,7 @@ namespace ResourceHubLauncher {
         public ModButton Find(string modName) {
             return list.Find(mod => mod.modName == modName);
         }
-        
+
         public void ThemeChanged(bool lightTheme) {
             foreach (ModButton button in list) {
                 button.ThemeChanged(lightTheme);
