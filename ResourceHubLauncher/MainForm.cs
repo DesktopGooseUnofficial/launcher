@@ -67,7 +67,6 @@ namespace ResourceHubLauncher {
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
-
             Console.WriteLine($"Loading MainForm");
             InitializeInstallerAPI();
             Console.WriteLine($"Installer API loaded");
@@ -83,11 +82,10 @@ namespace ResourceHubLauncher {
 
             Console.WriteLine($"Html tags Loaded");
 
-            if ((string)Config.Options["latestU"] != md5.ToString()) {
+            if ((string)Config.Options["latestU"] != md5.ToString() && !(bool)Config.Options["devmd"]) {
                 Console.WriteLine($"User appears to have updated.\nDisplaying changelog...");
                 htmlTags.Apply(ref changelogRichTextBox);
                 changelogPanel.Location = new Point(0, 5);
-                changelogPanel.Show();
                 Config.Options["latestU"] = md5.ToString();
                 Config.Save();
             }
@@ -101,11 +99,9 @@ namespace ResourceHubLauncher {
                     mods.Add(mod);
                     ModButton modB = new ModButton((string)mod["name"], (int)mod["level"], ModButtonStates.Available, ModClick, ModHover);
 
-                    Controls.Add(modB);
                     modB.Visible = false;
                     modsButtons.Add(modB);
 
-                    modB.Parent = metroPanel2;
                     modB.changeContextMenu(modListContextMenu);
 
                     modB.ThemeChanged((int)Config.Options["theme"] == 1);
@@ -127,7 +123,6 @@ namespace ResourceHubLauncher {
                         JObject data = JObject.Parse(File.ReadAllText(datPath));
                         if ((string)data["mod-version"] != (string)mod["mod-version"]) {
                             if (MsgBox($"{data["name"]} is outdated.\r\nWould you like to update?", "Mod Auto-Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
-
                                 AddToInstallQueue(mod);
                             }
                             continue;
@@ -145,13 +140,10 @@ namespace ResourceHubLauncher {
                         foundObj.InstalledMod = true;
                         disableToolStripMenuItem1.Text = "Disable";
                     }
-
                 } else {
                     ModButtonStates statee = File.Exists(Path.Combine(pMod, modName + ".dll.RHLdisabled")) ? ModButtonStates.Disabled : ModButtonStates.Installed;
                     ModButton newMod = new ModButton(modName, 0, statee, ModClick, ModHover);
-                    metroPanel2.Controls.Add(newMod);
                     modsButtons.Add(newMod);
-                    newMod.Parent = metroPanel2;
                     newMod.changeContextMenu(modListContextMenu);
                     if (statee == ModButtonStates.Installed) {
                         disableToolStripMenuItem1.Enabled = true;
@@ -164,6 +156,14 @@ namespace ResourceHubLauncher {
             Config.Theme(this);
             modsButtons.ThemeChanged((int)Config.Options["theme"] == 1);
             UpdateTheme((int)Config.Options["theme"] == 1);
+
+            List<ModButton> modButtons = modsButtons.GetMods();
+
+            foreach (ModButton b in modButtons) {
+                b.BringToFront();
+                metroPanel2.Controls.Add(b);
+                b.Parent = metroPanel2;
+            }
 
             if (Process.GetProcessesByName("GooseDesktop").Count() > 0) {
                 gooseToolStripMenuItem.Text = "Geese";
@@ -901,6 +901,8 @@ namespace ResourceHubLauncher {
 
         private void changelogPanel_MouseDown(object sender, MouseEventArgs e) {
             changelogPanel.Hide();
+            Config.Options["cl"] = true;
+            Config.Save();
         }
 
         private void disableToolStripMenuItem1_Click(object sender, EventArgs e) {
@@ -1333,6 +1335,5 @@ namespace ResourceHubLauncher {
                 }
             }
         }
-
     }
 }

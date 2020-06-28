@@ -227,6 +227,10 @@ namespace ResourceHubLauncher {
             list = new List<ModButton>();
         }
 
+        public List<ModButton> GetMods() {
+            return list;
+        }
+
         public void Add(ModButton mod) {
             mod.setLocation(new Point(0, latestAddedPos.Y + 88));
             latestAddedPos = new Point(latestAddedPos.X, latestAddedPos.Y + 88);
