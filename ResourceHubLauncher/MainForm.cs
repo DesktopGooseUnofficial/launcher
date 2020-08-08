@@ -279,7 +279,7 @@ namespace ResourceHubLauncher {
         }
 
         private void changeModDescription() {
-            if(mod == null) {
+            if (mod == null) {
                 label3.Text = $"<big>{actualModButton.modName}</big> ? (Probably Goose 0.3)\nCreated by Unknown\n\nThis mod is could not be found in the database.";
                 htmlTags.Apply(ref label3);
             } else {
@@ -358,7 +358,7 @@ namespace ResourceHubLauncher {
         }
 
         private string ReadableBytes(double len) {
-            string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+            string[] sizes = { "B", "KB", "MB", "GB" };
             int order = 0;
             while (len >= 1024 && order < sizes.Length - 1) {
                 order++;

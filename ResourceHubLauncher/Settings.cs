@@ -65,10 +65,6 @@ namespace ResourceHubLauncher {
             configPath.Text = Path.GetFileName((string)Config.Options["cpath"]);
         }
 
-        private void Settings_Load(object sender, EventArgs e) {
-            
-        }
-
         private void lightTheme_CheckedChanged(object sender, EventArgs e) {
             Config.Save();
             Config.Load();

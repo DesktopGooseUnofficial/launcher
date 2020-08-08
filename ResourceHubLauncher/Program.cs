@@ -25,7 +25,7 @@ namespace ResourceHubLauncher {
 
         public static bool CheckForInternetConnection() {
             try {
-                new WebClient().OpenRead("https://example.com");
+                new WebClient().OpenRead("https://google.com");
                 return true;
             } catch {
                 return false;
@@ -105,7 +105,6 @@ namespace ResourceHubLauncher {
                                 Environment.Exit(0);
                             }
                         }
-
                     } else {
                         if (_G.dev || !_G.update) {
                             Console.WriteLine("Looks like the user doesn't want updates.");
