@@ -279,8 +279,8 @@ namespace ResourceHubLauncher {
         }
 
         private void changeModDescription() {
-            if (mod == null) {
-                label3.Text = $"<big>{actualModButton.modName}</big> ? (Probably Goose 0.3)\nCreated by Unknown\n\nThis mod is could not be found in the database.";
+            if(mod == null) {
+                label3.Text = $"<big>{actualModButton.modName}</big>\n\nThis mod could not be found in the database! Detailed information will not be displayed.";
                 htmlTags.Apply(ref label3);
             } else {
                 try {
