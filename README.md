@@ -21,9 +21,9 @@ The original creators of the mod installer for Desktop Goose lost interest in th
 
 ### Where can I download final versions?
 
-[1.2](https://github.com/DesktopGooseUnofficial/launcher/releases)
+[1.3]([https://github.com/DesktopGooseUnofficial/launcher/releases](https://github.com/DesktopGooseUnofficial/launcher/releases/download/v1.3/ResourceHubLauncher.exe))
 
-[2.0](https://github.com/DesktopGooseUnofficial/launcher-nightly/releases/latest)
+[Unfinished 2.0 beta](https://github.com/ResourceHubLauncher/nightly/releases/download/nightly-2/ResourceHubLauncher.exe)
 
 ### I have downloaded mods, but it doesn't work! Help!
 
