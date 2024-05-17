@@ -11,15 +11,19 @@ Welcome to ResourceHub Launcher!
 
 The ResourceHub Launcher is a easy and simple way to install mods for the Desktop Goose!
 
-Want to download the launcher? Feel free to [download it here](https://github.com/desktopgooseunofficial/launcher/releases/latest). Or do you like living on the edge? Testing out new very in development features? You can [try our nightly builds](https://github.com/DesktopGooseUnofficial/launcher-nightly/releases/latest) as well!
-
 Looking for the backend? Check [this github repo](https://github.com/desktopgooseunofficial/launcher-backend). 
 
 ## FAQ:
 
-### When is 2.0 coming out?
+### Why Archived?
 
-Soon™️! Meanwhile, you can [try our nightly builds](https://github.com/DesktopGooseUnofficial/launcher-nightly/releases/latest) or [our beta builds](https://github.com/DesktopGooseUnofficial/launcher/releases). Don't forget to report the bugs you may encounter to [our bug tracker](https://github.com/DesktopGooseUnofficial/launcher/issues), so they can be quickly fixed!
+The original creators of the mod installer for Desktop Goose lost interest in the project a long time ago. If somebody is still maintaining our launcher then you won't be able to see their work in this repository anyway.
+
+### Where can I download final versions?
+
+[1.2](https://github.com/DesktopGooseUnofficial/launcher/releases)
+
+[2.0](https://github.com/DesktopGooseUnofficial/launcher-nightly/releases/latest)
 
 ### I have downloaded mods, but it doesn't work! Help!
 
