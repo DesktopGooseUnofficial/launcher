@@ -21,7 +21,7 @@ The original creators of the mod installer for Desktop Goose lost interest in th
 
 ### Where can I download final versions?
 
-[1.3]([https://github.com/DesktopGooseUnofficial/launcher/releases](https://github.com/DesktopGooseUnofficial/launcher/releases/download/v1.3/ResourceHubLauncher.exe))
+[1.3](https://github.com/DesktopGooseUnofficial/launcher/releases/download/v1.3/ResourceHubLauncher.exe)
 
 [Unfinished 2.0 beta](https://github.com/ResourceHubLauncher/nightly/releases/download/nightly-2/ResourceHubLauncher.exe)
 
