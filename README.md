@@ -36,4 +36,4 @@ Checklist:
 
 ### Can I give the developers... money?
 
-We would rather you giving the money to [Sam](https://patreon.com/sammakesvr) instead of us ❤
+We would rather you giving the money to [Sam](https://patreon.com/sammakesthings) instead of us ❤
